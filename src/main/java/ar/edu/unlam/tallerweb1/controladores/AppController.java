@@ -1,5 +1,6 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
+import ar.edu.unlam.tallerweb1.modelo.Commerce;
 import ar.edu.unlam.tallerweb1.modelo.Item;
 import ar.edu.unlam.tallerweb1.modelo.Message;
 import ar.edu.unlam.tallerweb1.servicios.ItemService;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -34,7 +36,7 @@ public class AppController {
     @RequestMapping(path = "/buscar", method = RequestMethod.POST)
     public ModelAndView buscar(@ModelAttribute("message") Message message, HttpServletRequest request) {
         ModelMap model = new ModelMap();
-        List<Item> items = itemService.searchItems(message);
+        List<Object[]> items = itemService.searchItems(message);
         model.put("items", items);
         return new ModelAndView("itemList", model);
     }

@@ -17,7 +17,7 @@
     </c:when>
     <c:otherwise>
         <c:forEach items="${items}"  var="ListItem">
-            <li>${ListItem.brand}</li>
+            
         </c:forEach>
         <br />
     </c:otherwise>

@@ -6,5 +6,5 @@ import ar.edu.unlam.tallerweb1.modelo.Message;
 import java.util.List;
 
 public interface ItemService {
-   List<Item> searchItems(Message message);
+   List<Object[]> searchItems(Message message);
 }

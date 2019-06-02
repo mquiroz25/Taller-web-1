@@ -39,13 +39,6 @@ public class Item {
         this.id = id;
     }
 
-    public String getName() {
-        return brand;
-    }
-
-    public void setName(String brand) {
-        this.brand = brand;
-    }
 
     public Set<Commerce> getCommerces() {
         return commerces;
