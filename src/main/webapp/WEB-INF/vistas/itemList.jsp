@@ -28,11 +28,8 @@
   							<div class="card-body">
     							<h5 class="card-title">Comercio: <span class="text-capitalize">${item[1]}</span></h5>
     							<p class="card-text">
-    								<span class="text-capitalize">${item[3]}</span> marca <span class="text-capitalize">${item[2]}</span>
-    								<c:if test="${not empty item[4]}">
-    									<br>
-    									Distancia: <span>${item[4]} Kms</span>
-    								</c:if>
+    								<span class="text-capitalize">${item[3]}</span> marca <span class="text-capitalize">${item[2]}</span><br>
+    								Distancia: <span>${item[4]} Kms</span>
     							</p>
   							</div>
 						</div>

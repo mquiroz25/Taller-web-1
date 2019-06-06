@@ -29,30 +29,29 @@
     			</div>
   			</div>
 	        <div class="form-group row">
-	    		<div class="col-sm-4">
-					<button type="button" class="btn btn-info" onclick="getLocation()">Usar mi ubicación</button>
 	  				<p id="info"></p>
-	    		</div>
 			</div>
 		</form:form>
 </div>
 <script>
-    var info = document.getElementById("info");
+	$( document ).ready(function() {
+	    function getLocation() {
+	        if (navigator.geolocation) {
+	            navigator.geolocation.getCurrentPosition(showPosition);
+	        } else {
+	        	$("#info").text("Geolocalización no disponible.");
+	        }
+	    }
 
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            info.innerHTML = "Geolocalización no disponible.";
-        }
-    }
-
-    function showPosition(position) {
-        document.getElementById("latitude").value = position.coords.latitude;
-        document.getElementById("longitude").value = position.coords.longitude;
-
-        info.innerHTML = "Usando tu ubicación. Click en buscar"
-    }
+	    function showPosition(position) {
+	        $("#latitude").val(position.coords.latitude);
+	        $("#longitude").val(position.coords.longitude);
+			$("#info").text("Usando tu ubicación. Click en buscar");
+	    }
+	    
+	    getLocation();
+	});
+    
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
