@@ -3,26 +3,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!--  <link href="css/bootstrap.min.css" rel="stylesheet">
-      <link href="css/bootstrap-theme.min.css" rel="stylesheet"> -->
+<meta content="text/html">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
+<br>
 <div class="container">
-    <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+		<h3>Taller Web I</h3><br>
         <form:form action="buscar" method="POST" modelAttribute="message">
-            <h3 class="form-signin-heading">Taller Web I</h3>
-            <hr class="colorgraph"><br>
-            <label for="category">Buscar:</label>
-            <form:input path="category" id="category" type="text" class="form-control" />
-            <form:input path="latitude" id="latitude" type="hidden"/>
-            <form:input path="longitude" id="longitude" type="hidden"/>
-
-            <button class="btn btn-lg btn-primary btn-block" Type="Submit"/>Login</button>
-        </form:form>
-        <button onclick="getLocation()">Usar mi ubicaciÃ³n</button>
-
-        <p id="info"></p>
-    </div>
+        	<div class="form-group row">
+        		<label for="category" class="col-sm-2 col-form-label">Categoria: </label>
+    			<div class="col-sm-8">
+    				<form:input path="category" id="category" type="text" class="form-control"/>
+	            	<form:input path="latitude" id="latitude" type="hidden"/>
+	            	<form:input path="longitude" id="longitude" type="hidden"/>
+    			</div>
+    			<div class="col-sm-2">
+    				<button type="submit" class="btn btn-primary">Buscar</button>
+    			</div>
+  			</div>
+	        <div class="form-group row">
+	    		<div class="col-sm-4">
+					<button type="button" class="btn btn-info" onclick="getLocation()">Usar mi ubicación</button>
+	  				<p id="info"></p>
+	    		</div>
+			</div>
+		</form:form>
 </div>
 <script>
     var info = document.getElementById("info");
@@ -31,7 +43,7 @@
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
         } else {
-            info.innerHTML = "GeolocalizaciÃ³n no disponible.";
+            info.innerHTML = "Geolocalización no disponible.";
         }
     }
 
@@ -39,7 +51,7 @@
         document.getElementById("latitude").value = position.coords.latitude;
         document.getElementById("longitude").value = position.coords.longitude;
 
-        info.innerHTML = "Usando tu ubicaciÃ³n. Click en buscar"
+        info.innerHTML = "Usando tu ubicación. Click en buscar"
     }
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

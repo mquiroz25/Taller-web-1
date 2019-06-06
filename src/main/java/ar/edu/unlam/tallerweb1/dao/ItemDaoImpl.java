@@ -12,6 +12,8 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
+
+import java.io.Console;
 import java.util.List;
 
 @Repository("ItemDao")
@@ -20,13 +22,14 @@ public class ItemDaoImpl implements ItemDao {
     private SessionFactory sessionFactory;
 
     @Override
-    public List<Item> obtainItemsByCategory(Message message){
+    public List<Object[]> obtainItemsByCategory(Message message){
         final Session session = sessionFactory.getCurrentSession();
         @SuppressWarnings("unchecked")
-        List<Item> items = session.createCriteria(Item.class)
+        List<Object[]> items = session.createCriteria(Item.class)
                 .createAlias("category", "c")
                 .add(Restrictions.ilike("c.name", message.getCategory(), MatchMode.ANYWHERE))
                 .list();
+
         return items;
     }
     // sql native porque no sé si sea posible hacerlo con criteria, yo no pude y estuve como 3 horas (?
@@ -36,10 +39,13 @@ public class ItemDaoImpl implements ItemDao {
     @Override
     public List<Object[]> obtainItemsByCategoryAndLocation(Message message){
         final Session session = sessionFactory.getCurrentSession();
-        final String sql = "SELECT commerce.name as commerce, i.brand as itemBrand, category.name as category, ( 6371 * acos( cos( radians("+message.getLatitude()+") * cos( radians( latitude ) ) *" +
-                "cos( radians( longitude ) - radians("+message.getLongitude()+") ) + sin( radians("+message.getLatitude()+") ) * sin( radians( latitude ) ) ) ) ) AS distance " +
-                "FROM commerce INNER JOIN commerce_item as ci ON commerce.id = ci.commerce_id INNER JOIN item as i ON ci.item_id = i.id INNER JOIN category ON i.category_id = category.id "+
-                "WHERE category.name LIKE  '%"+message.getCategory()+"%' " +
+
+        final String sql = "SELECT i.id, Commerce.name as commerce, i.brand as itemBrand, Category.name as category, ROUND((ACOS(((SIN(radians(latitude)))*(SIN(radians("+message.getLatitude()+")))) + ((COS(radians(latitude)))*(COS(radians("+message.getLatitude()+")))*(COS(radians("+message.getLongitude()+"-longitude))))) * 6371), 2) AS distance " +
+                "FROM Commerce " +
+        		"INNER JOIN commerce_item as ci ON Commerce.id = ci.commerce_id " +
+                "INNER JOIN Item as i ON ci.item_id = i.id "+
+        		"INNER JOIN Category ON i.category_id = Category.id " +
+                "WHERE Category.name LIKE  '%"+message.getCategory()+"%' " +
                 "HAVING distance < 10";
         SQLQuery query = session.createSQLQuery(sql);
         List<Object[]> rows = query.list();
