@@ -31,7 +31,7 @@
     			</div>
   			</div>
   			<div class="form-group row">
-	  			<label for="distancia" class="col-sm-2 col-form-label">Distancia m�xima en Kms: </label>
+	  			<label for="distancia" class="col-sm-2 col-form-label">Distancia m&aacute;xima en Kms: </label>
     			<div class="col-sm-8">
     				<form:input path="distancia" id="distancia" type="text" class="form-control"/>
     			</div>
@@ -52,14 +52,14 @@
 	        if (navigator.geolocation) {
 	            navigator.geolocation.getCurrentPosition(showPosition);
 	        } else {
-	        	$("#info").text("Geolocalizaci�n no disponible.");
+	        	$("#info").text("Geolocalizaci\u00F3n no disponible.");
 	        }
 	    }
 
 	    function showPosition(position) {
 	        $("#latitude").val(position.coords.latitude);
 	        $("#longitude").val(position.coords.longitude);
-			$("#info").text("Usando tu ubicaci�n. Click en buscar");
+			$("#info").text("Usando tu ubicaci\u00F3n. Click en buscar");
 	    }
 	    
 	    getLocation();
