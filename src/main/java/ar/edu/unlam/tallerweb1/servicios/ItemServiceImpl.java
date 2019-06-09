@@ -23,7 +23,7 @@ public class ItemServiceImpl implements ItemService{
     private ItemDao itemDao;
 
    @Override
-   public List<Item> searchItems(Message message){ 
+   public List<Item> searchItems(Message message){
 	   List<Item> lista_items = itemDao.obtainItemsByCategoryAndLocation(message);
 
 	   if (message.getDistancia() != null) {
@@ -33,7 +33,7 @@ public class ItemServiceImpl implements ItemService{
 			   Set<Commerce> lita_comercios = item.getCommerces();
 			   Iterator<Commerce> commerces = lita_comercios.iterator();
 			   while (commerces.hasNext()) {
-				   Commerce commerce = commerces.next();			    	  
+				   Commerce commerce = commerces.next();
 				   final Long distancia = Math.round((Math.acos(((Math.sin(Math.toRadians(commerce.getLatitude())))*(Math.sin(Math.toRadians(message.getLatitude())))) + ((Math.cos(Math.toRadians(commerce.getLatitude())))*(Math.cos(Math.toRadians(message.getLatitude())))*(Math.cos(Math.toRadians(message.getLongitude()-commerce.getLongitude()))))) * 6371));
 				   if (distancia > message.getDistancia()) {
 					   commerces.remove();
@@ -45,7 +45,7 @@ public class ItemServiceImpl implements ItemService{
 		   }
 	   } else {
 		   Set<Set<Commerce>> lista_comercios = new HashSet<>();
-		   
+
 		   for (Item item : lista_items) {
 			   lista_comercios.add(item.getCommerces());
 		}
