@@ -1,8 +1,6 @@
 package ar.edu.unlam.tallerweb1.modelo;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class Commerce {

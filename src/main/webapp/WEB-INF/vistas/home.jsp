@@ -15,7 +15,9 @@
 <body>
 <br>
 <div class="container">
+
 		<h3>Taller Web I</h3><br>
+		<a href="/proyecto-limpio-spring/cargarProductos" class="btn btn-seconday">Cargar datos en DB</a><br>
         <form:form action="buscar" method="POST" modelAttribute="message">
         	<div class="form-group row">
         		<label for="category" class="col-sm-2 col-form-label">Categoria: </label>
@@ -28,13 +30,19 @@
     				<button type="submit" class="btn btn-primary">Buscar</button>
     			</div>
   			</div>
+  			<div class="form-group row">
+	  			<label for="distancia" class="col-sm-2 col-form-label">Distancia máxima en Kms: </label>
+    			<div class="col-sm-8">
+    				<form:input path="distancia" id="distancia" type="text" class="form-control"/>
+    			</div>
+			</div>
 	        <div class="form-group row">
 	  				<p id="info"></p>
 			</div>
 		</form:form>
 		
-		
-	<a href="/proyecto-limpio-spring/buscarProductoPorMarca"	><button class="btn btn-success">Buscar Productos Por marca</button></a>
+	
+	<a href="/proyecto-limpio-spring/buscarProductoPorMarca"><button class="btn btn-success">Buscar Productos Por marca</button></a>
 
 	
 		

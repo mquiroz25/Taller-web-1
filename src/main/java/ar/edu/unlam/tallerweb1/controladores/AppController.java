@@ -30,7 +30,6 @@ import java.util.Set;
 
 @Transactional
 @Controller
-
 public class AppController {
 
     @Inject
@@ -38,7 +37,6 @@ public class AppController {
 
     @RequestMapping("/home")
     public ModelAndView home() {
-
         ModelMap model = new ModelMap();
 
         Message message = new Message();
@@ -47,10 +45,11 @@ public class AppController {
         return new ModelAndView("home", model);
     }
 
+    // Busca por categoria, las cargadas son "gaseosas" y "lavandinas"
     @RequestMapping(path = "/buscar", method = RequestMethod.POST)
     public ModelAndView buscar(@ModelAttribute("message") Message message, HttpServletRequest request) {
         ModelMap model = new ModelMap();
-        List<Object[]> items = itemService.searchItems(message);
+        List<Item> items = itemService.searchItems(message);
         model.put("items", items);
         return new ModelAndView("itemList", model);
     }
@@ -63,116 +62,54 @@ public class AppController {
     }
     
     
-
-    //ayudin o pepsi
 	@RequestMapping(path="/buscarProductoPorMarca",method=RequestMethod.GET)
 	public ModelAndView buscarProducto() {
-		
-		
-		itemService.crearItems();
-		
-
 		return new ModelAndView("buscar");
 	}
+	
+	@RequestMapping(path="/cargarProductos",method=RequestMethod.GET)
+	public ModelAndView cargarProductos() {
+		itemService.crearItems();
+		return new ModelAndView("redirect:/home");
+	}
     
-/*	@RequestMapping(path="/ComerciosEncontrados",method=RequestMethod.GET)
-	public ModelAndView detalleProducto(@RequestParam String marca) throws UnsupportedEncodingException {
-		
-		
-		  ModelMap model = new ModelMap();
-		
-		List<Item>listaDeProductos=itemService.obtenerProductoPorMarca(marca);
-		
-		
-		//obtengo los comercios del primer producto de la lista
-				Set<Commerce>comercios=	 listaDeProductos.get(0).getCommerces();
-				
-				//convierte set en list
-				List <Commerce> comerciosList = new ArrayList <Commerce> (comercios);
-				// Convierto la lista en una cadena json
-				Gson gson = new Gson();
-				String jsonString = gson.toJson(comerciosList);
-				
-
-				  model.put("items", listaDeProductos);
-				  model.put("comercios", comerciosList);
-					//  model.put("jsonString", jsonString); //codifico los espacios de la cadena json para luego poder pasarlo como parametro por url
-				    String encode= URLEncoder.encode(jsonString,"UTF-8");
-				    
-				    model.put("encode", encode);
-				    
-				    
-				return new ModelAndView("itemList",model);
-					//	return new ModelAndView("resultado",model);
-
-	}*/
 	
-	
-	
- 
+	// Busca por marca, las cargadas son "pepsi" y "ayudin"
 	@RequestMapping(path="/ProductosEncontrados",method=RequestMethod.GET)
 	public ModelAndView detalleProducto(@RequestParam String marca) {
-		
-		
-		  ModelMap model = new ModelMap();
-		
+		ModelMap model = new ModelMap();
 		List<Item>listaDeProductos=itemService.obtenerProductoPorMarca(marca);
-		
-		
-Set<Set<Commerce>> comerciosList= new HashSet<>();
-
+		Set<Set<Commerce>> comerciosList= new HashSet<>();
 
 		for (Item p:listaDeProductos) {
-			
 			comerciosList.add(p.getCommerces());
-
-			}
+		}
 		
-
-
-
-				  model.put("items", listaDeProductos);
+		model.put("items", listaDeProductos);
 		
-		
-
-				return new ModelAndView("itemList",model);
-
+		return new ModelAndView("itemList",model);
 	}
 	
-
 
 	@RequestMapping(path="/mostrarEnMapa",method=RequestMethod.GET)
 	public ModelAndView mostrarEnMapa(String nombre,Double latitud,Double longitud) {
+		ModelMap model = new ModelMap();
 		
-		 ModelMap model = new ModelMap();
-		 
 		Commerce  Commerce=new Commerce();
-
-		
-		
 		Commerce.setName(nombre);
 		Commerce.setLatitude(latitud);
 		Commerce.setLongitude(longitud);
-		
 
-		
-		
-		
-List<Commerce>list=new ArrayList<>();
-list.add(Commerce);
-
-
+		List<Commerce>list=new ArrayList<>();
+		list.add(Commerce);
 
 		// Convierto la lista en una cadena json
-			Gson gson = new Gson();
-			String jsonString = gson.toJson(list);
-		 
-		 
-		 
+		Gson gson = new Gson();
+		String jsonString = gson.toJson(list);
 		 
 		model.put("jsonString", jsonString);
 
 		return new ModelAndView("mostrarEnMapa",model);
 	}
- 
+
 }

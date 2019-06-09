@@ -1,7 +1,6 @@
 package ar.edu.unlam.tallerweb1.modelo;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,10 +11,17 @@ public class Item {
     private String brand;
     private String urlImage;
     private String description;
+    private String distancia;
     
-    
-  
+ 
+    @Transient
+	public String getDistancia() {
+		return distancia;
+	}
 
+	public void setDistancia(String distancia) {
+		this.distancia = distancia;
+	}
 
 	@ManyToMany(cascade=CascadeType.ALL)  
     @JoinTable(name="commerce_item", joinColumns=@JoinColumn(name="itemId"), inverseJoinColumns=@JoinColumn(name="commerceId"))   

@@ -5,8 +5,17 @@ public class Message {
     private String category;
     private Double latitude;
     private Double longitude;
+    private Long distancia;
 
-    public String getCategory() {
+    public Long getDistancia() {
+		return distancia;
+	}
+
+	public void setDistancia(Long distancia) {
+		this.distancia = distancia;
+	}
+
+	public String getCategory() {
         return category;
     }
 

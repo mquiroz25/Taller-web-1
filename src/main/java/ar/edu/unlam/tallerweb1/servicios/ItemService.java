@@ -6,7 +6,7 @@ import ar.edu.unlam.tallerweb1.modelo.Message;
 import java.util.List;
 
 public interface ItemService {
-   List<Object[]> searchItems(Message message);
+   List<Item> searchItems(Message message);
    List<Item> obtenerProductoPorMarca(String marca);
    void crearItems();
 
