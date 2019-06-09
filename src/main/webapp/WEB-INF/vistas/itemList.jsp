@@ -43,7 +43,7 @@
     										<c:forEach items="${item.commerces}"  var="item2">
         								 	${item2.name}
         								 	
-        								 	<a href="/proyecto-limpio-spring/mostrarEnMapa?nombre=${item2.name}&latitud=${item2.latitude}&longitud=	${item2.longitude}">Mostrar en mapa</a><br>
+        								 	<a href="${pageContext.request.contextPath}/mostrarEnMapa?nombre=${item2.name}&latitud=${item2.latitude}&longitud=	${item2.longitude}">Mostrar en mapa</a><br>
         								 	
 
  										</c:forEach>

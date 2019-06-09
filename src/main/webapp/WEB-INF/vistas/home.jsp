@@ -17,7 +17,7 @@
 <div class="container">
 
 		<h3>Taller Web I</h3><br>
-		<a href="/proyecto-limpio-spring/cargarProductos" class="btn btn-seconday">Cargar datos en DB</a><br>
+		<a href="${pageContext.request.contextPath}/cargarProductos" class="btn btn-seconday">Cargar datos en DB</a><br>
         <form:form action="buscar" method="POST" modelAttribute="message">
         	<div class="form-group row">
         		<label for="category" class="col-sm-2 col-form-label">Categoria: </label>
@@ -31,7 +31,7 @@
     			</div>
   			</div>
   			<div class="form-group row">
-	  			<label for="distancia" class="col-sm-2 col-form-label">Distancia máxima en Kms: </label>
+	  			<label for="distancia" class="col-sm-2 col-form-label">Distancia mï¿½xima en Kms: </label>
     			<div class="col-sm-8">
     				<form:input path="distancia" id="distancia" type="text" class="form-control"/>
     			</div>
@@ -40,9 +40,8 @@
 	  				<p id="info"></p>
 			</div>
 		</form:form>
-		
-	
-	<a href="/proyecto-limpio-spring/buscarProductoPorMarca"><button class="btn btn-success">Buscar Productos Por marca</button></a>
+
+	<a href="${pageContext.request.contextPath}/buscarProductoPorMarca"><button class="btn btn-success">Buscar Productos Por marca</button></a>
 
 	
 		
@@ -53,14 +52,14 @@
 	        if (navigator.geolocation) {
 	            navigator.geolocation.getCurrentPosition(showPosition);
 	        } else {
-	        	$("#info").text("Geolocalización no disponible.");
+	        	$("#info").text("Geolocalizaciï¿½n no disponible.");
 	        }
 	    }
 
 	    function showPosition(position) {
 	        $("#latitude").val(position.coords.latitude);
 	        $("#longitude").val(position.coords.longitude);
-			$("#info").text("Usando tu ubicación. Click en buscar");
+			$("#info").text("Usando tu ubicaciï¿½n. Click en buscar");
 	    }
 	    
 	    getLocation();
