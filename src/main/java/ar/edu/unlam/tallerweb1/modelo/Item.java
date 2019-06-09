@@ -5,32 +5,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "item")
 public class Item {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
     private String brand;
-    @ManyToMany(mappedBy = "items")
-    private Set<Commerce> commerces = new HashSet<>();
-    @ManyToOne
     private Category category;
+    private Set<ItemCommerce> itemCommerces = new HashSet<ItemCommerce>();
 
-    public String getBrand() {
-        return brand;
+    public Item(){
+
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -39,12 +28,33 @@ public class Item {
         this.id = id;
     }
 
-
-    public Set<Commerce> getCommerces() {
-        return commerces;
+    @ManyToOne
+    public Category getCategory(){
+        return category;
     }
 
-    public void setCommerces(Set<Commerce> commerces) {
-        this.commerces = commerces;
+    public void setCategory(Category category){
+        this.category = category;
+    }
+
+    @OneToMany(mappedBy = "item")
+    public Set<ItemCommerce> getItemCommerces() {
+        return itemCommerces;
+    }
+
+    public void setItemCommerces(Set<ItemCommerce> itemCommerces) {
+        this.itemCommerces = itemCommerces;
+    }
+
+    public void addItemCommerce(ItemCommerce itemCommerce){
+        this.itemCommerces = itemCommerces;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 }

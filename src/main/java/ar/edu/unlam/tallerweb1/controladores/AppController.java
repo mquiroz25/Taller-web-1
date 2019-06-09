@@ -35,6 +35,7 @@ public class AppController {
         ModelMap model = new ModelMap();
         List<Object[]> items = itemService.searchItems(message);
         model.put("items", items);
+
         return new ModelAndView("itemList", model);
     }
 

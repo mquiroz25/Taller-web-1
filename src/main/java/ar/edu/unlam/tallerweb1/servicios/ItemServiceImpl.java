@@ -17,9 +17,9 @@ public class ItemServiceImpl implements ItemService{
     @Inject
     private ItemDao itemDao;
 
-   public List<Object[]> searchItems(Message message){
-	   List<Object[]> items = itemDao.obtainItemsByCategoryAndLocation(message);
-	   return items;
-   }
+    public List<Object[]> searchItems(Message message){
+        List<Object[]> items = itemDao.obtainItemsByCategoryAndLocation(message);
+        return items;
+    }
 
 }

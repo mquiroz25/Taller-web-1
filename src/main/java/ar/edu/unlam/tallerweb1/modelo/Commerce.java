@@ -6,21 +6,19 @@ import java.util.Set;
 
 @Entity
 public class Commerce {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
     private String name;
     private Double latitude;
     private Double longitude;
+    private Set<ItemCommerce> itemCommerces = new HashSet<ItemCommerce>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "commerce_item",
-            joinColumns = { @JoinColumn(name = "commerce_id") },
-            inverseJoinColumns = { @JoinColumn(name = "item_id") }
-    )
-    Set<Item> items = new HashSet<>();
+    public Commerce(){
 
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -37,6 +35,15 @@ public class Commerce {
         this.name = name;
     }
 
+    @OneToMany(mappedBy = "commerce")
+    public Set<ItemCommerce> getItemCommerces(){
+        return itemCommerces;
+    }
+
+    public void setItemCommerces(Set<ItemCommerce> commerces){
+        this.itemCommerces = commerces;
+    }
+
     public Double getLatitude() {
         return latitude;
     }
@@ -51,13 +58,5 @@ public class Commerce {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
-    }
-
-    public Set<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(Set<Item> items) {
-        this.items = items;
     }
 }
