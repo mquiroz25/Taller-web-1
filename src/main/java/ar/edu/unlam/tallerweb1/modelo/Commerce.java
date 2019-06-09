@@ -8,25 +8,17 @@ import java.util.Set;
 public class Commerce {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long commerceId;
     private String name;
     private Double latitude;
     private Double longitude;
 
-    @ManyToMany
-    @JoinTable(
-            name = "commerce_item",
-            joinColumns = { @JoinColumn(name = "commerce_id") },
-            inverseJoinColumns = { @JoinColumn(name = "item_id") }
-    )
-    Set<Item> items = new HashSet<>();
-
     public Long getId() {
-        return id;
+        return commerceId;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.commerceId = id;
     }
 
     public String getName() {
@@ -53,11 +45,5 @@ public class Commerce {
         this.longitude = longitude;
     }
 
-    public Set<Item> getItems() {
-        return items;
-    }
 
-    public void setItems(Set<Item> items) {
-        this.items = items;
-    }
 }

@@ -32,6 +32,12 @@
 	  				<p id="info"></p>
 			</div>
 		</form:form>
+		
+		
+	<a href="/proyecto-limpio-spring/buscarProductoPorMarca"	><button class="btn btn-success">Buscar Productos Por marca</button></a>
+
+	
+		
 </div>
 <script>
 	$( document ).ready(function() {
