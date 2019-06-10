@@ -25,28 +25,21 @@
 		<div class="container">
 			<br>
 				<c:choose>
-    			<c:when test="${empty items}">
-        			<h4><span>No hay resultados</span></h4>
-    			</c:when>
+					<c:when test="${empty items}">
+						<h4><span>No hay resultados</span></h4>
+					</c:when>
     			<c:otherwise>
- 	
- 										<c:forEach items="${items}"  var="item">
-        				<div id="itemId${item.id}" class="card text-white bg-info mb-3" style="max-width: 20rem;">
-  							<div class="card-header">Producto #${item.brand}</div>
-  						<div class="card-body">
-    							<h5 class="card-title"><span class="text-capitalize"><img src="${item.urlImage}" width="200"></span></h5>
-    							<p class="card-text">
-    								Descripcion: <span>${item.description}</span>
-    							</p>
-    							
-    								<p class="card-text"> Comercios:<br>
-    										<c:forEach items="${item.commerces}"  var="item2">
-        								 	${item2.name}
-        								 	
-        								 	<a href="${pageContext.request.contextPath}/mostrarEnMapa?nombre=${item2.name}&latitud=${item2.latitude}&longitud=	${item2.longitude}">Mostrar en mapa</a><br>
-        								 	
-
- 										</c:forEach>
+					<c:forEach items="${items}"  var="item">
+						<div id="itemId${item.id}" class="card text-white bg-info mb-3" style="max-width: 20rem;">
+							<div class="card-header">Producto #${item.brand}</div>
+							<div class="card-body">
+								<h5 class="card-title"><span class="text-capitalize"><img src="${item.urlImage}" width="200"></span></h5>
+								<p class="card-text">Descripcion: <span>${item.description}</span></p>
+								<p class="card-text"> Comercios:<br>
+									<c:forEach items = "${item.getCommerces()}" var="commerce">
+										${commerce.name}
+										<a href="${pageContext.request.contextPath}/mostrarEnMapa?nombre=${commerce.name}&latitud=${commerce.latitude}&longitud=${commerce.longitude}">Mostrar en mapa</a><br>
+									</c:forEach>
  					
     							</p>
   							</div>

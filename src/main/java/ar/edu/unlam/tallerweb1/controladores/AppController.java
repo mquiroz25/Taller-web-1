@@ -1,12 +1,10 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
-
 import ar.edu.unlam.tallerweb1.modelo.Commerce;
 import ar.edu.unlam.tallerweb1.modelo.Item;
 import ar.edu.unlam.tallerweb1.modelo.Message;
 
 import ar.edu.unlam.tallerweb1.servicios.ItemService;
-
 
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 
 @Transactional
 @Controller
@@ -55,13 +52,11 @@ public class AppController {
         return new ModelAndView("itemList", model);
     }
 
-
     // Escucha la url /, y redirige a la URL /login, es lo mismo que si se invoca la url /login directamente.
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ModelAndView inicio() {
         return new ModelAndView("redirect:/home");
     }
-    
     
 	@RequestMapping(path="/buscarProductoPorMarca",method=RequestMethod.GET)
 	public ModelAndView buscarProducto() {
@@ -73,14 +68,13 @@ public class AppController {
 		itemService.crearItems();
 		return new ModelAndView("redirect:/home");
 	}
-    
-	
+
 	// Busca por marca, las cargadas son "pepsi" y "ayudin"
 	@RequestMapping(path="/ProductosEncontrados",method=RequestMethod.GET)
 	public ModelAndView detalleProducto(@RequestParam String marca) {
 		ModelMap model = new ModelMap();
-		List<Item>listaDeProductos=itemService.obtenerProductoPorMarca(marca);
-		Set<Set<Commerce>> comerciosList= new HashSet<>();
+		List<Item>listaDeProductos = itemService.obtenerProductoPorMarca(marca);
+		Set<Set<Commerce>> comerciosList = new HashSet<>();
 
 		for (Item p:listaDeProductos) {
 			comerciosList.add(p.getCommerces());
@@ -88,20 +82,16 @@ public class AppController {
 		
 		model.put("items", listaDeProductos);
 		
-		return new ModelAndView("itemList",model);
+		return new ModelAndView("itemList", model);
 	}
-	
 
-	@RequestMapping(path="/mostrarEnMapa",method=RequestMethod.GET)
-	public ModelAndView mostrarEnMapa(String nombre,Double latitud,Double longitud) {
+	@RequestMapping(path="/mostrarEnMapa", method=RequestMethod.GET)
+	public ModelAndView mostrarEnMapa(String nombre, Double latitud, Double longitud) {
 		ModelMap model = new ModelMap();
 		
-		Commerce  Commerce=new Commerce();
-		Commerce.setName(nombre);
-		Commerce.setLatitude(latitud);
-		Commerce.setLongitude(longitud);
+		Commerce Commerce = new Commerce(nombre, latitud, longitud);
 
-		List<Commerce>list=new ArrayList<>();
+		List<Commerce> list = new ArrayList<>();
 		list.add(Commerce);
 
 		// Convierto la lista en una cadena json
@@ -110,7 +100,6 @@ public class AppController {
 		 
 		model.put("jsonString", jsonString);
 
-		return new ModelAndView("mostrarEnMapa",model);
+		return new ModelAndView("mostrarEnMapa", model);
 	}
-
 }

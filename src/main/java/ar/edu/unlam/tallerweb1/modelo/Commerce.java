@@ -7,24 +7,31 @@ import java.util.Set;
 @Entity
 public class Commerce {
 
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long commerce_id;
     private String name;
     private Double latitude;
     private Double longitude;
+
+    @OneToMany(mappedBy = "commerce")
     private Set<ItemCommerce> itemCommerces = new HashSet<>();
 
-    public Commerce(){
-
+    public Commerce() {
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long getId() {
-        return id;
+    public Commerce(String name, Double latitude, Double longitude) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getCommerce_id() {
+        return commerce_id;
+    }
+
+    public void setCommerce_id(Long commerce_id) {
+        this.commerce_id = commerce_id;
     }
 
     public String getName() {
@@ -35,7 +42,6 @@ public class Commerce {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "commerce")
     public Set<ItemCommerce> getItemCommerces(){
         return itemCommerces;
     }
@@ -58,5 +64,15 @@ public class Commerce {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public Set<Item> getItems(){
+        Set<Item> result = new HashSet<>();
+
+        for (ItemCommerce itemCommerce:itemCommerces){
+            result.add(itemCommerce.getItem());
+        }
+
+        return result;
     }
 }

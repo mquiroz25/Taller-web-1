@@ -7,8 +7,16 @@ public class ItemCommerce {
 
     // Esta clase representa a la tabla commerce_item
     // Se tuvo que hacer esto para poder incluir campos extras a la relación como precio y stock
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "item_id")
     private Item item;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "commerce_id")
     private Commerce commerce;
 
     public ItemCommerce(){
@@ -16,11 +24,12 @@ public class ItemCommerce {
     }
 
     // campos extras a la relación item-commerce
+    @Column(name = "price")
     private Double price;
+
+    @Column(name = "stock")
     private Integer stock;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId(){
         return id;
     }
@@ -29,8 +38,6 @@ public class ItemCommerce {
         this.id = id;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "item_id")
     public Item getItem(){
         return item;
     }
@@ -39,8 +46,6 @@ public class ItemCommerce {
         this.item = item;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "commerce_id")
     public Commerce getCommerce(){
         return commerce;
     }
@@ -49,7 +54,6 @@ public class ItemCommerce {
         this.commerce = commerce;
     }
 
-    @Column(name = "price")
     public Double getPrice(){
         return this.price;
     }
@@ -58,7 +62,6 @@ public class ItemCommerce {
         this.price = price;
     }
 
-    @Column(name = "stock")
     public Integer getStock(){
         return stock;
     }

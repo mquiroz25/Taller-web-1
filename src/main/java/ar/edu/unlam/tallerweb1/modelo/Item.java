@@ -1,25 +1,36 @@
 package ar.edu.unlam.tallerweb1.modelo;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "item")
 public class Item {
 
-    private Long id;
-    private String brand;
-    private Category category;
-    private Set<ItemCommerce> itemCommerces = new HashSet<>();
-
-    public Item(){
-
-    }
-
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String urlImage;
+    private String description;
+    private String brand;
+
+    @ManyToOne
+    private Category category;
+
+    @OneToMany(mappedBy = "item")
+    private Set<ItemCommerce> itemCommerces = new HashSet<>();
+
+    public Item() {
+    }
+
+    public Item(String urlImage, String description, String brand, Category category) {
+        this.urlImage = urlImage;
+        this.description = description;
+        this.brand = brand;
+        this.category = category;
+    }
+
     public Long getId() {
         return id;
     }
@@ -28,7 +39,6 @@ public class Item {
         this.id = id;
     }
 
-    @ManyToOne
     public Category getCategory(){
         return category;
     }
@@ -37,7 +47,6 @@ public class Item {
         this.category = category;
     }
 
-    @OneToMany(mappedBy = "item")
     public Set<ItemCommerce> getItemCommerces() {
         return itemCommerces;
     }
@@ -56,5 +65,31 @@ public class Item {
 
     public void setBrand(String brand) {
         this.brand = brand;
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Set<Commerce> getCommerces(){
+        Set<Commerce> result = new HashSet<>();
+
+        for (ItemCommerce itemCommerce:itemCommerces){
+            result.add(itemCommerce.getCommerce());
+        }
+
+        return result;
     }
 }

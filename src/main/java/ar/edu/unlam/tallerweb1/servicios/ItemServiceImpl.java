@@ -19,29 +19,29 @@ import java.util.Set;
 @Transactional
 public class ItemServiceImpl implements ItemService{
 
-    @Inject
-    private ItemDao itemDao;
+	@Inject
+	private ItemDao itemDao;
 
-   @Override
-   public List<Item> searchItems(Message message){
-	   List<Item> lista_items = itemDao.obtainItemsByCategoryAndLocation(message);
+	@Override
+	public List<Item> searchItems(Message message){
+		List<Item> lista_items = itemDao.obtainItemsByCategoryAndLocation(message);
 
-	   if (message.getDistancia() != null) {
-		   Iterator<Item> items = lista_items.iterator();
-		   while (items.hasNext()) {
-			   Item item = items.next();
-			   Set<Commerce> lita_comercios = item.getCommerces();
-			   Iterator<Commerce> commerces = lita_comercios.iterator();
-			   while (commerces.hasNext()) {
-				   Commerce commerce = commerces.next();
-				   final Long distancia = Math.round((Math.acos(((Math.sin(Math.toRadians(commerce.getLatitude())))*(Math.sin(Math.toRadians(message.getLatitude())))) + ((Math.cos(Math.toRadians(commerce.getLatitude())))*(Math.cos(Math.toRadians(message.getLatitude())))*(Math.cos(Math.toRadians(message.getLongitude()-commerce.getLongitude()))))) * 6371));
-				   if (distancia > message.getDistancia()) {
-					   commerces.remove();
-				   }
-			   }
-			   if (item.getCommerces().isEmpty()) {
-				   items.remove();
-				}
+   		if (message.getDistancia() != null) {
+	 		Iterator<Item> items = lista_items.iterator();
+		   	while (items.hasNext()) {
+		   		Item item = items.next();
+			    Set<Commerce> lita_comercios = item.getCommerces();
+			    Iterator<Commerce> commerces = lita_comercios.iterator();
+			    while (commerces.hasNext()) {
+			    	Commerce commerce = commerces.next();
+				    final Long distancia = Math.round((Math.acos(((Math.sin(Math.toRadians(commerce.getLatitude())))*(Math.sin(Math.toRadians(message.getLatitude())))) + ((Math.cos(Math.toRadians(commerce.getLatitude())))*(Math.cos(Math.toRadians(message.getLatitude())))*(Math.cos(Math.toRadians(message.getLongitude()-commerce.getLongitude()))))) * 6371));
+				    if (distancia > message.getDistancia()) {
+				    	commerces.remove();
+				    }
+			    }
+			    if (item.getCommerces().isEmpty()) {
+				    items.remove();
+			    }
 		   }
 	   } else {
 		   Set<Set<Commerce>> lista_comercios = new HashSet<>();
@@ -50,7 +50,7 @@ public class ItemServiceImpl implements ItemService{
 			   lista_comercios.add(item.getCommerces());
 		}
 	}
-       return lista_items;
+	   return lista_items;
    }
 
    @Override
