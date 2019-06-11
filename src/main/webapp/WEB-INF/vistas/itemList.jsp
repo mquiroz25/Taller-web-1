@@ -1,4 +1,3 @@
-<%@page import="java.util.ArrayList"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
@@ -25,32 +24,27 @@
 		<div class="container">
 			<br>
 				<c:choose>
-					<c:when test="${empty items}">
+					<c:when test="${empty responseMap}">
 						<h4><span>No hay resultados</span></h4>
 					</c:when>
     			<c:otherwise>
-					<c:forEach items="${items}"  var="item">
-						<div id="itemId${item.id}" class="card text-white bg-info mb-3" style="max-width: 20rem;">
-							<div class="card-header">Producto #${item.brand}</div>
+					<c:forEach items = "${responseMap}" var="item">
+						<div id="itemId${item.key.getId()}" class="card text-white bg-info mb-3" style="max-width: 20rem;">
+							<div class="card-header">Producto #${item.key.getBrand()}</div>
 							<div class="card-body">
-								<h5 class="card-title"><span class="text-capitalize"><img src="${item.urlImage}" width="200"></span></h5>
-								<p class="card-text">Descripcion: <span>${item.description}</span></p>
+								<h5 class="card-title"><span class="text-capitalize"><img src="${item.key.getUrlImage()}" width="200"></span></h5>
+								<p class="card-text">Descripcion: <span>${item.key.getDescription()}</span></p>
 								<p class="card-text"> Comercios:<br>
-									<c:forEach items = "${item.getCommerces()}" var="commerce">
+									<c:forEach var = "commerce" items = "${item.value}">
 										${commerce.name}
 										<a href="${pageContext.request.contextPath}/mostrarEnMapa?nombre=${commerce.name}&latitud=${commerce.latitude}&longitud=${commerce.longitude}">Mostrar en mapa</a><br>
 									</c:forEach>
- 					
-    							</p>
-  							</div>
-  			
-  							</div>
-
+								</p>
+							</div>
+						</div>
  					</c:forEach>
-
     			</c:otherwise>
 				</c:choose>
-					</div>
-		
+		</div>
 	</body>
 </html>

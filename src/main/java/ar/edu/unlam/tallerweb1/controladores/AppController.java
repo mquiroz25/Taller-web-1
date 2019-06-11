@@ -2,6 +2,7 @@ package ar.edu.unlam.tallerweb1.controladores;
 
 import ar.edu.unlam.tallerweb1.modelo.Commerce;
 import ar.edu.unlam.tallerweb1.modelo.Item;
+import ar.edu.unlam.tallerweb1.modelo.ItemCommerce;
 import ar.edu.unlam.tallerweb1.modelo.Message;
 
 import ar.edu.unlam.tallerweb1.servicios.ItemService;
@@ -20,10 +21,7 @@ import com.google.gson.Gson;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Transactional
 @Controller
@@ -46,8 +44,26 @@ public class AppController {
     @RequestMapping(path = "/buscar", method = RequestMethod.POST)
     public ModelAndView buscar(@ModelAttribute("message") Message message, HttpServletRequest request) {
         ModelMap model = new ModelMap();
-        List<Item> items = itemService.searchItems(message);
-        model.put("items", items);
+
+		Map<Item, List<Commerce>> responseMap = new HashMap<>();
+        List<ItemCommerce> items = itemService.searchItems(message);
+
+		for (ItemCommerce itemCommerce: items) {
+			Item itemForMap = itemCommerce.getItem();
+			List<Commerce> commerceList = new ArrayList<>();
+
+            if (responseMap.containsKey(itemForMap)){
+                commerceList = responseMap.get(itemForMap);
+                commerceList.add(itemCommerce.getCommerce());
+
+                responseMap.replace(itemForMap, commerceList);
+            } else {
+                commerceList.add(itemCommerce.getCommerce());
+                responseMap.put(itemForMap, new ArrayList<>());
+            }
+		}
+
+        model.put("responseMap", responseMap);
 
         return new ModelAndView("itemList", model);
     }
@@ -58,22 +74,22 @@ public class AppController {
         return new ModelAndView("redirect:/home");
     }
     
-	@RequestMapping(path="/buscarProductoPorMarca",method=RequestMethod.GET)
+	@RequestMapping(path="/buscarProductoPorMarca",method = RequestMethod.GET)
 	public ModelAndView buscarProducto() {
 		return new ModelAndView("buscar");
 	}
 	
-	@RequestMapping(path="/cargarProductos",method=RequestMethod.GET)
+	@RequestMapping(path="/cargarProductos",method = RequestMethod.GET)
 	public ModelAndView cargarProductos() {
 		itemService.crearItems();
 		return new ModelAndView("redirect:/home");
 	}
 
 	// Busca por marca, las cargadas son "pepsi" y "ayudin"
-	@RequestMapping(path="/ProductosEncontrados",method=RequestMethod.GET)
+	@RequestMapping(path="/ProductosEncontrados", method = RequestMethod.GET)
 	public ModelAndView detalleProducto(@RequestParam String marca) {
 		ModelMap model = new ModelMap();
-		List<Item>listaDeProductos = itemService.obtenerProductoPorMarca(marca);
+		List<Item> listaDeProductos = itemService.obtenerProductoPorMarca(marca);
 		Set<Set<Commerce>> comerciosList = new HashSet<>();
 
 		for (Item p:listaDeProductos) {
@@ -85,7 +101,7 @@ public class AppController {
 		return new ModelAndView("itemList", model);
 	}
 
-	@RequestMapping(path="/mostrarEnMapa", method=RequestMethod.GET)
+	@RequestMapping(path="/mostrarEnMapa", method = RequestMethod.GET)
 	public ModelAndView mostrarEnMapa(String nombre, Double latitud, Double longitud) {
 		ModelMap model = new ModelMap();
 		

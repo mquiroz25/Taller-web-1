@@ -12,7 +12,10 @@ public class Message {
 	}
 
 	public void setDistancia(Long distancia) {
-		this.distancia = distancia;
+		if (distancia == null){
+		    distancia = new Long(0);
+        }
+        this.distancia = distancia;
 	}
 
 	public String getCategory() {

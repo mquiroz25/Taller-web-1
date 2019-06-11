@@ -18,19 +18,19 @@ public class ItemDaoImpl implements ItemDao {
     @Inject
     private SessionFactory sessionFactory;
 
-    @Override
-    public List<Item> obtainItemsByCategoryAndLocation(Message message){
+    public List<ItemCommerce> getItemCommerceByCategory(String category, List<Commerce> commercesToKeep){
         final Session session = sessionFactory.getCurrentSession();
 
         @SuppressWarnings("unchecked")
-		List<Item> lista_items = session.createCriteria(Item.class)
-        		.createAlias("category", "c")
-        		.add(Restrictions.ilike("c.name", message.getCategory(), MatchMode.ANYWHERE))
+		List<ItemCommerce> itemList = session.createCriteria(ItemCommerce.class)
+				.createAlias("item", "i")
+        		.createAlias("i.category", "c")
+        		.add(Restrictions.ilike("c.name", category, MatchMode.ANYWHERE))
+				.add(Restrictions.in("commerce", commercesToKeep))
         		.list();
 
-        return lista_items;
+        return itemList;
     }
-    
     
     @Override
 	public List<Item> obtenerProductoPorMarca(String marca) {
@@ -43,7 +43,6 @@ public class ItemDaoImpl implements ItemDao {
 		   
     	return productos;
     }
-
 
 	@Override
 	public void crearItems() {
