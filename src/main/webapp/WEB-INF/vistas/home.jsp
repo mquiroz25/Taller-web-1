@@ -17,7 +17,7 @@
 <div class="container">
 
 		<h3>Taller Web I</h3><br>
-		<a href="${pageContext.request.contextPath}/cargarProductos" class="btn btn-seconday">Cargar datos en DB</a><br>
+		<a href="${pageContext.request.contextPath}/cargarProductos" class="btn btn-secondary">Cargar datos en DB</a><br>
         <form:form action="buscar" method="POST" modelAttribute="message">
         	<div class="form-group row">
         		<label for="category" class="col-sm-2 col-form-label">Categoria o Marca: </label>

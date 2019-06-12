@@ -1,5 +1,6 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
+import ar.edu.unlam.tallerweb1.modelo.Category;
 import ar.edu.unlam.tallerweb1.modelo.Commerce;
 import ar.edu.unlam.tallerweb1.modelo.Item;
 import ar.edu.unlam.tallerweb1.modelo.ItemCommerce;
@@ -46,10 +47,12 @@ public class AppController {
     public ModelAndView buscar(@ModelAttribute("message") Message message, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
-		Map<Item, List<Commerce>> responseMap = new HashMap<>();
+	//	Map<Item, List<Commerce>> responseMap = new HashMap<>();
+        
+        
         List<ItemCommerce> items = itemService.searchItems(message);
 
-		for (ItemCommerce itemCommerce: items) {
+	/*	for (ItemCommerce itemCommerce: items) {
 			Item itemForMap = itemCommerce.getItem();
 			List<Commerce> commerceList = new ArrayList<>();
 
@@ -62,9 +65,9 @@ public class AppController {
                 commerceList.add(itemCommerce.getCommerce());
                 responseMap.put(itemForMap, new ArrayList<>());
             }
-		}
+		}*/
 
-		model.put("responseMap", responseMap);
+		model.put("items", items);
 
         return new ModelAndView("itemList", model);
     }
@@ -99,4 +102,25 @@ public class AppController {
 
 		return new ModelAndView("mostrarEnMapa", model);
 	}
+	
+	@RequestMapping(path="/detalleProducto", method = RequestMethod.GET)
+	public ModelAndView detalleProducto(String marca, String descripcion, String imagen,String categoria) {
+		ModelMap model = new ModelMap();
+		
+		Category category=new Category();
+		category.setName(categoria);
+		
+		
+		Item item = new Item();
+		item.setBrand(marca);
+		item.setDescription(descripcion);
+		item.setUrlImage(imagen);
+		item.setCategory(category);
+
+		model.put("item", item);
+
+		return new ModelAndView("detalleProducto", model);
+	}
+	
+	
 }
