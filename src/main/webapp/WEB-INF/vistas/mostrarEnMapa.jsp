@@ -16,6 +16,7 @@
 
   var locations = JSON.parse(jsontext);
 
+  
   var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 10,
       center: new google.maps.LatLng(-34.7504785, -58.5846362),
@@ -25,20 +26,46 @@
   var infowindow = new google.maps.InfoWindow();
 
   var marker, i;
-
+  
+  
   for (i = 0; i < locations.length; i++) {
-    marker = new google.maps.Marker({
-      position: new google.maps.LatLng(locations[i]["latitude"], locations[i]["longitude"]),
-      map: map
-    });
+	    marker = new google.maps.Marker({
+	      position: new google.maps.LatLng(locations[i]["latitude"], locations[i]["longitude"]),
+	      map: map
+	    });
 
-    google.maps.event.addListener(marker, 'click', (function(marker, i) {
-      return function() {
-        infowindow.setContent(locations[i]["name"]);
-        infowindow.open(map, marker);
-      }
-    })(marker, i));
+	    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+	      return function() {
+	        infowindow.setContent(locations[i]["name"]);
+	        infowindow.open(map, marker);
+	      }
+	    })(marker, i));
+	  }
+  
+
+  // Geolocalizacion
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      
+      var miUbicacion= new google.maps.Marker({
+  		position: pos,
+  		map: map,
+  		title: 'Mi ubicacion',
+  		icon : 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+  		});
+
+    }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  } else {	
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
   }
-  </script>
+  
+ </script>
 </body>
 </html>

@@ -20,7 +20,7 @@
 		<a href="${pageContext.request.contextPath}/cargarProductos" class="btn btn-seconday">Cargar datos en DB</a><br>
         <form:form action="buscar" method="POST" modelAttribute="message">
         	<div class="form-group row">
-        		<label for="category" class="col-sm-2 col-form-label">Categoria: </label>
+        		<label for="category" class="col-sm-2 col-form-label">Categoria o Marca: </label>
     			<div class="col-sm-8">
     				<form:input path="category" id="category" type="text" class="form-control"/>
 	            	<form:input path="latitude" id="latitude" type="hidden"/>
