@@ -40,10 +40,6 @@
 	  				<p id="info"></p>
 			</div>
 		</form:form>
-
-	<a href="${pageContext.request.contextPath}/buscarProductoPorMarca"><button class="btn btn-success">Buscar Productos Por marca</button></a>
-
-	
 		
 </div>
 <script>

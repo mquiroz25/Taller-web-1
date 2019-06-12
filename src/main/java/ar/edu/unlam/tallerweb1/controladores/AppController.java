@@ -41,6 +41,7 @@ public class AppController {
     }
 
     // Busca por categoria, las cargadas son "gaseosas" y "lavandinas"
+	// ahora tambien busca por marca, las cargadas son "pepsi" y "ayudin"
     @RequestMapping(path = "/buscar", method = RequestMethod.POST)
     public ModelAndView buscar(@ModelAttribute("message") Message message, HttpServletRequest request) {
         ModelMap model = new ModelMap();
@@ -63,7 +64,7 @@ public class AppController {
             }
 		}
 
-        model.put("responseMap", responseMap);
+		model.put("responseMap", responseMap);
 
         return new ModelAndView("itemList", model);
     }
@@ -73,32 +74,12 @@ public class AppController {
     public ModelAndView inicio() {
         return new ModelAndView("redirect:/home");
     }
-    
-	@RequestMapping(path="/buscarProductoPorMarca",method = RequestMethod.GET)
-	public ModelAndView buscarProducto() {
-		return new ModelAndView("buscar");
-	}
+
 	
 	@RequestMapping(path="/cargarProductos",method = RequestMethod.GET)
 	public ModelAndView cargarProductos() {
 		itemService.crearItems();
 		return new ModelAndView("redirect:/home");
-	}
-
-	// Busca por marca, las cargadas son "pepsi" y "ayudin"
-	@RequestMapping(path="/ProductosEncontrados", method = RequestMethod.GET)
-	public ModelAndView detalleProducto(@RequestParam String marca) {
-		ModelMap model = new ModelMap();
-		List<Item> listaDeProductos = itemService.obtenerProductoPorMarca(marca);
-		Set<Set<Commerce>> comerciosList = new HashSet<>();
-
-		for (Item p:listaDeProductos) {
-			comerciosList.add(p.getCommerces());
-		}
-		
-		model.put("items", listaDeProductos);
-		
-		return new ModelAndView("itemList", model);
 	}
 
 	@RequestMapping(path="/mostrarEnMapa", method = RequestMethod.GET)

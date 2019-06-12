@@ -18,30 +18,21 @@ public class ItemDaoImpl implements ItemDao {
     @Inject
     private SessionFactory sessionFactory;
 
-    public List<ItemCommerce> getItemCommerceByCategory(String category, List<Commerce> commercesToKeep){
+    public List<ItemCommerce> getItemCommerceByCategoryOrBrand(String category, List<Commerce> commercesToKeep){
         final Session session = sessionFactory.getCurrentSession();
 
         @SuppressWarnings("unchecked")
 		List<ItemCommerce> itemList = session.createCriteria(ItemCommerce.class)
 				.createAlias("item", "i")
         		.createAlias("i.category", "c")
-        		.add(Restrictions.ilike("c.name", category, MatchMode.ANYWHERE))
 				.add(Restrictions.in("commerce", commercesToKeep))
-        		.list();
+				.add(Restrictions.disjunction()
+						.add(Restrictions.ilike("c.name", category, MatchMode.ANYWHERE))
+						.add(Restrictions.ilike("i.brand", category, MatchMode.ANYWHERE))
+				)
+				.list();
 
         return itemList;
-    }
-    
-    @Override
-	public List<Item> obtenerProductoPorMarca(String marca) {
-    	final Session session = sessionFactory.getCurrentSession();
-		
-    	@SuppressWarnings("unchecked")
-    	List<Item> productos = session.createCriteria(Item.class)
-    		.add(Restrictions.eq("brand", marca))
-    		.list();
-		   
-    	return productos;
     }
 
 	@Override

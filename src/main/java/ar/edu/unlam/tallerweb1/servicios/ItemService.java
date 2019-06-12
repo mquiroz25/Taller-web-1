@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface ItemService {
    List<ItemCommerce> searchItems(Message message);
-   List<Item> obtenerProductoPorMarca(String marca);
    void crearItems();
 
 }

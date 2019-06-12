@@ -8,9 +8,8 @@ import ar.edu.unlam.tallerweb1.modelo.Message;
 import java.util.List;
 
 public interface ItemDao {
-   List<ItemCommerce> getItemCommerceByCategory(String category,  List<Commerce> commercesToKeep);
-   List<Item> obtenerProductoPorMarca(String marca);
-   
+   List<ItemCommerce> getItemCommerceByCategoryOrBrand(String category,  List<Commerce> commercesToKeep);
+
    void crearItems();
 
 }

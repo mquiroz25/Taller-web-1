@@ -27,7 +27,7 @@ public class ItemServiceImpl implements ItemService{
 	@Override
 	public List<ItemCommerce> searchItems(Message message){
 		List<Commerce> commercesToKeep = commerceService.getCommercesByDistance(message.getDistancia(), message.getLatitude(), message.getLongitude());
-		List<ItemCommerce> itemCommerceList = itemDao.getItemCommerceByCategory(message.getCategory(), commercesToKeep);
+		List<ItemCommerce> itemCommerceList = itemDao.getItemCommerceByCategoryOrBrand(message.getCategory(), commercesToKeep);
 
    		return itemCommerceList;
    }
@@ -52,11 +52,6 @@ public class ItemServiceImpl implements ItemService{
 
    private Long calculateDistance(Double Lat1, Double Lon1, Double Lat2, Double Lon2){
 	   return Math.round((Math.acos(((Math.sin(Math.toRadians(Lat2)))*(Math.sin(Math.toRadians(Lat1)))) + ((Math.cos(Math.toRadians(Lat2)))*(Math.cos(Math.toRadians(Lat1)))*(Math.cos(Math.toRadians(Lon1 - Lon2))))) * 6371));
-   }
-
-   @Override
-   public List<Item> obtenerProductoPorMarca(String marca) {
-	   return itemDao.obtenerProductoPorMarca(marca);
    }
 
    @Override
