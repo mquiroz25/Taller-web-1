@@ -14,7 +14,8 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+	
 </head>
 <body>
 
@@ -31,35 +32,34 @@
     	</div>
     </div>
     <div class="col">
-    <h3><u>Comercios</u></h3>
-    <div id="tableCommerces">
-        <table class="table table-bordered table-hover ">
-            <tr class="table-primary">
-                <th>Nombre</th>
-                <th>Distancia</th>
-                <th>Stock</th>
-                <th>Precio</th>
-            </tr>
-
-            <c:forEach items="${itemCommerce}" var="commerce">
+    <h3><u>Comercios</u></h3><br>
+        <table id="tableCommerces" class="table table-striped table-bordered table-hover" style="width:100%">
+        	<thead>
+            	<tr class="table-primary">
+                	<th>Nombre</th>
+                	<th>Distancia</th>
+                	<th>Stock</th>
+                	<th>Precio</th>
+            	</tr>
+			</thead>
+			<tbody>
+            	<c:forEach items="${itemCommerce}" var="commerce">
                 <tr>
-                    <td class="text-capitalize">${commerce.commerce.name}</td>
+                	<td class="text-capitalize">${commerce.commerce.name}</td>
                     <td>${commerce.commerce.distance} KMs</td>
                     <td>${commerce.stock}</td>
                     <td>$${commerce.price}</td>
                 </tr>
-            </c:forEach>
+            	</c:forEach>
+            </tbody>
         </table>
-        </div>
     </div>
    		</div>
     	<div id="map" style="width: 800px; height: 600px;"></div>
     </div>	
 
     
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
@@ -68,8 +68,11 @@
             crossorigin="anonymous"></script>
     <script src="http://maps.google.com/maps/api/js?key=AIzaSyCiIDP3P5IqtJ4LQGy2--zrhbtCsXJGpjI&sensor=false"
             type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/natural.js"></script>
     <script type="text/javascript">
-        var items = [];
+    $(document).ready(function() {
+    	var items = [];
         <c:forEach items="${itemCommerce}" var="item">
             items.push({
                 key: ${item.id},
@@ -128,7 +131,38 @@
             // Browser doesn't support Geolocation
             handleLocationError(false, infoWindow, map.getCenter());
         }
-
+        
+        $('#tableCommerces').DataTable({
+            "searching": true,
+            "paging": true,
+            "info": false,
+            "language": {
+                "decimal": ",",
+                "thousands": ".",
+                "emptyTable": "Sin datos",
+                "search": "Buscar:",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente",
+                    "last": "Última"
+                },
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "zeroRecords": "No se han encontrado resultados",
+                "lengthMenu": "Mostrar _MENU_ resultados"
+            },
+            "pageLength": 10,
+            "columnDefs": [{
+                "type": "num-fmt",
+                "targets": 3
+            }, {
+                "type": "natural",
+                "targets": 1
+            }]
+        });
+    });
+        
+	
     </script>
 </body>
 </html>
