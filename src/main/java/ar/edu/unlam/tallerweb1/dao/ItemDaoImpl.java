@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Repository("ItemDao")
 public class ItemDaoImpl implements ItemDao {
@@ -35,6 +33,15 @@ public class ItemDaoImpl implements ItemDao {
         return itemList;
     }
 
+	@Override
+	public Item getItemById(Long id){
+		final Session session = sessionFactory.getCurrentSession();
+		Object obj = session.createCriteria(Item.class)
+				.add(Restrictions.eq("id", id))
+				.uniqueResult();
+		Item item = (Item)obj;
+		return item;
+	}
 	@Override
 	public void crearItems() {
         final Session session = sessionFactory.getCurrentSession();

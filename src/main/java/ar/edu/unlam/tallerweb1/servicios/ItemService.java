@@ -9,5 +9,7 @@ import java.util.List;
 public interface ItemService {
    List<ItemCommerce> searchItems(Message message);
    void crearItems();
+   Item searchItemById(Long id);
+
 
 }

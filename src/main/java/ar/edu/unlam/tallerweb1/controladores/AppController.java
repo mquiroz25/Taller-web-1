@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import java.util.*;
 
@@ -42,32 +43,24 @@ public class AppController {
     }
 
     // Busca por categoria, las cargadas son "gaseosas" y "lavandinas"
-	// ahora tambien busca por marca, las cargadas son "pepsi" y "ayudin"
+    // ahora tambien busca por marca, las cargadas son "pepsi" y "ayudin"
     @RequestMapping(path = "/buscar", method = RequestMethod.POST)
     public ModelAndView buscar(@ModelAttribute("message") Message message, HttpServletRequest request) {
         ModelMap model = new ModelMap();
+        HttpSession session = request.getSession(true);
+        List<ItemCommerce> itemCommerces = itemService.searchItems(message);
+        Message messageForm = new Message();
+        model.put("message", messageForm);
 
-	//	Map<Item, List<Commerce>> responseMap = new HashMap<>();
-        
-        
-        List<ItemCommerce> items = itemService.searchItems(message);
+        session.setAttribute("items", itemCommerces);
 
-	/*	for (ItemCommerce itemCommerce: items) {
-			Item itemForMap = itemCommerce.getItem();
-			List<Commerce> commerceList = new ArrayList<>();
-
-            if (responseMap.containsKey(itemForMap)){
-                commerceList = responseMap.get(itemForMap);
-                commerceList.add(itemCommerce.getCommerce());
-
-                responseMap.replace(itemForMap, commerceList);
-            } else {
-                commerceList.add(itemCommerce.getCommerce());
-                responseMap.put(itemForMap, new ArrayList<>());
+        List <Item> items = new ArrayList<>();
+        for (ItemCommerce var : itemCommerces) {
+            if (!items.contains(var.getItem())) {
+                items.add(var.getItem());
             }
-		}*/
-
-		model.put("items", items);
+        }
+        model.put("items", items);
 
         return new ModelAndView("itemList", model);
     }
@@ -78,49 +71,33 @@ public class AppController {
         return new ModelAndView("redirect:/home");
     }
 
-	
-	@RequestMapping(path="/cargarProductos",method = RequestMethod.GET)
-	public ModelAndView cargarProductos() {
-		itemService.crearItems();
-		return new ModelAndView("redirect:/home");
-	}
 
-	@RequestMapping(path="/mostrarEnMapa", method = RequestMethod.GET)
-	public ModelAndView mostrarEnMapa(String nombre, Double latitud, Double longitud) {
-		ModelMap model = new ModelMap();
-		
-		Commerce Commerce = new Commerce(nombre, latitud, longitud);
+    @RequestMapping(path = "/cargarProductos", method = RequestMethod.GET)
+    public ModelAndView cargarProductos() {
+        itemService.crearItems();
+        return new ModelAndView("redirect:/home");
+    }
 
-		List<Commerce> list = new ArrayList<>();
-		list.add(Commerce);
 
-		// Convierto la lista en una cadena json
-		Gson gson = new Gson();
-		String jsonString = gson.toJson(list);
-		 
-		model.put("jsonString", jsonString);
+    @RequestMapping(path = "/detalleProducto", method = RequestMethod.POST)
+    public ModelAndView detalleProducto(@ModelAttribute("message") Message message, HttpServletRequest request) {
+        ModelMap model = new ModelMap();
+        Item item = itemService.searchItemById(message.getIdItem());
+        model.put("item", item);
 
-		return new ModelAndView("mostrarEnMapa", model);
-	}
-	
-	@RequestMapping(path="/detalleProducto", method = RequestMethod.GET)
-	public ModelAndView detalleProducto(String marca, String descripcion, String imagen,String categoria) {
-		ModelMap model = new ModelMap();
-		
-		Category category=new Category();
-		category.setName(categoria);
-		
-		
-		Item item = new Item();
-		item.setBrand(marca);
-		item.setDescription(descripcion);
-		item.setUrlImage(imagen);
-		item.setCategory(category);
+        //para el mapa
+        HttpSession session= request.getSession();
+        List<ItemCommerce> auxList = (List<ItemCommerce>) session.getAttribute("items");
 
-		model.put("item", item);
+        List<ItemCommerce> list = new ArrayList<>();
+        for (ItemCommerce itemCommerce:auxList) {
+        if (itemCommerce.getItem().getId().equals(message.getIdItem())) {
+            list.add(itemCommerce);
+            }
+        }
 
-		return new ModelAndView("detalleProducto", model);
-	}
-	
-	
+        model.put("itemCommerce", list);
+
+        return new ModelAndView("detalleProducto", model);
+    }
 }

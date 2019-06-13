@@ -9,8 +9,7 @@ import java.util.List;
 
 public interface ItemDao {
    List<ItemCommerce> getItemCommerceByCategoryOrBrand(String category,  List<Commerce> commercesToKeep);
-
+   Item getItemById(Long id);
    void crearItems();
-
 }
 

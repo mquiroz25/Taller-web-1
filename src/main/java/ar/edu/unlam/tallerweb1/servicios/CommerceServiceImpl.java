@@ -2,6 +2,8 @@ package ar.edu.unlam.tallerweb1.servicios;
 
 import ar.edu.unlam.tallerweb1.dao.CommercesDao;
 import ar.edu.unlam.tallerweb1.modelo.Commerce;
+import ar.edu.unlam.tallerweb1.modelo.ItemCommerce;
+import ar.edu.unlam.tallerweb1.modelo.Message;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

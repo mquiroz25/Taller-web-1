@@ -58,4 +58,10 @@ public class ItemServiceImpl implements ItemService{
    public void crearItems() {
 	   itemDao.crearItems();
    }
+
+   @Override
+   public Item searchItemById(Long id){
+		return itemDao.getItemById(id);
+   }
+
 }
