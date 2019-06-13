@@ -2,7 +2,6 @@ package ar.edu.unlam.tallerweb1.modelo;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -17,8 +16,19 @@ public class Commerce {
 
     @OneToMany(mappedBy = "commerce")
     private Set<ItemCommerce> itemCommerces = new HashSet<>();
+    
+    @Transient
+    private Long distance;
 
-    public Commerce() {
+    public Long getDistance() {
+		return distance;
+	}
+
+	public void setDistance(Long distance) {
+		this.distance = distance;
+	}
+
+	public Commerce() {
     }
 
     public Commerce(String name, Double latitude, Double longitude) {

@@ -20,14 +20,43 @@
 
 <div class="container">
     <br>
-    <div id="itemId${item.id}" class="card text-white bg-info mb-3" style="max-width: 22rem;">
-        <div class="card-header">Producto #${item.brand}</div>
-        <div class="card-body">
-            <h5 class="card-title"><span class="text-capitalize"><img src="${item.urlImage}" width="300"></span></h5>
-            <p class="card-text">Descripcion: <span>${item.description}</span></p>
+    <div class="row">
+    <div class="col">
+    	<div id="itemId${item.id}" class="card text-white bg-info mb-3" style="max-width: 22rem;">
+        	<div class="card-header">Producto #${item.brand}</div>
+        	<div class="card-body">
+            	<h5 class="card-title"><span class="text-capitalize"><img src="${item.urlImage}" width="300"></span></h5>
+            	<p class="card-text">Descripcion: <span>${item.description}</span></p>
+        	</div>
+    	</div>
+    </div>
+    <div class="col">
+    <h3><u>Comercios</u></h3>
+    <div id="tableCommerces">
+        <table class="table table-bordered table-hover ">
+            <tr class="table-primary">
+                <th>Nombre</th>
+                <th>Distancia</th>
+                <th>Stock</th>
+                <th>Precio</th>
+            </tr>
+
+            <c:forEach items="${itemCommerce}" var="commerce">
+                <tr>
+                    <td class="text-capitalize">${commerce.commerce.name}</td>
+                    <td>${commerce.commerce.distance} KMs</td>
+                    <td>${commerce.stock}</td>
+                    <td>$${commerce.price}</td>
+                </tr>
+            </c:forEach>
+        </table>
         </div>
     </div>
-    <div id="map" style="width: 800px; height: 600px;"></div>
+   		</div>
+    	<div id="map" style="width: 800px; height: 600px;"></div>
+    </div>	
+
+    
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"></script>
