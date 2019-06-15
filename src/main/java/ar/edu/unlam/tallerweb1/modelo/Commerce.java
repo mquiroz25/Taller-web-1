@@ -6,27 +6,43 @@ import java.util.Set;
 
 @Entity
 public class Commerce {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long commerce_id;
     private String name;
     private Double latitude;
     private Double longitude;
 
-    @ManyToMany
-    @JoinTable(
-            name = "commerce_item",
-            joinColumns = { @JoinColumn(name = "commerce_id") },
-            inverseJoinColumns = { @JoinColumn(name = "item_id") }
-    )
-    Set<Item> items = new HashSet<>();
+    @OneToMany(mappedBy = "commerce")
+    private Set<ItemCommerce> itemCommerces = new HashSet<>();
+    
+    @Transient
+    private Long distance;
 
-    public Long getId() {
-        return id;
+    public Long getDistance() {
+		return distance;
+	}
+
+	public void setDistance(Long distance) {
+		this.distance = distance;
+	}
+
+	public Commerce() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Commerce(String name, Double latitude, Double longitude) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public Long getCommerce_id() {
+        return commerce_id;
+    }
+
+    public void setCommerce_id(Long commerce_id) {
+        this.commerce_id = commerce_id;
     }
 
     public String getName() {
@@ -35,6 +51,14 @@ public class Commerce {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<ItemCommerce> getItemCommerces(){
+        return itemCommerces;
+    }
+
+    public void setItemCommerces(Set<ItemCommerce> commerces){
+        this.itemCommerces = commerces;
     }
 
     public Double getLatitude() {
@@ -53,11 +77,13 @@ public class Commerce {
         this.longitude = longitude;
     }
 
-    public Set<Item> getItems() {
-        return items;
-    }
+    public Set<Item> getItems(){
+        Set<Item> result = new HashSet<>();
 
-    public void setItems(Set<Item> items) {
-        this.items = items;
+        for (ItemCommerce itemCommerce:itemCommerces){
+            result.add(itemCommerce.getItem());
+        }
+
+        return result;
     }
 }
