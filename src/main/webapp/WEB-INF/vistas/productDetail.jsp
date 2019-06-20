@@ -58,7 +58,6 @@
     	<div id="map" style="width: 800px; height: 600px;"></div>
     </div>	
 
-    
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -70,19 +69,10 @@
             type="text/javascript"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/natural.js"></script>
-    <script type="text/javascript">
-    $(document).ready(function() {
-    	var items = [];
-        <c:forEach items="${itemCommerce}" var="item">
-            items.push({
-                key: ${item.id},
-                longitude: ${item.commerce.longitude},
-                latitude: ${item.commerce.latitude},
-                stock: ${item.stock},
-                price: ${item.price},
-            });
-        </c:forEach>
-
+    <script>
+    var jsontext = '${jsonString}';
+    var locations = JSON.parse (jsontext);
+    
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 10,
             center: new google.maps.LatLng(-34.7504785, -58.5846362),
@@ -94,20 +84,19 @@
         var marker, i;
 
 
-        for (i = 0; i < items.length; i++) {
+        for (i = 0; i < locations.length; i++) {
             marker = new google.maps.Marker({
-                position: new google.maps.LatLng(items[i]["latitude"], items[i]["longitude"]),
+                position: new google.maps.LatLng(locations[i]["latitude"], locations[i]["longitude"]),
                 map: map
             });
 
             google.maps.event.addListener(marker, 'click', (function (marker, i) {
                 return function () {
-                    infowindow.setContent(items[i]["price"]);
+                    infowindow.setContent(locations[i]["name"]);
                     infowindow.open(map, marker);
                 }
             })(marker, i));
         }
-
 
         // Geolocalizacion
         if (navigator.geolocation) {
@@ -160,9 +149,6 @@
                 "targets": 1
             }]
         });
-    });
-        
-	
     </script>
 </body>
 </html>

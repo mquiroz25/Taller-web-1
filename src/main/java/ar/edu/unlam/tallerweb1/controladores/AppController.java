@@ -1,5 +1,6 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
+import ar.edu.unlam.tallerweb1.modelo.Commerce;
 import ar.edu.unlam.tallerweb1.modelo.Item;
 import ar.edu.unlam.tallerweb1.modelo.ItemCommerce;
 import ar.edu.unlam.tallerweb1.modelo.ItemCommerceTransporter;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import org.springframework.web.servlet.ModelAndView;
 
-
+import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
@@ -87,20 +88,24 @@ public class AppController {
         Item item = itemService.searchItemById(message.getIdItem());
         model.put("item", item);
 
-        //para el mapa
         List<ItemCommerce>listItemCommerce=ItemCommerceTransporter.getItemscommerces();
-  
-
+        List <Commerce>CommerceList= new ArrayList<>();
         List<ItemCommerce> list = new ArrayList<>();
+        
         for (ItemCommerce itemCommerce:listItemCommerce) {
         if (itemCommerce.getItem().getId().equals(message.getIdItem())) {
             list.add(itemCommerce);
+            CommerceList.add(new Commerce(itemCommerce.getCommerce().getName(), itemCommerce.getCommerce().getLatitude(), itemCommerce.getCommerce().getLongitude()));
             }
         }
 
+		// Convierto la lista en una cadena json
+		Gson gson = new Gson();
+		String jsonString = gson.toJson(CommerceList);
 
-        model.put("itemCommerce", list);
-        
+
+        model.put("itemCommerce", list); 
+        model.put("jsonString", jsonString);
 
         return new ModelAndView("productDetail", model);
     }
