@@ -26,7 +26,11 @@ public class ItemServiceImpl implements ItemService{
 	@Override
 	public List<ItemCommerce> searchItems(Message message){
 		List<Commerce> commercesToKeep = commerceService.getCommercesByDistance(message.getDistancia(), message.getLatitude(), message.getLongitude());
-		List<ItemCommerce> itemCommerceList = itemDao.getItemCommerceByCategoryOrBrand(message.getCategory(), commercesToKeep);
+		List<ItemCommerce> itemCommerceList = new ArrayList<>();
+
+		if (!commercesToKeep.isEmpty()){
+			itemCommerceList = itemDao.getItemCommerceByCategoryOrBrand(message.getCategory(), commercesToKeep);
+		}
 
    		return itemCommerceList;
    }
