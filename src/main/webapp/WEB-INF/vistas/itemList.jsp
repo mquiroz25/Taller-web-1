@@ -15,15 +15,15 @@
     <br>
     <c:choose>
     <c:when test="${empty items}">
-    <h4><span>No hay resultados</span></h4>
+    <h4><span>No results</span></h4>
     </c:when>
     <c:otherwise>
 
     <div id="tablaLista">
         <table class="table table-bordered table-hover ">
             <tr class="table-primary">
-                <th>Foto</th>
-                <th>Producto</th>
+                <th>Image</th>
+                <th>Product</th>
                 <th></th>
             </tr>
 
@@ -31,7 +31,7 @@
                 <tr>
                     <td><img src="${item.urlImage}" width="50"></td>
                     <td>${item.brand} </td>
-                    <td><form:form action="detalleProducto" method="POST" modelAttribute="message">
+                    <td><form:form action="productDetail" method="POST" modelAttribute="message">
                         <form:input path="idItem" id="idItem" value="${item.id}" type="hidden"/>
                         <input type="submit" value="Ver detalles" class="btn btn-primary"/>
                     </form:form></td>

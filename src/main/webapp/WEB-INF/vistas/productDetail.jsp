@@ -32,14 +32,14 @@
     	</div>
     </div>
     <div class="col">
-    <h3><u>Comercios</u></h3><br>
+    <h3><u>Commerces</u></h3><br>
         <table id="tableCommerces" class="table table-striped table-bordered table-hover" style="width:100%">
         	<thead>
             	<tr class="table-primary">
-                	<th>Nombre</th>
-                	<th>Distancia</th>
+                	<th>Name</th>
+                	<th>Distance</th>
                 	<th>Stock</th>
-                	<th>Precio</th>
+                	<th>Price</th>
             	</tr>
 			</thead>
 			<tbody>
@@ -102,7 +102,7 @@
 
             google.maps.event.addListener(marker, 'click', (function (marker, i) {
                 return function () {
-                    infowindow.setContent(locations[i]["name"]);
+                    infowindow.setContent(items[i]["price"]);
                     infowindow.open(map, marker);
                 }
             })(marker, i));

@@ -43,7 +43,7 @@ public class ItemDaoImpl implements ItemDao {
 		return item;
 	}
 	@Override
-	public void crearItems() {
+	public void createItems() {
         final Session session = sessionFactory.getCurrentSession();
 
         // creo los comercios

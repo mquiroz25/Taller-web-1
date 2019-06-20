@@ -17,10 +17,10 @@
 <div class="container">
 
 		<h3>Taller Web I</h3><br>
-		<a href="${pageContext.request.contextPath}/cargarProductos" class="btn btn-secondary">Cargar datos en DB</a><br>
-        <form:form action="buscar" method="POST" modelAttribute="message">
+		<a href="${pageContext.request.contextPath}/loadProducts" class="btn btn-secondary">Load data in DB</a><br>
+        <form:form action="search" method="POST" modelAttribute="message">
         	<div class="form-group row">
-        		<label for="category" class="col-sm-2 col-form-label">Categoria o Marca: </label>
+        		<label for="category" class="col-sm-2 col-form-label">Category or Brand: </label>
     			<div class="col-sm-8">
     				<form:input path="category" id="category" type="text" class="form-control"/>
 	            	<form:input path="latitude" id="latitude" type="hidden"/>
@@ -31,9 +31,9 @@
     			</div>
   			</div>
   			<div class="form-group row">
-	  			<label for="distancia" class="col-sm-2 col-form-label">Distancia m&aacute;xima en Kms: </label>
+	  			<label for="distance" class="col-sm-2 col-form-label">Distance maximum in Kms: </label>
     			<div class="col-sm-8">
-    				<form:input path="distancia" id="distancia" type="text" class="form-control"/>
+    				<form:input path="distance" id="distance" type="text" class="form-control"/>
     			</div>
 			</div>
 	        <div class="form-group row">
