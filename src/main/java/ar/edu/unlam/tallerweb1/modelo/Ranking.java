@@ -13,7 +13,7 @@ public class Ranking {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long value;
+    private Double value;
     private String review;
     
     @ManyToOne(cascade = CascadeType.ALL)
@@ -28,11 +28,11 @@ public class Ranking {
 		this.id = id;
 	}
 
-	public Long getValue() {
+	public Double getValue() {
 		return value;
 	}
 
-	public void setValue(Long value) {
+	public void setValue(Double value) {
 		this.value = value;
 	}
 

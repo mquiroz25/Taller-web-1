@@ -20,7 +20,7 @@ public class Commerce {
     @OneToMany(mappedBy = "commerce")
     private Set<ItemCommerce> itemCommerces = new HashSet<>();
  
-    private Long averageRanking;
+    private Double averageRanking;
 
 	@Transient
     private Long distance;
@@ -92,11 +92,11 @@ public class Commerce {
         return result;
     }
     
-	public Long getAverageRanking() {
+	public Double getAverageRanking() {
 		return averageRanking;
 	}
 
-	public void setAverageRanking(Long averageRanking) {
+	public void setAverageRanking(Double averageRanking) {
 		this.averageRanking = averageRanking;
 	}
 }

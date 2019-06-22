@@ -24,7 +24,6 @@ import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
-
 import java.util.*;
 
 @Transactional
@@ -117,8 +116,8 @@ public class AppController {
     
     
     
-    @RequestMapping(path = "/qualify/{id_commerce}", method = RequestMethod.GET)
-    public ModelAndView calificar(@PathVariable Long id_commerce) {
+    @RequestMapping(path = "/qualify/{id_commerce}/{name_commerce}", method = RequestMethod.GET)
+    public ModelAndView calificar(@PathVariable Long id_commerce,@PathVariable String name_commerce ) {
     	
         ModelMap model = new ModelMap();
 
@@ -128,7 +127,8 @@ public class AppController {
         rankingListCommerce= rankingService.getRankingByIdCommerce(id_commerce);
         
         model.put("rankingListCommerce", rankingListCommerce);
-        model.put("id_commerce", id_commerce);
+        model.put("id_commerce", id_commerce);    
+        model.put("name_commerce", name_commerce);
   
         return new ModelAndView("qualify", model);
     }
@@ -136,7 +136,7 @@ public class AppController {
     
     
     @RequestMapping(path ="/processQualification", method = RequestMethod.GET)
-    public ModelAndView procesar(Long id,Long rating,String review) {
+    public ModelAndView procesar(Long id,Double rating,String review) {
  
         ModelMap model = new ModelMap();
         
@@ -157,9 +157,11 @@ public class AppController {
         //obtengo la lista de ranking por id delcomercio
         List<Ranking>rankingList=new ArrayList<>();
         rankingList= rankingService.getRankingByIdCommerce(id);
-        Long averageRanking=rankingService.getAverageRanking(rankingList);
+        Double averageRanking=rankingService.getAverageRanking(rankingList);
 
-        commerce.setAverageRanking(averageRanking);
+		double roundedDouble = Math.round(averageRanking * 10.0) / 10.0;
+
+        commerce.setAverageRanking(roundedDouble);
  
         return new ModelAndView("redirect:/home");   
     }

@@ -51,7 +51,7 @@
                     <td>${commerce.stock}</td>
                     <td>$${commerce.price}</td>
                     <td>${commerce.commerce.averageRanking}</td>
-                    <td><a href="/proyecto-limpio-spring/qualify/${commerce.commerce.commerce_id}">Calificar</a></td>
+                    <td><a href="${pageContext.request.contextPath}/qualify/${commerce.commerce.commerce_id}/${commerce.commerce.name}">Calificar</a></td>
                 </tr>
             	</c:forEach>
             </tbody>

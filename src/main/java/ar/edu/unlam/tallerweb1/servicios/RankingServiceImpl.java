@@ -28,11 +28,11 @@ public class RankingServiceImpl implements RankingService {
 	}
 
 	@Override
-	public Long getAverageRanking(List<Ranking> rankingList) {
+	public Double getAverageRanking(List<Ranking> rankingList) {
 
 		
-        Long average;
-		Long sum=(long) 0;
+		Double average;
+		Double sum= 0.0;
 
 		for (Ranking r :rankingList ) 
 		{

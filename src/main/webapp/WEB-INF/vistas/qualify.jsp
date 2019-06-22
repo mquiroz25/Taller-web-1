@@ -19,7 +19,7 @@
 <body>
 
 <div class="container ">
-<h2 class="text-center">Sistema de puntuacion</h2>
+<h2 class="text-center">${name_commerce}</h2>
 <form:form action="/proyecto-limpio-spring/processQualification" method="GET">
   <div class="form-group">
     <label for="exampleFormControlSelect1">Seleccione una calificacion</label>
