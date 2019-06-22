@@ -1,17 +1,20 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
+
 import ar.edu.unlam.tallerweb1.modelo.Commerce;
 import ar.edu.unlam.tallerweb1.modelo.Item;
 import ar.edu.unlam.tallerweb1.modelo.ItemCommerce;
 import ar.edu.unlam.tallerweb1.modelo.ItemCommerceTransporter;
 import ar.edu.unlam.tallerweb1.modelo.Message;
-
+import ar.edu.unlam.tallerweb1.modelo.Ranking;
+import ar.edu.unlam.tallerweb1.servicios.CommerceService;
 import ar.edu.unlam.tallerweb1.servicios.ItemService;
-
+import ar.edu.unlam.tallerweb1.servicios.RankingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -30,7 +33,11 @@ public class AppController {
 
     @Inject
     private ItemService itemService;
-
+    @Inject
+    private CommerceService commerceService;
+    @Inject
+    private RankingService rankingService;
+    
     @RequestMapping("/home")
     public ModelAndView home() {
         ModelMap model = new ModelMap();
@@ -61,8 +68,7 @@ public class AppController {
         }
         
         ItemCommerceTransporter.setItemscommerces(itemCommerces);
-        
-        
+           
         model.put("items", items);
 
         return new ModelAndView("itemList", model);
@@ -103,10 +109,59 @@ public class AppController {
 		Gson gson = new Gson();
 		String jsonString = gson.toJson(CommerceList);
 
-
         model.put("itemCommerce", list); 
         model.put("jsonString", jsonString);
 
         return new ModelAndView("productDetail", model);
     }
+    
+    
+    
+    @RequestMapping(path = "/qualify/{id_commerce}", method = RequestMethod.GET)
+    public ModelAndView calificar(@PathVariable Long id_commerce) {
+    	
+        ModelMap model = new ModelMap();
+
+        //obtengo la lista de ranking por id delcomercio
+        List<Ranking>rankingListCommerce=new ArrayList<>();
+        
+        rankingListCommerce= rankingService.getRankingByIdCommerce(id_commerce);
+        
+        model.put("rankingListCommerce", rankingListCommerce);
+        model.put("id_commerce", id_commerce);
+  
+        return new ModelAndView("qualify", model);
+    }
+  
+    
+    
+    @RequestMapping(path ="/processQualification", method = RequestMethod.GET)
+    public ModelAndView procesar(Long id,Long qualification,String review) {
+ 
+        ModelMap model = new ModelMap();
+        
+       //obtengo el comercio con el id
+        Commerce commerce =new Commerce();
+        commerce=commerceService.getCommerceById(id);
+        
+        //recibo la calificacion y la guardo en un objeto ranking
+        Ranking ranking =new Ranking();
+        ranking.setValue(qualification);
+        ranking.setReview(review);
+        
+        //seteo el ranking al comercio
+        ranking.setCommerce(commerce);
+        
+        rankingService.saveRanking(ranking);
+  
+        //obtengo la lista de ranking por id delcomercio
+        List<Ranking>rankingList=new ArrayList<>();
+        rankingList= rankingService.getRankingByIdCommerce(id);
+        Long averageRanking=rankingService.getAverageRanking(rankingList);
+
+        commerce.setAverageRanking(averageRanking);
+ 
+        return new ModelAndView("redirect:/home");   
+    }
+  
 }

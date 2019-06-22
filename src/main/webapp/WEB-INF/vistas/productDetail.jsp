@@ -40,6 +40,7 @@
                 	<th>Distance</th>
                 	<th>Stock</th>
                 	<th>Price</th>
+                	<th>Ranking</th>
             	</tr>
 			</thead>
 			<tbody>
@@ -49,6 +50,8 @@
                     <td>${commerce.commerce.distance} KMs</td>
                     <td>${commerce.stock}</td>
                     <td>$${commerce.price}</td>
+                    <td>${commerce.commerce.averageRanking}</td>
+                    <td><a href="/proyecto-limpio-spring/qualify/${commerce.commerce.commerce_id}">Calificar</a></td>
                 </tr>
             	</c:forEach>
             </tbody>

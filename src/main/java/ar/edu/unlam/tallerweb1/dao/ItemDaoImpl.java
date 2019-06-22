@@ -135,4 +135,6 @@ public class ItemDaoImpl implements ItemDao {
 		itemCommerce.setPrice(35.0);
 		session.save(itemCommerce);
 	}
+
+
 }
