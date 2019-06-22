@@ -136,7 +136,7 @@ public class AppController {
     
     
     @RequestMapping(path ="/processQualification", method = RequestMethod.GET)
-    public ModelAndView procesar(Long id,Long qualification,String review) {
+    public ModelAndView procesar(Long id,Long rating,String review) {
  
         ModelMap model = new ModelMap();
         
@@ -146,7 +146,7 @@ public class AppController {
         
         //recibo la calificacion y la guardo en un objeto ranking
         Ranking ranking =new Ranking();
-        ranking.setValue(qualification);
+        ranking.setValue(rating);
         ranking.setReview(review);
         
         //seteo el ranking al comercio
