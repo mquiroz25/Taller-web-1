@@ -13,7 +13,7 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	
+
 <title>Insert title here</title>
 </head>
 <body>
@@ -21,21 +21,56 @@
 <div class="container ">
 <h2 class="text-center">${name_commerce}</h2>
 <form:form action="/proyecto-limpio-spring/processQualification" method="GET">
-  <div class="form-group">
-    <label for="exampleFormControlSelect1">Seleccione una calificacion</label>
-    	 <div class="starrating  d-flex justify-content-center flex-row-reverse">
-            <input type="radio" id="star5" name="rating" value="5" required/><label for="star5" title="5 star">5</label>
-            <input type="radio" id="star4" name="rating" value="4" required/><label for="star4" title="4 star">4</label>
-            <input type="radio" id="star3" name="rating" value="3" required/><label for="star3" title="3 star">3</label>
-            <input type="radio" id="star2" name="rating" value="2" required/><label for="star2" title="2 star">2</label>
-            <input type="radio" id="star1" name="rating" value="1" required/><label for="star1" title="1 star">1</label>
-        </div>
-        		<input type="hidden" name="id" value="${id_commerce}"><br>
+
+ <div class="question" id="q1">
+    <p class="criteria">Atencion</p>
+    <input type="radio" name="attention" value="1" required>
+    <label for="a1">1</label>
+    <input type="radio" name="attention" value="2" required>
+    <label for="a2">2</label>
+    <input type="radio" name="attention" value="3" required>
+    <label for="a3">3</label>
+    <input type="radio" name="attention" value="4" required>
+    <label for="a4">4</label>
+    <input type="radio" name="attention" value="5" required>
+    <label for="a5">5</label>
   </div>
+
+  <div class="question" id="q2">
+     <p class="criteria">Rapidez</p>
+    <input type="radio" name="speed" value="1" required>
+    <label for="b1">1</label>
+    <input type="radio" name="speed" value="2" required>
+    <label for="b2">2</label>
+    <input type="radio" name="speed" value="3" required>
+    <label for="b3">3</label>
+    <input type="radio" name="speed" value="4" required>
+    <label for="b4">4</label>
+    <input type="radio" name="speed" value="5" required>
+    <label for="b5">5</label>
+  </div>
+  
+  
+  <div class="question" id="q3">
+     <p class="criteria">Precios</p>
+    <input type="radio" name="prices" value="1" required>
+    <label for="c1">1</label>
+    <input type="radio" name="prices" value="2" required>
+    <label for="c2">2</label>
+    <input type="radio" name="prices" value="3" required>
+    <label for="c3">3</label>
+    <input type="radio" name="prices" value="4" required>
+    <label for="c4">4</label>
+    <input type="radio" name="prices" value="5" required>
+    <label for="c5">5</label>
+  </div>
+
+
   <div class="form-group">
     <label for="exampleFormControlTextarea1">Escriba un comentario</label>
     <textarea class="form-control" name="review"  id="exampleFormControlTextarea1" rows="2"required></textarea>
   </div>
+  <input type="hidden" name="id" value="${id_commerce}"><br>
   <button type="submit" class="btn btn-primary">Calificar</button>
 </form:form>
 </div>

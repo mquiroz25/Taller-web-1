@@ -2,6 +2,7 @@
          pageEncoding="ISO-8859-1" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,15 +16,15 @@
     <br>
     <c:choose>
     <c:when test="${empty items}">
-    <h4><span>No results</span></h4>
+    <h4><span>No hay resultados</span></h4>
     </c:when>
     <c:otherwise>
 
     <div id="tablaLista">
         <table class="table table-bordered table-hover ">
             <tr class="table-primary">
-                <th>Image</th>
-                <th>Product</th>
+                <th>Foto</th>
+                <th>Producto</th>
                 <th></th>
             </tr>
 

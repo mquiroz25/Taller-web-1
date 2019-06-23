@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: Rocio
@@ -27,20 +28,20 @@
         	<div class="card-header">Producto #${item.brand}</div>
         	<div class="card-body">
             	<h5 class="card-title"><span class="text-capitalize"><img src="${item.urlImage}" width="300"></span></h5>
-            	<p class="card-text">Descripcion: <span>${item.description}</span></p>
+            	<p class="card-text">Descripción: <span>${item.description}</span></p>
         	</div>
     	</div>
     </div>
     <div class="col">
-    <h3><u>Commerces</u></h3><br>
+    <h3><u>Comercios</u></h3><br>
         <table id="tableCommerces" class="table table-striped table-bordered table-hover" style="width:100%">
         	<thead>
             	<tr class="table-primary">
-                	<th>Name</th>
-                	<th>Distance</th>
+                	<th>Nombre</th>
+                	<th>Distancia</th>
                 	<th>Stock</th>
-                	<th>Price</th>
-                	<th>Ranking</th>
+                	<th>Precio</th>
+                	<th>Calificacion</th>
             	</tr>
 			</thead>
 			<tbody>

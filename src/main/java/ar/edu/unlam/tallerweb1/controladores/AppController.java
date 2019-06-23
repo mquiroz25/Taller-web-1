@@ -136,9 +136,12 @@ public class AppController {
     
     
     @RequestMapping(path ="/processQualification", method = RequestMethod.GET)
-    public ModelAndView procesar(Long id,Double rating,String review) {
+    public ModelAndView procesar(Long id,Double attention,Double speed,Double prices,String review) {
  
         ModelMap model = new ModelMap();
+        
+        Double av = (attention+ speed + prices)/3;
+    	double avOneDecimal = Math.round(av * 10.0) / 10.0;
         
        //obtengo el comercio con el id
         Commerce commerce =new Commerce();
@@ -146,7 +149,7 @@ public class AppController {
         
         //recibo la calificacion y la guardo en un objeto ranking
         Ranking ranking =new Ranking();
-        ranking.setValue(rating);
+        ranking.setValue(avOneDecimal);
         ranking.setReview(review);
         
         //seteo el ranking al comercio
