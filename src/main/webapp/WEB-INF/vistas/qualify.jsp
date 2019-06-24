@@ -13,58 +13,34 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/css/star-rating.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/javascript.js"></script>
+    
 <title>Insert title here</title>
 </head>
 <body>
 
 <div class="container ">
 <h2 class="text-center">${name_commerce}</h2>
-<form:form action="/proyecto-limpio-spring/processQualification" method="GET">
+<form:form action="/proyecto-limpio-spring/processQualification" method="GET" onsubmit="myFunction()">
 
- <div class="question" id="q1">
-    <p class="criteria">Atencion</p>
-    <input type="radio" name="attention" value="1" required>
-    <label for="a1">1</label>
-    <input type="radio" name="attention" value="2" required>
-    <label for="a2">2</label>
-    <input type="radio" name="attention" value="3" required>
-    <label for="a3">3</label>
-    <input type="radio" name="attention" value="4" required>
-    <label for="a4">4</label>
-    <input type="radio" name="attention" value="5" required>
-    <label for="a5">5</label>
-  </div>
 
-  <div class="question" id="q2">
-     <p class="criteria">Rapidez</p>
-    <input type="radio" name="speed" value="1" required>
-    <label for="b1">1</label>
-    <input type="radio" name="speed" value="2" required>
-    <label for="b2">2</label>
-    <input type="radio" name="speed" value="3" required>
-    <label for="b3">3</label>
-    <input type="radio" name="speed" value="4" required>
-    <label for="b4">4</label>
-    <input type="radio" name="speed" value="5" required>
-    <label for="b5">5</label>
-  </div>
-  
-  
-  <div class="question" id="q3">
-     <p class="criteria">Precios</p>
-    <input type="radio" name="prices" value="1" required>
-    <label for="c1">1</label>
-    <input type="radio" name="prices" value="2" required>
-    <label for="c2">2</label>
-    <input type="radio" name="prices" value="3" required>
-    <label for="c3">3</label>
-    <input type="radio" name="prices" value="4" required>
-    <label for="c4">4</label>
-    <input type="radio" name="prices" value="5" required>
-    <label for="c5">5</label>
-  </div>
+<div class="container">
+    <br/>
+    <label for="input-1" class="control-label">Atención</label>
+    <input id="input-1" name="prices" class="rating rating-loading" value="0" data-min="0" data-max="5" data-step="1" data-size="xs" required>
 
+    <br/>
+    <label for="input-1" class="control-label">Rapidez</label>
+    <input id="input-1" name="speed" class="rating rating-loading" value="0" data-min="0" data-max="5" data-step="1" data-size="xs" required>
+
+    <br/>
+    <label for="input-1" class="control-label">Precios</label>
+    <input id="input-1" name="attention" class="rating rating-loading" value="0" data-min="0" data-max="5" data-step="1" data-size="xs" required>
+</div>
 
   <div class="form-group">
     <label for="exampleFormControlTextarea1">Escriba un comentario</label>
@@ -75,28 +51,23 @@
 </form:form>
 </div>
 
-
 <hr />
-    
-            
-   <div class="container">
-<ul class="list-group">
+           
+<div class="container">
+	<ul class="list-group">
 
-<c:forEach items="${rankingListCommerce}" var="item">
-                
-                
-                <li class="list-group-item">
-    <div class="d-flex w-100 justify-content-between">
-     <div class="px-2" id="caja"> <h5 class="mb-1">${item.value}</h5></div>
-    </div>
-    <p class="mb-1">${item.review}</p>
-  </li>
-                
-                  </c:forEach>
+		<c:forEach items="${rankingListCommerce}" var="item">              
+           <li class="list-group-item">
+    			<div class="d-flex w-100 justify-content-between">
+     				<div class="px-2" id="caja">
+     					 <h5 class="mb-1">${item.value}</h5>
+     			    </div>
+    			</div>
+    					<p class="mb-1">${item.review}</p>
+  		   </li>     
+        </c:forEach>
   
-</ul>
-   </div>
-
-
+	</ul>
+</div>
 </body>
 </html>

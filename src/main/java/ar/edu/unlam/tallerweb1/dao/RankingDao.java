@@ -9,4 +9,5 @@ public interface RankingDao {
 	   List<Ranking>getRankingByIdCommerce(Long id);
 	   	void saveRanking (Ranking ranking);
 
+
 }

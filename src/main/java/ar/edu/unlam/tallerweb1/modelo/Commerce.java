@@ -17,7 +17,8 @@ public class Commerce {
     private Double latitude;
     private Double longitude;
 
-    @OneToMany(mappedBy = "commerce")
+
+	@OneToMany(mappedBy = "commerce")
     private Set<ItemCommerce> itemCommerces = new HashSet<>();
  
     private Double averageRanking;
@@ -96,7 +97,20 @@ public class Commerce {
 		return averageRanking;
 	}
 
-	public void setAverageRanking(Double averageRanking) {
-		this.averageRanking = averageRanking;
+	public void setAverageRanking(List<Ranking>rankingList) {
+		
+		Double sum= 0.0;
+
+		for (Ranking r :rankingList ) 
+		{
+		sum=sum + r.getValue();	
+		}
+		
+		this.averageRanking=sum/rankingList.size();
+		
+		this.averageRanking = Math.round(this.averageRanking * 10.0) / 10.0;
+		 
+	
 	}
+
 }

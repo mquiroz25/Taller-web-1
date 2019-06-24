@@ -10,6 +10,9 @@ import ar.edu.unlam.tallerweb1.modelo.Ranking;
 import ar.edu.unlam.tallerweb1.servicios.CommerceService;
 import ar.edu.unlam.tallerweb1.servicios.ItemService;
 import ar.edu.unlam.tallerweb1.servicios.RankingService;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
@@ -29,7 +32,7 @@ import java.util.*;
 @Transactional
 @Controller
 public class AppController {
-
+	
     @Inject
     private ItemService itemService;
     @Inject
@@ -137,20 +140,17 @@ public class AppController {
     
     @RequestMapping(path ="/processQualification", method = RequestMethod.GET)
     public ModelAndView procesar(Long id,Double attention,Double speed,Double prices,String review) {
- 
-        ModelMap model = new ModelMap();
+    
+        Double averageForCriteria=  rankingService.getAverageForCriteria(attention, speed, prices);
         
-        Double av = (attention+ speed + prices)/3;
-    	double avOneDecimal = Math.round(av * 10.0) / 10.0;
+        //guardo la calificacion obtenida en un objeto ranking
+        Ranking ranking =new Ranking();
+        ranking.setValue(averageForCriteria);
+        ranking.setReview(review);
         
-       //obtengo el comercio con el id
+        //obtengo el comercio con el id
         Commerce commerce =new Commerce();
         commerce=commerceService.getCommerceById(id);
-        
-        //recibo la calificacion y la guardo en un objeto ranking
-        Ranking ranking =new Ranking();
-        ranking.setValue(avOneDecimal);
-        ranking.setReview(review);
         
         //seteo el ranking al comercio
         ranking.setCommerce(commerce);
@@ -160,12 +160,8 @@ public class AppController {
         //obtengo la lista de ranking por id delcomercio
         List<Ranking>rankingList=new ArrayList<>();
         rankingList= rankingService.getRankingByIdCommerce(id);
-        Double averageRanking=rankingService.getAverageRanking(rankingList);
+        commerce.setAverageRanking(rankingList);
 
-		double roundedDouble = Math.round(averageRanking * 10.0) / 10.0;
-
-        commerce.setAverageRanking(roundedDouble);
- 
         return new ModelAndView("redirect:/home");   
     }
   

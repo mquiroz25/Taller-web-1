@@ -8,5 +8,6 @@ public interface RankingService {
 
 	   List<Ranking>getRankingByIdCommerce(Long id);
 	   void saveRanking(Ranking ranking);
-	   	Double getAverageRanking(List<Ranking> rankingList);
+	//   	Double getAverageRanking(List<Ranking> rankingList);
+	   	Double getAverageForCriteria(Double attention,Double speed,Double prices);
 }

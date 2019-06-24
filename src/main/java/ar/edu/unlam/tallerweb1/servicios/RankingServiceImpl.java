@@ -27,7 +27,7 @@ public class RankingServiceImpl implements RankingService {
 		rankingDao.saveRanking(ranking);		
 	}
 
-	@Override
+	/*@Override
 	public Double getAverageRanking(List<Ranking> rankingList) {
 
 		
@@ -41,8 +41,18 @@ public class RankingServiceImpl implements RankingService {
 		
 		average=sum/rankingList.size();
 		
+		 average = Math.round(average * 10.0) / 10.0;
+		 
 		return average;
 	
+	}*/
+
+	@Override
+	public Double getAverageForCriteria(Double attention, Double speed, Double prices) {
+	     Double av = (attention+ speed + prices)/3;
+	    	double avOneDecimal = Math.round(av * 10.0) / 10.0;
+	    	
+			return avOneDecimal;
 	}
 
 }
