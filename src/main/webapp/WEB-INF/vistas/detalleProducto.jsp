@@ -22,41 +22,74 @@
 <div class="container">
     <br>
     <div class="row">
-    <div class="col">
-    	<div id="itemId${item.id}" class="card text-white bg-info mb-3" style="max-width: 22rem;">
-        	<div class="card-header">Producto #${item.brand}</div>
-        	<div class="card-body">
-            	<h5 class="card-title"><span class="text-capitalize"><img src="${item.urlImage}" width="300"></span></h5>
-            	<p class="card-text">Descripcion: <span>${item.description}</span></p>
-        	</div>
-    	</div>
+        <div class="col">
+            <div id="itemId${item.id}" class="card text-white bg-info mb-3" style="max-width: 22rem;">
+                <div class="card-header">Producto #${item.brand}</div>
+                <div class="card-body">
+                    <h5 class="card-title"><span class="text-capitalize"><img src="${item.urlImage}" width="300"></span></h5>
+                    <p class="card-text">Descripcion: <span>${item.description}</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+        <h3><u>Comercios</u></h3><br>
+            <table id="tableCommerces" class="table table-striped table-bordered table-hover" style="width:100%">
+                <thead>
+                    <tr class="table-primary">
+                        <th>Nombre</th>
+                        <th>Distancia</th>
+                        <th>Stock</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${itemCommerce}" var="commerce">
+                    <tr>
+                        <td class="text-capitalize">${commerce.commerce.name}</td>
+                        <td>${commerce.commerce.distance} KMs</td>
+                        <td>${commerce.stock}</td>
+                        <td>$${commerce.price}</td>
+                    </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="col">
-    <h3><u>Comercios</u></h3><br>
-        <table id="tableCommerces" class="table table-striped table-bordered table-hover" style="width:100%">
-        	<thead>
-            	<tr class="table-primary">
-                	<th>Nombre</th>
-                	<th>Distancia</th>
-                	<th>Stock</th>
-                	<th>Precio</th>
-            	</tr>
-			</thead>
-			<tbody>
-            	<c:forEach items="${itemCommerce}" var="commerce">
-                <tr>
-                	<td class="text-capitalize">${commerce.commerce.name}</td>
-                    <td>${commerce.commerce.distance} KMs</td>
-                    <td>${commerce.stock}</td>
-                    <td>$${commerce.price}</td>
-                </tr>
-            	</c:forEach>
-            </tbody>
-        </table>
+    <div class="row">
+        <div class="col">
+            <div id="map" style="width: 800px; height: 600px;">
+            </div>
+        </div>
+        <div class="col">
+            <div class="col">
+                <h3><u>Referencia</u></h3><br>
+                <table id="referenceTable" class="table table-striped table-bordered table-hover" style="width:100%">
+                    <thead>
+                    <tr class="table-primary">
+                        <th>Icono</th>
+                        <th>Referencia</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|2B17FF"></td>
+                            <td>Tu posición actual</td>
+                        </tr>
+                        <tr>
+                            <td><img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|04FF38"></td>
+                            <td>Comercio con el producto en stock y el más barato</td>
+                        </tr>
+                        <tr>
+                            <td><img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FE7569"></td>
+                            <td>Comercio con el producto en stock</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-   		</div>
-    	<div id="map" style="width: 800px; height: 600px;"></div>
-    </div>	
+
+</div>
 
     
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -83,6 +116,13 @@
             });
         </c:forEach>
 
+        var items = items.sort(function (a, b){
+            if (a.price > b.price) return 1;
+            if (a.price < b.price) return -1;
+
+            return 0;
+        });
+
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 10,
             center: new google.maps.LatLng(-34.7504785, -58.5846362),
@@ -93,11 +133,22 @@
 
         var marker, i;
 
-
         for (i = 0; i < items.length; i++) {
+            var pinColor = "FE7569"; /// rojo
+
+            if (i == 0){
+                pinColor = "04FF38"; /// verde
+            }
+
+            var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+                new google.maps.Size(21, 34),
+                new google.maps.Point(0,0),
+                new google.maps.Point(10, 34));
+
             marker = new google.maps.Marker({
                 position: new google.maps.LatLng(items[i]["latitude"], items[i]["longitude"]),
-                map: map
+                map: map,
+                icon: pinImage
             });
 
             google.maps.event.addListener(marker, 'click', (function (marker, i) {
@@ -121,7 +172,7 @@
                     position: pos,
                     map: map,
                     title: 'Mi ubicacion',
-                    icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                    icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|2B17FF'
                 });
 
             }, function () {
