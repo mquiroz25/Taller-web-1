@@ -2,6 +2,7 @@
          pageEncoding="ISO-8859-1" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,7 +32,7 @@
                 <tr>
                     <td><img src="${item.urlImage}" width="50"></td>
                     <td>${item.brand} </td>
-                    <td><form:form action="detalleProducto" method="POST" modelAttribute="message">
+                    <td><form:form action="productDetail" method="POST" modelAttribute="message">
                         <form:input path="idItem" id="idItem" value="${item.id}" type="hidden"/>
                         <input type="submit" value="Ver detalles" class="btn btn-primary"/>
                     </form:form></td>

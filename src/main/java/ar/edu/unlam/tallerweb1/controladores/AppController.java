@@ -1,28 +1,24 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
-import ar.edu.unlam.tallerweb1.modelo.Category;
 import ar.edu.unlam.tallerweb1.modelo.Commerce;
 import ar.edu.unlam.tallerweb1.modelo.Item;
 import ar.edu.unlam.tallerweb1.modelo.ItemCommerce;
+import ar.edu.unlam.tallerweb1.modelo.ItemCommerceTransporter;
 import ar.edu.unlam.tallerweb1.modelo.Message;
-
+import ar.edu.unlam.tallerweb1.modelo.Ranking;
+import ar.edu.unlam.tallerweb1.servicios.CommerceService;
 import ar.edu.unlam.tallerweb1.servicios.ItemService;
-
+import ar.edu.unlam.tallerweb1.servicios.RankingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.google.gson.Gson;
-
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import java.util.*;
 
 @Transactional
@@ -31,7 +27,11 @@ public class AppController {
 
     @Inject
     private ItemService itemService;
-
+    @Inject
+    private CommerceService commerceService;
+    @Inject
+    private RankingService rankingService;
+    
     @RequestMapping("/home")
     public ModelAndView home() {
         ModelMap model = new ModelMap();
@@ -44,15 +44,14 @@ public class AppController {
 
     // Busca por categoria, las cargadas son "gaseosas" y "lavandinas"
     // ahora tambien busca por marca, las cargadas son "pepsi" y "ayudin"
-    @RequestMapping(path = "/buscar", method = RequestMethod.POST)
-    public ModelAndView buscar(@ModelAttribute("message") Message message, HttpServletRequest request) {
+    @RequestMapping(path = "/search", method = RequestMethod.POST)
+    public ModelAndView search(@ModelAttribute("message") Message message) {
         ModelMap model = new ModelMap();
-        HttpSession session = request.getSession(true);
+        
         List<ItemCommerce> itemCommerces = itemService.searchItems(message);
+        
         Message messageForm = new Message();
         model.put("message", messageForm);
-
-        session.setAttribute("items", itemCommerces);
 
         List <Item> items = new ArrayList<>();
         for (ItemCommerce var : itemCommerces) {
@@ -60,6 +59,9 @@ public class AppController {
                 items.add(var.getItem());
             }
         }
+        
+        ItemCommerceTransporter.setItemsCommerces(itemCommerces);
+           
         model.put("items", items);
 
         return new ModelAndView("itemList", model);
@@ -67,37 +69,78 @@ public class AppController {
 
     // Escucha la url /, y redirige a la URL /login, es lo mismo que si se invoca la url /login directamente.
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public ModelAndView inicio() {
+    public ModelAndView index() {
         return new ModelAndView("redirect:/home");
     }
 
-
-    @RequestMapping(path = "/cargarProductos", method = RequestMethod.GET)
-    public ModelAndView cargarProductos() {
-        itemService.crearItems();
+    @RequestMapping(path = "/loadProducts", method = RequestMethod.GET)
+    public ModelAndView loadProducts() {
+        itemService.createItems();
         return new ModelAndView("redirect:/home");
     }
 
-
-    @RequestMapping(path = "/detalleProducto", method = RequestMethod.POST)
-    public ModelAndView detalleProducto(@ModelAttribute("message") Message message, HttpServletRequest request) {
+    @RequestMapping(path = "/productDetail", method = RequestMethod.POST)
+    public ModelAndView productDetail(@ModelAttribute("message") Message message) {
         ModelMap model = new ModelMap();
         Item item = itemService.searchItemById(message.getIdItem());
         model.put("item", item);
 
-        //para el mapa
-        HttpSession session= request.getSession();
-        List<ItemCommerce> auxList = (List<ItemCommerce>) session.getAttribute("items");
-
+        List<ItemCommerce> listItemCommerce = ItemCommerceTransporter.getItemsCommerces();
+        List<Commerce> CommerceList = new ArrayList<>();
         List<ItemCommerce> list = new ArrayList<>();
-        for (ItemCommerce itemCommerce:auxList) {
-        if (itemCommerce.getItem().getId().equals(message.getIdItem())) {
-            list.add(itemCommerce);
+        
+        for (ItemCommerce itemCommerce : listItemCommerce) {
+            if (itemCommerce.getItem().getId().equals(message.getIdItem())) {
+                list.add(itemCommerce);
+                CommerceList.add(new Commerce(itemCommerce.getCommerce().getName(), itemCommerce.getCommerce().getLatitude(), itemCommerce.getCommerce().getLongitude()));
             }
         }
 
-        model.put("itemCommerce", list);
+		// Convierto la lista en una cadena json
+		Gson gson = new Gson();
+		String jsonString = gson.toJson(CommerceList);
 
-        return new ModelAndView("detalleProducto", model);
+        model.put("itemCommerce", list); 
+        model.put("jsonString", jsonString);
+
+        return new ModelAndView("productDetail", model);
+    }
+
+    @RequestMapping(path = "/rate/{id_commerce}/{name_commerce}", method = RequestMethod.GET)
+    public ModelAndView rate(@PathVariable Long id_commerce,@PathVariable String name_commerce ) {
+        ModelMap model = new ModelMap();
+
+        //obtengo la lista de ranking por id delcomercio
+        List<Ranking> rankingListCommerce = rankingService.getRankingByIdCommerce(id_commerce);
+        
+        model.put("rankingListCommerce", rankingListCommerce);
+        model.put("id_commerce", id_commerce);    
+        model.put("name_commerce", name_commerce);
+  
+        return new ModelAndView("rating", model);
+    }
+
+    @RequestMapping(path ="/processRating", method = RequestMethod.GET)
+    public ModelAndView process(Long id, Double attention, Double speed, Double prices, String review) {
+        Double averageForCriteria = rankingService.getAverageForCriteria(attention, speed, prices);
+        
+        //guardo la calificacion obtenida en un objeto ranking
+        Ranking ranking = new Ranking();
+        ranking.setValue(averageForCriteria);
+        ranking.setReview(review);
+        
+        //obtengo el comercio con el id
+        Commerce commerce = commerceService.getCommerceById(id);
+        
+        //seteo el ranking al comercio
+        ranking.setCommerce(commerce);
+        
+        rankingService.saveRanking(ranking);
+  
+        //obtengo la lista de ranking por id delcomercio
+        List<Ranking> rankingList = rankingService.getRankingByIdCommerce(id);
+        commerce.setAverageRanking(rankingList);
+
+        return new ModelAndView("redirect:/home");   
     }
 }

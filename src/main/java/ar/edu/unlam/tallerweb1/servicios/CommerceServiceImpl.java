@@ -2,6 +2,8 @@ package ar.edu.unlam.tallerweb1.servicios;
 
 import ar.edu.unlam.tallerweb1.dao.CommercesDao;
 import ar.edu.unlam.tallerweb1.modelo.Commerce;
+import ar.edu.unlam.tallerweb1.modelo.Ranking;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,4 +44,9 @@ public class CommerceServiceImpl implements CommerceService {
     private Long calculateDistance(Double Lat1, Double Lon1, Double Lat2, Double Lon2){
         return Math.round((Math.acos(((Math.sin(Math.toRadians(Lat2)))*(Math.sin(Math.toRadians(Lat1)))) + ((Math.cos(Math.toRadians(Lat2)))*(Math.cos(Math.toRadians(Lat1)))*(Math.cos(Math.toRadians(Lon1 - Lon2))))) * 6371));
     }
+
+	@Override
+	public Commerce getCommerceById(Long id) {
+		return commerceDao.getCommerceById(id);
+	}
 }

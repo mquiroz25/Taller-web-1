@@ -3,8 +3,8 @@ package ar.edu.unlam.tallerweb1.dao;
 import ar.edu.unlam.tallerweb1.modelo.Commerce;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
-
 import javax.inject.Inject;
 import java.util.List;
 
@@ -22,4 +22,13 @@ public class CommercesDaoImpl implements CommercesDao {
 
         return commerceList;
     }
+
+	public Commerce getCommerceById(Long id) {
+		
+		final Session session = sessionFactory.getCurrentSession();
+		Commerce commerce = (Commerce) session.createCriteria(Commerce.class)
+				.add(Restrictions.eq("commerce_id", id))
+				.uniqueResult();
+		return commerce;
+	}
 }

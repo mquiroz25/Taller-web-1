@@ -1,5 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,8 +18,8 @@
 <div class="container">
 
 		<h3>Taller Web I</h3><br>
-		<a href="${pageContext.request.contextPath}/cargarProductos" class="btn btn-secondary">Cargar datos en DB</a><br>
-        <form:form action="buscar" method="POST" modelAttribute="message">
+		<a href="${pageContext.request.contextPath}/loadProducts" class="btn btn-secondary">Cargar datos en db</a><br>
+        <form:form action="search" method="POST" modelAttribute="message">
         	<div class="form-group row">
         		<label for="category" class="col-sm-2 col-form-label">Categoria o Marca: </label>
     			<div class="col-sm-8">
@@ -31,9 +32,9 @@
     			</div>
   			</div>
   			<div class="form-group row">
-	  			<label for="distancia" class="col-sm-2 col-form-label">Distancia m&aacute;xima en Kms: </label>
+	  			<label for="distance" class="col-sm-2 col-form-label">Distancia máxima en Kms: </label>
     			<div class="col-sm-8">
-    				<form:input path="distancia" id="distancia" type="text" class="form-control"/>
+    				<form:input path="distance" id="distance" type="text" class="form-control"/>
     			</div>
 			</div>
 	        <div class="form-group row">
@@ -48,14 +49,14 @@
 	        if (navigator.geolocation) {
 	            navigator.geolocation.getCurrentPosition(showPosition);
 	        } else {
-	        	$("#info").text("Geolocalizaci\u00F3n no disponible.");
+	        	$("#info").text("Geolocalización no disponible.");
 	        }
 	    }
 
 	    function showPosition(position) {
 	        $("#latitude").val(position.coords.latitude);
 	        $("#longitude").val(position.coords.longitude);
-			$("#info").text("Usando tu ubicaci\u00F3n. Click en buscar");
+			$("#info").text("Usando tu ubicación. Click en buscar");
 	    }
 	    
 	    getLocation();

@@ -2,6 +2,7 @@ package ar.edu.unlam.tallerweb1.modelo;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,10 +15,13 @@ public class Commerce {
     private Double latitude;
     private Double longitude;
 
-    @OneToMany(mappedBy = "commerce")
+
+	@OneToMany(mappedBy = "commerce")
     private Set<ItemCommerce> itemCommerces = new HashSet<>();
-    
-    @Transient
+ 
+    private Double averageRanking;
+
+	@Transient
     private Long distance;
 
     public Long getDistance() {
@@ -86,4 +90,20 @@ public class Commerce {
 
         return result;
     }
+    
+	public Double getAverageRanking() {
+		return averageRanking;
+	}
+
+	public void setAverageRanking(List<Ranking>rankingList) {
+		Double sum = 0.0;
+
+		for (Ranking r : rankingList)
+		{
+		    sum = sum + r.getValue();
+		}
+		
+		this.averageRanking = sum/rankingList.size();
+		this.averageRanking = Math.round(this.averageRanking * 10.0) / 10.0;
+	}
 }

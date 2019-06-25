@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: Rocio
@@ -27,7 +28,7 @@
         	<div class="card-header">Producto #${item.brand}</div>
         	<div class="card-body">
             	<h5 class="card-title"><span class="text-capitalize"><img src="${item.urlImage}" width="300"></span></h5>
-            	<p class="card-text">Descripcion: <span>${item.description}</span></p>
+            	<p class="card-text">Descripción: <span>${item.description}</span></p>
         	</div>
     	</div>
     </div>
@@ -40,6 +41,7 @@
                 	<th>Distancia</th>
                 	<th>Stock</th>
                 	<th>Precio</th>
+                	<th>Calificacion</th>
             	</tr>
 			</thead>
 			<tbody>
@@ -49,6 +51,8 @@
                     <td>${commerce.commerce.distance} KMs</td>
                     <td>${commerce.stock}</td>
                     <td>$${commerce.price}</td>
+                    <td>${commerce.commerce.averageRanking}</td>
+                    <td><a href="${pageContext.request.contextPath}/rate/${commerce.commerce.commerce_id}/${commerce.commerce.name}" class="btn btn-info" role="button">Calificar</a></td>
                 </tr>
             	</c:forEach>
             </tbody>
@@ -58,7 +62,6 @@
     	<div id="map" style="width: 800px; height: 600px;"></div>
     </div>	
 
-    
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -70,19 +73,10 @@
             type="text/javascript"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/natural.js"></script>
-    <script type="text/javascript">
-    $(document).ready(function() {
-    	var items = [];
-        <c:forEach items="${itemCommerce}" var="item">
-            items.push({
-                key: ${item.id},
-                longitude: ${item.commerce.longitude},
-                latitude: ${item.commerce.latitude},
-                stock: ${item.stock},
-                price: ${item.price},
-            });
-        </c:forEach>
-
+    <script>
+    var jsontext = '${jsonString}';
+    var locations = JSON.parse (jsontext);
+    
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 10,
             center: new google.maps.LatLng(-34.7504785, -58.5846362),
@@ -94,9 +88,9 @@
         var marker, i;
 
 
-        for (i = 0; i < items.length; i++) {
+        for (i = 0; i < locations.length; i++) {
             marker = new google.maps.Marker({
-                position: new google.maps.LatLng(items[i]["latitude"], items[i]["longitude"]),
+                position: new google.maps.LatLng(locations[i]["latitude"], locations[i]["longitude"]),
                 map: map
             });
 
@@ -107,7 +101,6 @@
                 }
             })(marker, i));
         }
-
 
         // Geolocalizacion
         if (navigator.geolocation) {
@@ -160,9 +153,6 @@
                 "targets": 1
             }]
         });
-    });
-        
-	
     </script>
 </body>
 </html>
