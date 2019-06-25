@@ -10,6 +10,4 @@ public interface ItemService {
    List<ItemCommerce> searchItems(Message message);
    void createItems();
    Item searchItemById(Long id);
-
-
 }

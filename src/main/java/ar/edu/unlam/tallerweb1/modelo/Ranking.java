@@ -51,7 +51,4 @@ public class Ranking {
 	public void setCommerce(Commerce commerce) {
 		this.commerce = commerce;
 	}
-       
 }
-
-

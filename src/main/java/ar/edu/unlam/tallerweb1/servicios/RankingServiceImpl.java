@@ -1,24 +1,20 @@
 package ar.edu.unlam.tallerweb1.servicios;
 
 import java.util.List;
-
 import javax.inject.Inject;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import ar.edu.unlam.tallerweb1.dao.RankingDao;
 import ar.edu.unlam.tallerweb1.modelo.Ranking;
 
 @Service("RankingService")
 @Transactional
 public class RankingServiceImpl implements RankingService {
-	   @Inject
-	   private RankingDao rankingDao;
+	@Inject
+	private RankingDao rankingDao;
 
 	@Override
 	public List<Ranking> getRankingByIdCommerce(Long id) {
-		// TODO Auto-generated method stub
 		return rankingDao.getRankingByIdCommerce(id);
 	}
 
@@ -49,10 +45,9 @@ public class RankingServiceImpl implements RankingService {
 
 	@Override
 	public Double getAverageForCriteria(Double attention, Double speed, Double prices) {
-	     Double av = (attention+ speed + prices)/3;
-	    	double avOneDecimal = Math.round(av * 10.0) / 10.0;
+	 	Double av = (attention+ speed + prices)/3;
+		double avOneDecimal = Math.round(av * 10.0) / 10.0;
 	    	
-			return avOneDecimal;
+		return avOneDecimal;
 	}
-
 }

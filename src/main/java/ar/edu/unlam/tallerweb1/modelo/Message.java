@@ -1,8 +1,5 @@
 package ar.edu.unlam.tallerweb1.modelo;
 
-
-import java.util.List;
-
 public class Message {
     private String category;
     private Double latitude;

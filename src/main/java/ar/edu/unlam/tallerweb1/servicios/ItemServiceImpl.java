@@ -62,5 +62,4 @@ public class ItemServiceImpl implements ItemService{
    public Item searchItemById(Long id){
 		return itemDao.getItemById(id);
    }
-
 }

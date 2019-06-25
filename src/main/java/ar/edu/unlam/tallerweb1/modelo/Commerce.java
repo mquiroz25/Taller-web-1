@@ -1,8 +1,6 @@
 package ar.edu.unlam.tallerweb1.modelo;
 
 import javax.persistence.*;
-
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -98,19 +96,14 @@ public class Commerce {
 	}
 
 	public void setAverageRanking(List<Ranking>rankingList) {
-		
-		Double sum= 0.0;
+		Double sum = 0.0;
 
-		for (Ranking r :rankingList ) 
+		for (Ranking r : rankingList)
 		{
-		sum=sum + r.getValue();	
+		    sum = sum + r.getValue();
 		}
 		
-		this.averageRanking=sum/rankingList.size();
-		
+		this.averageRanking = sum/rankingList.size();
 		this.averageRanking = Math.round(this.averageRanking * 10.0) / 10.0;
-		 
-	
 	}
-
 }

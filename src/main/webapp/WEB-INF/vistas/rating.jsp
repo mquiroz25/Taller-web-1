@@ -25,12 +25,12 @@
 
 <div class="container ">
 <h2 class="text-center">${name_commerce}</h2>
-<form:form action="/proyecto-limpio-spring/processQualification" method="GET" onsubmit="myFunction()">
+<form:form action="${pageContext.request.contextPath}/processRating" method="GET" onsubmit="myFunction()">
 
 
 <div class="container">
     <br/>
-    <label for="input-1" class="control-label">Atención</label>
+    <label for="input-1" class="control-label">Atenciï¿½n</label>
     <input id="input-1" name="prices" class="rating rating-loading" value="0" data-min="0" data-max="5" data-step="1" data-size="xs" required>
 
     <br/>

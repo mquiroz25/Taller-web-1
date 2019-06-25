@@ -49,5 +49,4 @@ public class CommerceServiceImpl implements CommerceService {
 	public Commerce getCommerceById(Long id) {
 		return commerceDao.getCommerceById(id);
 	}
-
 }

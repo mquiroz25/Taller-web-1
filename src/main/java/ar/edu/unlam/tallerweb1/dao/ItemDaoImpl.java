@@ -6,9 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
-
 import javax.inject.Inject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,8 +39,10 @@ public class ItemDaoImpl implements ItemDao {
 				.add(Restrictions.eq("id", id))
 				.uniqueResult();
 		Item item = (Item)obj;
+
 		return item;
 	}
+
 	@Override
 	public void createItems() {
         final Session session = sessionFactory.getCurrentSession();
@@ -69,7 +69,7 @@ public class ItemDaoImpl implements ItemDao {
 		List<Ranking>l1 = new ArrayList<>();
 		l1.add(r1);
 		walmart.setAverageRanking(l1);
-//--------------------------------//		
+		//--------------------------------//
 		
 		Ranking r2 = new Ranking();
 		r2.setValue(4.6);
@@ -79,7 +79,7 @@ public class ItemDaoImpl implements ItemDao {
 		List<Ranking>l2 = new ArrayList<>();
 		l2.add(r2);
 		jumbo.setAverageRanking(l2);
-//--------------------------------//	
+		//--------------------------------//
 		Ranking r3 = new Ranking();
 		r3.setValue(3.5);
 		r3.setCommerce(coto);
@@ -88,7 +88,7 @@ public class ItemDaoImpl implements ItemDao {
 		List<Ranking>l3 = new ArrayList<>();
 		l3.add(r3);
 		coto.setAverageRanking(l3);
-//--------------------------------//	
+		//--------------------------------//
 		Ranking r4 = new Ranking();
 		r4.setValue(1.0);
 		r4.setCommerce(carrefour);
@@ -97,7 +97,7 @@ public class ItemDaoImpl implements ItemDao {
 		List<Ranking>l4 = new ArrayList<>();
 		l4.add(r4);
 		carrefour.setAverageRanking(l4);
-//--------------------------------//	
+		//--------------------------------//
 		Ranking r5 = new Ranking();
 		r5.setValue(2.5);
 		r5.setCommerce(walmartLujan);
@@ -190,6 +190,4 @@ public class ItemDaoImpl implements ItemDao {
 		itemCommerce.setPrice(35.0);
 		session.save(itemCommerce);
 	}
-
-
 }
