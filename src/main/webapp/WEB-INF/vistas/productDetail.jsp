@@ -22,38 +22,40 @@
 <div class="container">
     <br>
     <div class="row">
-        <div class="col">
-            <div id="itemId${item.id}" class="card text-white bg-info mb-3" style="max-width: 22rem;">
-                <div class="card-header">Producto #${item.brand}</div>
-                <div class="card-body">
-                    <h5 class="card-title"><span class="text-capitalize"><img src="${item.urlImage}" width="300"></span></h5>
-                    <p class="card-text">Descripcion: <span>${item.description}</span></p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-        <h3><u>Comercios</u></h3><br>
-            <table id="tableCommerces" class="table table-striped table-bordered table-hover" style="width:100%">
-                <thead>
-                    <tr class="table-primary">
-                        <th>Nombre</th>
-                        <th>Distancia</th>
-                        <th>Stock</th>
-                        <th>Precio</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${itemCommerce}" var="commerce">
-                    <tr>
-                        <td class="text-capitalize">${commerce.commerce.name}</td>
-                        <td>${commerce.commerce.distance} KMs</td>
-                        <td>${commerce.stock}</td>
-                        <td>$${commerce.price}</td>
-                    </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-        </div>
+    <div class="col">
+    	<div id="itemId${item.id}" class="card text-white bg-info mb-3" style="max-width: 22rem;">
+        	<div class="card-header">Producto #${item.brand}</div>
+        	<div class="card-body">
+            	<h5 class="card-title"><span class="text-capitalize"><img src="${item.urlImage}" width="300"></span></h5>
+            	<p class="card-text">Descripci&oacute;n: <span>${item.description}</span></p>
+        	</div>
+    	</div>
+    </div>
+    <div class="col">
+    <h3><u>Comercios</u></h3><br>
+        <table id="tableCommerces" class="table table-striped table-bordered table-hover" style="width:100%">
+        	<thead>
+            	<tr class="table-primary">
+                	<th>Nombre</th>
+                	<th>Distancia</th>
+                	<th>Stock</th>
+                	<th>Precio</th>
+                	<th>Calificaci&oacute;n</th>
+            	</tr>
+			</thead>
+			<tbody>
+            	<c:forEach items="${itemCommerce}" var="commerce">
+                <tr>
+                	<td class="text-capitalize">${commerce.commerce.name}</td>
+                    <td>${commerce.commerce.distance} KMs</td>
+                    <td>${commerce.stock}</td>
+                    <td>${commerce.price}</td>
+                    <td>${commerce.commerce.averageRanking}</td>
+                    <td><a href="${pageContext.request.contextPath}/rate/${commerce.commerce.commerce_id}/${commerce.commerce.name}" class="btn btn-info" role="button">Calificar</a></td>
+                </tr>
+            	</c:forEach>
+            </tbody>
+        </table>
     </div>
     <div class="row">
         <div class="col">
@@ -91,7 +93,7 @@
 
 </div>
 
-    
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -159,7 +161,6 @@
             })(marker, i));
         }
 
-
         // Geolocalizacion
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
@@ -212,8 +213,8 @@
             }]
         });
     });
-        
-	
+
+
     </script>
 </body>
 </html>

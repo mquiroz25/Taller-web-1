@@ -1,13 +1,10 @@
 package ar.edu.unlam.tallerweb1.modelo;
 
-
-import java.util.List;
-
 public class Message {
     private String category;
     private Double latitude;
     private Double longitude;
-    private Long distancia;
+    private Long distance;
     private Long idItem;
 
     public Long getIdItem() {
@@ -18,15 +15,15 @@ public class Message {
         this.idItem = idItem;
     }
 
-    public Long getDistancia() {
-        return distancia;
+    public Long getDistance() {
+        return distance;
     }
 
-    public void setDistancia(Long distancia) {
-        if (distancia == null) {
-            distancia = new Long(0);
+    public void setDistance(Long distance) {
+        if (distance == null) {
+            distance = new Long(0);
         }
-        this.distancia = distancia;
+        this.distance = distance;
     }
 
     public String getCategory() {

@@ -5,12 +5,9 @@ import ar.edu.unlam.tallerweb1.modelo.Commerce;
 import ar.edu.unlam.tallerweb1.modelo.Item;
 import ar.edu.unlam.tallerweb1.modelo.ItemCommerce;
 import ar.edu.unlam.tallerweb1.modelo.Message;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.inject.Inject;
-
 import java.util.*;
 
 @Service("ItemService")
@@ -25,7 +22,7 @@ public class ItemServiceImpl implements ItemService{
 
 	@Override
 	public List<ItemCommerce> searchItems(Message message){
-		List<Commerce> commercesToKeep = commerceService.getCommercesByDistance(message.getDistancia(), message.getLatitude(), message.getLongitude());
+		List<Commerce> commercesToKeep = commerceService.getCommercesByDistance(message.getDistance(), message.getLatitude(), message.getLongitude());
 		List<ItemCommerce> itemCommerceList = new ArrayList<>();
 
 		if (!commercesToKeep.isEmpty()){
@@ -41,7 +38,7 @@ public class ItemServiceImpl implements ItemService{
 		for (ItemCommerce itemCommerce: itemCommercesToFilter) {
 		   Commerce commerce = itemCommerce.getCommerce();
 
-		   if (message.getDistancia() < calculateDistanceBetweenCommerceAndUser(message.getLatitude(), message.getLongitude(), commerce.getLatitude(), commerce.getLongitude())){
+		   if (message.getDistance() < calculateDistanceBetweenCommerceAndUser(message.getLatitude(), message.getLongitude(), commerce.getLatitude(), commerce.getLongitude())){
 		   		itemsFiltered.add(itemCommerce.getItem());
 		   }
 	   }
@@ -58,13 +55,12 @@ public class ItemServiceImpl implements ItemService{
    }
 
    @Override
-   public void crearItems() {
-	   itemDao.crearItems();
+   public void createItems() {
+	   itemDao.createItems();
    }
 
    @Override
    public Item searchItemById(Long id){
 		return itemDao.getItemById(id);
    }
-
 }
