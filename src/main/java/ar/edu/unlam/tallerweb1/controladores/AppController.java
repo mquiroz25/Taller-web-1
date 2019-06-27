@@ -145,10 +145,17 @@ public class AppController {
         return new ModelAndView("redirect:/home");   
     }
 
-    @ResponseBody
-    @RequestMapping(path ="/noStock", method = RequestMethod.POST, produces = "application/json")
-    public boolean noStock(Long idCommerce, Long idItem) {
+
+    @RequestMapping(path ="/noStock", method = RequestMethod.GET, produces = "application/json")
+    public ModelAndView noStock(@RequestParam Long idCommerce, @RequestParam Long idItem) {
         boolean param = itemCommerceService.notifyNoStock(idCommerce, idItem);
-        return param;
+        ModelMap model = new ModelMap();
+        if(!param){
+            model.put("error", "Hubo un error al notificar stock, vuelva a intentar más tarde");
+            return new ModelAndView("error", model);
+        }else{
+            return new ModelAndView("redirect:/home");
+        }
     }
+
 }
