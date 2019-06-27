@@ -38,6 +38,7 @@
                                 <th>Precio</th>
                                 <th>Calificaci&oacute;n</th>
                                 <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,6 +50,7 @@
                                     <td>${commerce.price}</td>
                                     <td>${commerce.commerce.averageRanking}</td>
                                     <td><a href="${pageContext.request.contextPath}/rate/${commerce.commerce.commerce_id}/${commerce.commerce.name}" class="btn btn-info" role="button">Calificar</a></td>
+                                    <td><a href="${pageContext.request.contextPath}/noStock?idCommerce=${commerce.commerce.commerce_id}&idItem=${commerce.item.id}" class="btn btn-info" role="button">Notificar falta stock</a></td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -96,8 +98,9 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
                 integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
                 crossorigin="anonymous"></script>
-        <script src="http://maps.google.com/maps/api/js?key=AIzaSyCiIDP3P5IqtJ4LQGy2--zrhbtCsXJGpjI&sensor=false"
-                type="text/javascript"></script>
+        <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCiIDP3P5IqtJ4LQGy2--zrhbtCsXJGpjI">
+    </script>
         <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/sorting/natural.js"></script>
         <script type="text/javascript">
@@ -108,8 +111,10 @@
                         key: ${item.id},
                         longitude: ${item.commerce.longitude},
                         latitude: ${item.commerce.latitude},
+                        commerceName: "${item.commerce.name}",
                         stock: ${item.stock},
                         price: ${item.price},
+                        ranking: ${item.commerce.averageRanking}
                     });
                 </c:forEach>
 
@@ -119,17 +124,16 @@
 
                     return 0;
                 });
-
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 10,
-                    center: new google.maps.LatLng(-34.7504785, -58.5846362),
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                });
-
-                var infowindow = new google.maps.InfoWindow();
-
-                var marker, i;
-
+				
+                var map;
+                function initMap() {
+                  map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: -34.7504785, lng: -58.5846362},
+                    zoom: 10
+                  });
+                }
+                initMap();
+                
                 for (i = 0; i < items.length; i++) {
                     var pinColor = "FE7569"; /// rojo
 
@@ -142,17 +146,22 @@
                         new google.maps.Point(0,0),
                         new google.maps.Point(10, 34));
 
-                    marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(items[i]["latitude"], items[i]["longitude"]),
+                    var marker = new google.maps.Marker({
+                        position: {lat: items[i]["latitude"], lng: items[i]["longitude"]},
                         map: map,
-                        icon: pinImage
+                        icon: pinImage,
+                        title: items[i]["commerceName"],
+                        stock: items[i]["stock"],
+                        price: items[i]["price"]
                     });
-
-                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
-                        return function () {
-                            infowindow.setContent(locations[i]["name"]);
-                            infowindow.open(map, marker);
-                        }
+                                        
+                    var infowindow = new google.maps.InfoWindow();
+                    
+                    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                    	return function() {
+                    		infowindow.setContent(marker.title +" Stock: "+ marker.stock + " Precio: $" + marker.price);
+                    		infowindow.open(map, marker);
+                    	}
                     })(marker, i));
                 }
 
@@ -206,12 +215,13 @@
                         "type": "natural",
                         "targets": 1
                     }, {
-                        "targets": 5,
+                        "targets": [5, 6],
                         "orderable": false,
                         "searchable": false
                     }]
                 });
             });
+
         </script>
     </body>
 </html>
