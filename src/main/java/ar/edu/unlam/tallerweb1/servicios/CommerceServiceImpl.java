@@ -1,6 +1,6 @@
 package ar.edu.unlam.tallerweb1.servicios;
 
-import ar.edu.unlam.tallerweb1.dao.CommercesDao;
+import ar.edu.unlam.tallerweb1.dao.CommerceDao;
 import ar.edu.unlam.tallerweb1.modelo.Commerce;
 import ar.edu.unlam.tallerweb1.modelo.Ranking;
 
@@ -15,7 +15,7 @@ import java.util.List;
 @Transactional
 public class CommerceServiceImpl implements CommerceService {
     @Inject
-    private CommercesDao commerceDao;
+    private CommerceDao commerceDao;
 
     public List<Commerce> getCommercesByDistance(Long distance, Double userLat, Double userLon){
         List<Commerce> commerceList = commerceDao.getCommerces();

@@ -187,7 +187,7 @@
                         "decimal": ",",
                         "thousands": ".",
                         "emptyTable": "Sin datos",
-                        "search": "Buscar:",
+                        "search": "Filtrar:",
                         "paginate": {
                             "previous": "Anterior",
                             "next": "Siguiente",
@@ -205,15 +205,11 @@
                     }, {
                         "type": "natural",
                         "targets": 1
-                    }],
-                    "aoColumns": [
-                        { "bSortable": true },
-                        { "bSortable": true },
-                        { "bSortable": true },
-                        { "bSortable": true },
-                        { "bSortable": true },
-                        { "bSortable": false }
-                    ]
+                    }, {
+                        "targets": 5,
+                        "orderable": false,
+                        "searchable": false
+                    }]
                 });
             });
         </script>
