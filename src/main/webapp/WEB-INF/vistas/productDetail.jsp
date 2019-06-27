@@ -150,13 +150,15 @@
                     marker = new google.maps.Marker({
                         position: new google.maps.LatLng(items[i]["latitude"], items[i]["longitude"]),
                         map: map,
-                        icon: pinImage
+                        icon: pinImage,
+                        title: items[i]["commerceName"],
+                        stock: items[i]["stock"],
+                        price: items[i]["price"]
                     });
-
-                    marker.addListener('click', (function () {
-                            infowindow.setContent(items[i]["commerceName"] + " stock:" + items[i]["stock"] + " price: " + items[i]["price"] );
-                            infowindow.open(map, marker);
-                    }));
+                    marker.addListener('click', function() {
+                        infowindow.setContent(marker.title +" Stock: "+ marker.stock + " Precio: $" + marker.price);
+                        infowindow.open(map, marker);
+                    });
                 }
 
                 // Geolocalizacion
