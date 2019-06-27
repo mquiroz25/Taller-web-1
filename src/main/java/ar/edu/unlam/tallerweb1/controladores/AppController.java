@@ -1,5 +1,6 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
+import ar.edu.unlam.tallerweb1.dao.ItemCommerceDao;
 import ar.edu.unlam.tallerweb1.modelo.Commerce;
 import ar.edu.unlam.tallerweb1.modelo.Item;
 import ar.edu.unlam.tallerweb1.modelo.ItemCommerce;
@@ -7,15 +8,13 @@ import ar.edu.unlam.tallerweb1.modelo.ItemCommerceTransporter;
 import ar.edu.unlam.tallerweb1.modelo.Message;
 import ar.edu.unlam.tallerweb1.modelo.Ranking;
 import ar.edu.unlam.tallerweb1.servicios.CommerceService;
+import ar.edu.unlam.tallerweb1.servicios.ItemCommerceService;
 import ar.edu.unlam.tallerweb1.servicios.ItemService;
 import ar.edu.unlam.tallerweb1.servicios.RankingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import javax.inject.Inject;
@@ -31,6 +30,8 @@ public class AppController {
     private CommerceService commerceService;
     @Inject
     private RankingService rankingService;
+    @Inject
+    private ItemCommerceService itemCommerceService;
     
     @RequestMapping("/home")
     public ModelAndView home() {
@@ -142,5 +143,12 @@ public class AppController {
         commerce.setAverageRanking(rankingList);
 
         return new ModelAndView("redirect:/home");   
+    }
+
+    @ResponseBody
+    @RequestMapping(path ="/noStock", method = RequestMethod.POST, produces = "application/json")
+    public boolean noStock(Long idCommerce, Long idItem) {
+        boolean param = itemCommerceService.notifyNoStock(idCommerce, idItem);
+        return param;
     }
 }

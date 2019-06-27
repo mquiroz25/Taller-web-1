@@ -38,6 +38,7 @@
                                 <th>Precio</th>
                                 <th>Calificaci&oacute;n</th>
                                 <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,6 +50,7 @@
                                     <td>${commerce.price}</td>
                                     <td>${commerce.commerce.averageRanking}</td>
                                     <td><a href="${pageContext.request.contextPath}/rate/${commerce.commerce.commerce_id}/${commerce.commerce.name}" class="btn btn-info" role="button">Calificar</a></td>
+                                    <td><a class="btn btn-info" role="button" onclick="notifyNoStock(${commerce.commerce.commerce_id}, ${commerce.item.id})">Notificar falta stock</a></td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -213,6 +215,24 @@
                     }]
                 });
             });
+
+            var proyecto="${url}";
+            function notifyNoStock(commerceId, itemId){
+                $.ajax({
+                    type: 'POST',
+                    contentType : "application/json; charset=utf-8",
+                    url: proyecto+'/proyecto_limpio_spring_war/noStock',
+                    datatype: 'json',
+                    data: {commerceId: commerceId, itemId: itemId},
+                    success: function (data) {
+                        if(data==null){
+                            alert("Hubo un error, intente más tarde.");
+                        }else{
+                            window.location.href = proyecto;
+                        }
+                    }
+                });
+            }
         </script>
     </body>
 </html>
