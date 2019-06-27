@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import java.util.List;
 
 @Repository("CommerceDao")
-public class CommercesDaoImpl implements CommercesDao {
+public class CommerceDaoImpl implements CommerceDao {
     @Inject
     private SessionFactory sessionFactory;
 

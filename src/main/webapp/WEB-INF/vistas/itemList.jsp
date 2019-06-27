@@ -15,8 +15,8 @@
 <div class="container">
     <br>
     <c:choose>
-    <c:when test="${empty items}">
-    <h4><span>No hay resultados</span></h4>
+    <c:when test="${items.isEmpty()}">
+        <h4><span>No hay resultados</span></h4>
     </c:when>
     <c:otherwise>
 

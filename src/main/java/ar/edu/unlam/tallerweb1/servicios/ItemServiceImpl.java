@@ -5,12 +5,9 @@ import ar.edu.unlam.tallerweb1.modelo.Commerce;
 import ar.edu.unlam.tallerweb1.modelo.Item;
 import ar.edu.unlam.tallerweb1.modelo.ItemCommerce;
 import ar.edu.unlam.tallerweb1.modelo.Message;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.inject.Inject;
-
 import java.util.*;
 
 @Service("ItemService")
@@ -26,7 +23,11 @@ public class ItemServiceImpl implements ItemService{
 	@Override
 	public List<ItemCommerce> searchItems(Message message){
 		List<Commerce> commercesToKeep = commerceService.getCommercesByDistance(message.getDistance(), message.getLatitude(), message.getLongitude());
-		List<ItemCommerce> itemCommerceList = itemDao.getItemCommerceByCategoryOrBrand(message.getCategory(), commercesToKeep);
+		List<ItemCommerce> itemCommerceList = new ArrayList<>();
+
+		if (!commercesToKeep.isEmpty()){
+			itemCommerceList = itemDao.getItemCommerceByCategoryOrBrand(message.getCategory(), commercesToKeep);
+		}
 
    		return itemCommerceList;
    }
