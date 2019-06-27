@@ -108,8 +108,10 @@
                         key: ${item.id},
                         longitude: ${item.commerce.longitude},
                         latitude: ${item.commerce.latitude},
+                        commerceName: "${item.commerce.name}",
                         stock: ${item.stock},
                         price: ${item.price},
+                        ranking: ${item.commerce.averageRanking}
                     });
                 </c:forEach>
 
@@ -119,6 +121,7 @@
 
                     return 0;
                 });
+
 
                 var map = new google.maps.Map(document.getElementById('map'), {
                     zoom: 10,
@@ -148,12 +151,10 @@
                         icon: pinImage
                     });
 
-                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
-                        return function () {
-                            infowindow.setContent(locations[i]["name"]);
+                    marker.addListener('click', (function () {
+                            infowindow.setContent(items[i]["commerceName"] + " stock:" + items[i]["stock"] + " price: " + items[i]["price"] );
                             infowindow.open(map, marker);
-                        }
-                    })(marker, i));
+                    }));
                 }
 
                 // Geolocalizacion
