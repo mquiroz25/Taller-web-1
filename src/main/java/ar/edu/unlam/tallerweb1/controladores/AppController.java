@@ -1,10 +1,9 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
-import ar.edu.unlam.tallerweb1.dao.ItemCommerceDao;
+
 import ar.edu.unlam.tallerweb1.modelo.Commerce;
 import ar.edu.unlam.tallerweb1.modelo.Item;
 import ar.edu.unlam.tallerweb1.modelo.ItemCommerce;
-import ar.edu.unlam.tallerweb1.modelo.ItemCommerceTransporter;
 import ar.edu.unlam.tallerweb1.modelo.Message;
 import ar.edu.unlam.tallerweb1.modelo.Ranking;
 import ar.edu.unlam.tallerweb1.servicios.CommerceService;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import com.google.gson.Gson;
 import javax.inject.Inject;
 import java.util.*;
 
@@ -32,6 +30,14 @@ public class AppController {
     private RankingService rankingService;
     @Inject
     private ItemCommerceService itemCommerceService;
+    
+
+    @RequestMapping(path = "/loadProducts", method = RequestMethod.GET)
+    public ModelAndView loadProducts() {
+        itemService.createItems();
+        return new ModelAndView("redirect:/home");
+    }
+    
     
     @RequestMapping("/home")
     public ModelAndView home() {
@@ -51,69 +57,42 @@ public class AppController {
         
         List<ItemCommerce> itemCommerces = itemService.searchItems(message);
         
-        Message messageForm = new Message();
-        model.put("message", messageForm);
-
+        	model.put("m", message);
+  
         List <Item> items = new ArrayList<>();
         for (ItemCommerce var : itemCommerces) {
             if (!items.contains(var.getItem())) {
                 items.add(var.getItem());
             }
         }
-        
-        ItemCommerceTransporter.setItemsCommerces(itemCommerces);
            
         model.put("items", items);
 
         return new ModelAndView("itemList", model);
     }
 
-    
-    @RequestMapping(path = "/procesar", method = RequestMethod.POST)
-    public ModelAndView procesar (@ModelAttribute("message") Message message) {
-    	
+    @RequestMapping(path = "/productDetail", method = RequestMethod.GET)
+    public ModelAndView productDetail(@RequestParam Long idItem,@RequestParam String category,@RequestParam Double latitude,@RequestParam Double longitude,@RequestParam Long distance) {
         ModelMap model = new ModelMap();
-        model.put("message", message);
-
-        return new ModelAndView("vista", model);
-    }
-
-    
-    // Escucha la url /, y redirige a la URL /login, es lo mismo que si se invoca la url /login directamente.
-    @RequestMapping(path = "/", method = RequestMethod.GET)
-    public ModelAndView index() {
-        return new ModelAndView("redirect:/home");
-    }
-
-    @RequestMapping(path = "/loadProducts", method = RequestMethod.GET)
-    public ModelAndView loadProducts() {
-        itemService.createItems();
-        return new ModelAndView("redirect:/home");
-    }
-
-    @RequestMapping(path = "/productDetail", method = RequestMethod.POST)
-    public ModelAndView productDetail(@ModelAttribute("message") Message message) {
-        ModelMap model = new ModelMap();
-        Item item = itemService.searchItemById(message.getIdItem());
+        Item item = itemService.searchItemById(idItem);
         model.put("item", item);
 
-        List<ItemCommerce> listItemCommerce = ItemCommerceTransporter.getItemsCommerces();
-        List<Commerce> CommerceList = new ArrayList<>();
+        Message message = new Message();
+        message.setCategory(category);
+        message.setLatitude(latitude);
+        message.setLongitude(longitude);
+        message.setDistance(distance);
+
+        List<ItemCommerce> listItemCommerce = itemService.searchItems(message);
         List<ItemCommerce> list = new ArrayList<>();
         
         for (ItemCommerce itemCommerce : listItemCommerce) {
-            if (itemCommerce.getItem().getId().equals(message.getIdItem())) {
+            if (itemCommerce.getItem().getId().equals(idItem)) {
                 list.add(itemCommerce);
-                CommerceList.add(new Commerce(itemCommerce.getCommerce().getName(), itemCommerce.getCommerce().getLatitude(), itemCommerce.getCommerce().getLongitude()));
             }
         }
 
-		// Convierto la lista en una cadena json
-		Gson gson = new Gson();
-		String jsonString = gson.toJson(CommerceList);
-
         model.put("itemCommerce", list); 
-        model.put("jsonString", jsonString);
 
         return new ModelAndView("productDetail", model);
     }
@@ -169,4 +148,12 @@ public class AppController {
         }
     }
 
+    
+    // Escucha la url /, y redirige a la URL /login, es lo mismo que si se invoca la url /login directamente.
+    @RequestMapping(path = "/", method = RequestMethod.GET)
+    public ModelAndView index() {
+        return new ModelAndView("redirect:/home");
+    }
+    
+    
 }

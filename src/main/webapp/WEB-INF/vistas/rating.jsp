@@ -30,7 +30,7 @@
 
 <div class="container">
     <br/>
-    <label for="input-1" class="control-label">Atenci�n</label>
+    <label for="input-1" class="control-label">Atencion</label>
     <input id="input-1" name="prices" class="rating rating-loading" value="0" data-min="0" data-max="5" data-step="1" data-size="xs" required>
 
     <br/>

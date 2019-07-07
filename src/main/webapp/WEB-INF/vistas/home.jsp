@@ -20,7 +20,7 @@
 
 		<h3>Taller Web I</h3><br>
 		<a href="${pageContext.request.contextPath}/loadProducts" class="btn btn-secondary">Cargar datos en db</a><br>
-        <form:form action="procesar" method="POST" modelAttribute="message">
+        <form:form action="search" method="POST" modelAttribute="message">
         	<div class="form-group row">
         		<label for="category" class="col-sm-2 col-form-label">Categoria o Marca: </label>
     			<div class="col-sm-8">
