@@ -165,28 +165,16 @@
                     })(marker, i));
                 }
 
-                // Geolocalizacion
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function (position) {
-                        var pos = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        };
 
+                var myLatlng = new google.maps.LatLng("${latitude}","${longitude}");
+                
                         var miUbicacion = new google.maps.Marker({
-                            position: pos,
+                            position: myLatlng,
                             map: map,
                             title: 'Mi ubicacion',
                             icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|2B17FF'
                         });
 
-                    }, function () {
-                        handleLocationError(true, infoWindow, map.getCenter());
-                    });
-                } else {
-                    // Browser doesn't support Geolocation
-                    handleLocationError(false, infoWindow, map.getCenter());
-                }
 
                 $('#tableCommerces').DataTable({
                     "searching": true,

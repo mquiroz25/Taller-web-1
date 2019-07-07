@@ -38,21 +38,22 @@
     				<form:input path="distance" id="distance" type="text" class="form-control"/>
     			</div>
 			</div>
-	
-			
-	<div class="form-group">		
-<div class="radio">
-  <label><input type="radio"  name="ratio" value="geolocation"required>Mi ubicacion</label>
-</div>
-<div class="radio">
-  <label><input type="radio" name ="ratio" value="address" required>Direccion</label>
-</div>
-</div>
-	
+
+			<div class="form-check-inline">
+ 		 <label class="form-check-label">
+   		 <input type="radio" class="form-check-input" name="optradio" value="geolocation" required>Mi ubicacion
+  		</label>
+		</div>
+		<div class="form-check-inline">
+ 		 <label class="form-check-label">
+   		 <input type="radio" class="form-check-input" name="optradio" value="address" required>Direccion
+  		</label>
+		</div>
+
   			<div class="form-group row" style="display:none" id="addressDiv">
-	  			<label for="address" class="col-sm-2 col-form-label">Direccion: </label>
+	  			<label for="address" class="col-sm-2 col-form-label" >Direccion: </label>
     			<div class="col-sm-8">
-    		    <input id="address" type="text" size="50" placeholder="Ingrese una direccion" autocomplete="on"  />  
+    		    <input id="address" type="text" size="50" placeholder="Ingrese una direccion" autocomplete="on"  class="form-control"/>  
     			</div>
 			</div>
 	

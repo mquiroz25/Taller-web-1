@@ -82,7 +82,10 @@ public class AppController {
         message.setLatitude(latitude);
         message.setLongitude(longitude);
         message.setDistance(distance);
-
+        
+        model.put("latitude", latitude);
+        model.put("longitude", longitude);
+        
         List<ItemCommerce> listItemCommerce = itemService.searchItems(message);
         List<ItemCommerce> list = new ArrayList<>();
         
