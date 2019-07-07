@@ -68,6 +68,17 @@ public class AppController {
         return new ModelAndView("itemList", model);
     }
 
+    
+    @RequestMapping(path = "/procesar", method = RequestMethod.POST)
+    public ModelAndView procesar (@ModelAttribute("message") Message message) {
+    	
+        ModelMap model = new ModelMap();
+        model.put("message", message);
+
+        return new ModelAndView("vista", model);
+    }
+
+    
     // Escucha la url /, y redirige a la URL /login, es lo mismo que si se invoca la url /login directamente.
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ModelAndView index() {
