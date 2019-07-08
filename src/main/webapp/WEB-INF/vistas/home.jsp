@@ -13,13 +13,31 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCiIDP3P5IqtJ4LQGy2--zrhbtCsXJGpjI&libraries=places"></script>
+	        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" />
 </head>
 <body>
-<br>
 <div class="container">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark mb-3">
+  <!-- Brand/logo -->
+  <a class="navbar-brand" href="#">
+    <img src="http://www.fm891.com.ar/wp-content/uploads/2018/04/logo_unlam.png" alt="logo" style="width:50px;">
+  </a>
+  
+  <!-- Links -->
+  	<ul class="navbar-nav">
+    <li class="nav-item">
+      		<a class="nav-link" href="${pageContext.request.contextPath}/loadProducts">Cargar datos en db</a>
+    </li>
+ 	 </ul>
+	</nav>
 
-		<h3>Taller Web I</h3><br>
-		<a href="${pageContext.request.contextPath}/loadProducts" class="btn btn-secondary">Cargar datos en db</a><br>
+	<div class="jumbotron">
+  <div class="container">
+    <h1 class="display-4">Taller Web I</h1>
+    <p class="lead">Busqueda de productos en comercios cercanos</p>
+  </div>
+</div>
+
         <form:form action="search" method="POST" modelAttribute="message">
         	<div class="form-group row">
         		<label for="category" class="col-sm-2 col-form-label">Categoria o Marca: </label>
@@ -62,6 +80,37 @@
 	  				<p id="info"></p>
 			</div>
 		</form:form>
+		
+					<div class="card-deck mb-3">
+			  <div class="card">
+			    <img class="card-img-top mx-auto m-2" src="${pageContext.request.contextPath}/images/comercio.png" alt="Card image cap">
+			    <div class="card-body">
+			      <h5 class="card-title text-center">Comercios</h5>
+			      <p class="card-text"></p>
+			    </div>
+			  </div>
+			  <div class="card">
+			    <img class="card-img-top mx-auto m-2" src="${pageContext.request.contextPath}/images/producto.png" alt="Card image cap">
+			    <div class="card-body">
+			      <h5 class="card-title text-center">Productos</h5>
+			      <p class="card-text"></p>
+			    </div>
+			  </div>
+			  <div class="card">
+			    <img class="card-img-top mx-auto m-2" src="${pageContext.request.contextPath}/images/googleMaps.png" alt="Card image cap">
+			    <div class="card-body">
+			      <h5 class="card-title text-center">Google Maps</h5>
+			      <p class="card-text"></p>
+			    </div>
+			  </div>
+			   <div class="card">
+			    <img class="card-img-top mx-auto m-2" src="${pageContext.request.contextPath}/images/puntuacion.png" alt="Card image cap">
+			    <div class="card-body ">
+			      <h5 class="card-title text-center">Sistema de puntuacion</h5>
+			      <p class="card-text"></p>
+			    </div>
+			  </div>
+			</div>
 		
 </div>
 <script>
