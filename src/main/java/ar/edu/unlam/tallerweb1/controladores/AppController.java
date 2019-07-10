@@ -30,9 +30,18 @@ public class AppController {
     private RankingService rankingService;
     @Inject
     private ItemCommerceService itemCommerceService;
-    
 
-    @RequestMapping(path = "/loadProducts", method = RequestMethod.GET)
+
+    public void setCommerceService(CommerceService commerceService) {
+		this.commerceService = commerceService;
+	}
+
+	public void setRankingService(RankingService rankingService) {
+		this.rankingService = rankingService;
+	}
+
+
+	@RequestMapping(path = "/loadProducts", method = RequestMethod.GET)
     public ModelAndView loadProducts() {
         itemService.createItems();
         return new ModelAndView("redirect:/home");
@@ -115,7 +124,10 @@ public class AppController {
     }
 
     @RequestMapping(path ="/processRating", method = RequestMethod.GET)
-    public ModelAndView process(Long id, Double attention, Double speed, Double prices, String review) {
+    public ModelAndView process(Long id, Double attention, Double speed, Double prices, String review) {	
+    	
+    	ModelMap model = new ModelMap();
+    	
         Double averageForCriteria = rankingService.getAverageForCriteria(attention, speed, prices);
         
         //guardo la calificacion obtenida en un objeto ranking
@@ -126,16 +138,22 @@ public class AppController {
         //obtengo el comercio con el id
         Commerce commerce = commerceService.getCommerceById(id);
         
-        //seteo el ranking al comercio
-        ranking.setCommerce(commerce);
-        
-        rankingService.saveRanking(ranking);
-  
-        //obtengo la lista de ranking por id delcomercio
-        List<Ranking> rankingList = rankingService.getRankingByIdCommerce(id);
-        commerce.setAverageRanking(rankingList);
+        	if(commerce!=null) { 	
+            //seteo el ranking al comercio
+            ranking.setCommerce(commerce);
+            rankingService.saveRanking(ranking);
+      
+            //obtengo la lista de ranking por id delcomercio
+            List<Ranking> rankingList = rankingService.getRankingByIdCommerce(id);
+            commerce.setAverageRanking(rankingList);
 
-        return new ModelAndView("redirect:/home");   
+            return new ModelAndView("redirect:/home");  
+        }
+    
+        else {
+        	model.put("error", "no existe comercio con ese id");
+            return new ModelAndView("error", model);
+        }
     }
 
 
