@@ -39,6 +39,7 @@
                                 <th>Calificaci&oacute;n</th>
                                 <th></th>
                                 <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,6 +52,7 @@
                                     <td>${commerce.commerce.averageRanking}</td>
                                     <td><a href="${pageContext.request.contextPath}/rate/${commerce.commerce.commerce_id}/${commerce.commerce.name}" class="btn btn-info" role="button">Calificar</a></td>
                                     <td><a href="${pageContext.request.contextPath}/noStock?idCommerce=${commerce.commerce.commerce_id}&idItem=${commerce.item.id}" class="btn btn-info" role="button">Notificar falta stock</a></td>
+                                    <td><a href="${pageContext.request.contextPath}/reserve?idCommerce=${commerce.commerce.commerce_id}&idItem=${commerce.item.id}&latitude=${latitude}&longitude=${longitude}" class="btn btn-info" role="button">Reservar</a></td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -98,7 +100,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
                 integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
                 crossorigin="anonymous"></script>
-        <script async defer
+        <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCiIDP3P5IqtJ4LQGy2--zrhbtCsXJGpjI">
     </script>
         <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
@@ -165,28 +167,16 @@
                     })(marker, i));
                 }
 
-                // Geolocalizacion
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function (position) {
-                        var pos = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        };
 
+                var myLatlng = new google.maps.LatLng("${latitude}","${longitude}");
+                
                         var miUbicacion = new google.maps.Marker({
-                            position: pos,
+                            position: myLatlng,
                             map: map,
                             title: 'Mi ubicacion',
                             icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|2B17FF'
                         });
 
-                    }, function () {
-                        handleLocationError(true, infoWindow, map.getCenter());
-                    });
-                } else {
-                    // Browser doesn't support Geolocation
-                    handleLocationError(false, infoWindow, map.getCenter());
-                }
 
                 $('#tableCommerces').DataTable({
                     "searching": true,
@@ -215,7 +205,7 @@
                         "type": "natural",
                         "targets": 1
                     }, {
-                        "targets": [5, 6],
+                        "targets": [5, 6, 7],
                         "orderable": false,
                         "searchable": false
                     }]

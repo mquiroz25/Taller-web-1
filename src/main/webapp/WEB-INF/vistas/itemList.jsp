@@ -32,8 +32,12 @@
                 <tr>
                     <td><img src="${item.urlImage}" width="50"></td>
                     <td>${item.brand} </td>
-                    <td><form:form action="productDetail" method="POST" modelAttribute="message">
-                        <form:input path="idItem" id="idItem" value="${item.id}" type="hidden"/>
+                    <td><form:form action="productDetail" method="GET">
+                        <input id="idItem"  name="idItem"value="${item.id}" type="hidden"/>
+                       <input id="latitude"  name="latitude"value="${m.latitude}" type="hidden"/>
+                        <input id="longitude"  name="longitude"value="${m.longitude}" type="hidden"/>
+                        <input id="distance"  name="distance"value="${m.distance}" type="hidden"/>
+                        <input id="distance"  name="category"value="${m.category}" type="hidden"/>
                         <input type="submit" value="Ver detalles" class="btn btn-primary"/>
                     </form:form></td>
 
