@@ -39,6 +39,7 @@
                                 <th>Calificaci&oacute;n</th>
                                 <th></th>
                                 <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,6 +52,7 @@
                                     <td>${commerce.commerce.averageRanking}</td>
                                     <td><a href="${pageContext.request.contextPath}/rate/${commerce.commerce.commerce_id}/${commerce.commerce.name}" class="btn btn-info" role="button">Calificar</a></td>
                                     <td><a href="${pageContext.request.contextPath}/noStock?idCommerce=${commerce.commerce.commerce_id}&idItem=${commerce.item.id}" class="btn btn-info" role="button">Notificar falta stock</a></td>
+                                    <td><a href="${pageContext.request.contextPath}/reserve?idCommerce=${commerce.commerce.commerce_id}&idItem=${commerce.item.id}&latitude=${latitude}&longitude=${longitude}" class="btn btn-info" role="button">Reservar</a></td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -203,7 +205,7 @@
                         "type": "natural",
                         "targets": 1
                     }, {
-                        "targets": [5, 6],
+                        "targets": [5, 6, 7],
                         "orderable": false,
                         "searchable": false
                     }]

@@ -6,10 +6,13 @@ import ar.edu.unlam.tallerweb1.modelo.Item;
 import ar.edu.unlam.tallerweb1.modelo.ItemCommerce;
 import ar.edu.unlam.tallerweb1.modelo.Message;
 import ar.edu.unlam.tallerweb1.modelo.Ranking;
+import ar.edu.unlam.tallerweb1.modelo.Reserve;
 import ar.edu.unlam.tallerweb1.servicios.CommerceService;
 import ar.edu.unlam.tallerweb1.servicios.ItemCommerceService;
 import ar.edu.unlam.tallerweb1.servicios.ItemService;
 import ar.edu.unlam.tallerweb1.servicios.RankingService;
+import ar.edu.unlam.tallerweb1.servicios.ReserveService;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
@@ -30,6 +33,8 @@ public class AppController {
     private RankingService rankingService;
     @Inject
     private ItemCommerceService itemCommerceService;
+    @Inject
+    private ReserveService reserveService;
 
 
     public void setCommerceService(CommerceService commerceService) {
@@ -168,7 +173,43 @@ public class AppController {
             return new ModelAndView("redirect:/home");
         }
     }
+    
+    
+    @RequestMapping(path ="/reserve", method = RequestMethod.GET, produces = "application/json")
+    public ModelAndView reserve(@RequestParam Long idCommerce, @RequestParam Long idItem, @RequestParam Double latitude, @RequestParam Double longitude) {
+        Integer stock = itemCommerceService.checkStock(idCommerce, idItem);
+        ModelMap model = new ModelMap();
+        if(stock <= 0) {
+            model.put("error", "El item seleccionado no cuenta con stock disponible");
+            return new ModelAndView("error", model);
+        } else {
+            Reserve reserve = new Reserve();
+            model.put("reserve", reserve);
+        	ItemCommerce itemCommerce = itemCommerceService.getItemCommerceById(idCommerce, idItem);
+        	model.put("itemCommerce", itemCommerce);
+        	model.put("latitude", latitude);
+        	model.put("longitude", longitude);
+            return new ModelAndView("reserve", model);
+        }
+    }
 
+    @RequestMapping(path = "/save-reserve", method = RequestMethod.POST)
+    public ModelAndView saveReserve(@ModelAttribute("reserve") Reserve reserve) {
+    	Integer stock = itemCommerceService.checkStock(reserve.getCommerceId(), reserve.getItemId());
+    	ModelMap model = new ModelMap();
+    	if(stock - reserve.getAmount() < 0) {
+            model.put("error", "No es posible reservar la cantidad ingresada");
+            return new ModelAndView("error", model);
+        } else {
+        	itemCommerceService.deductStock(reserve.getCommerceId(), reserve.getItemId(), reserve.getAmount());
+        	reserve.setItem(itemService.searchItemById(reserve.getItemId()));
+        	reserve.setCommerce(commerceService.getCommerceById(reserve.getCommerceId()));
+        	reserveService.saveReserve(reserve);
+        	String message = String.format("Se ha reservado el producto %s por una cantidad de %d en el comercio %s", reserve.getItem().getDescription(), reserve.getAmount(), reserve.getCommerce().getName());
+        	model.put("success", message);
+        	return new ModelAndView("success", model);
+        }
+    }
     
     // Escucha la url /, y redirige a la URL /login, es lo mismo que si se invoca la url /login directamente.
     @RequestMapping(path = "/", method = RequestMethod.GET)

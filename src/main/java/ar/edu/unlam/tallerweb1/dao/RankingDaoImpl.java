@@ -18,7 +18,8 @@ public class RankingDaoImpl implements RankingDao {
 	public List<Ranking> getRankingByIdCommerce(Long id) {
         final Session session = sessionFactory.getCurrentSession();
         
-        List<Ranking>list=session.createCriteria(Ranking.class)
+        @SuppressWarnings("unchecked")
+		List<Ranking>list=session.createCriteria(Ranking.class)
         		.createAlias("commerce", "c")
         		.add(Restrictions.eq("c.commerce_id",id))
         		.list();
