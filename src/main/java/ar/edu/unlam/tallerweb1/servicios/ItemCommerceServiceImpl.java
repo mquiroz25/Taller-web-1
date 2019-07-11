@@ -14,6 +14,11 @@ public class ItemCommerceServiceImpl implements ItemCommerceService {
     @Inject
     private ItemCommerceDao itemCommerceDao;
 
+    public void setCommerceDao(ItemCommerceDao itemCommerceDao)
+    {
+        this.itemCommerceDao = itemCommerceDao;
+    }
+
     @Override
     public boolean notifyNoStock(Long idCommerce, Long idItem){
         try{

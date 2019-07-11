@@ -40,13 +40,16 @@ public class AppController {
     public void setCommerceService(CommerceService commerceService) {
 		this.commerceService = commerceService;
 	}
-
 	public void setRankingService(RankingService rankingService) {
 		this.rankingService = rankingService;
 	}
+    public void setItemService(ItemService itemService) {
+        this.itemService = itemService;
+    }
 
 
-	@RequestMapping(path = "/loadProducts", method = RequestMethod.GET)
+
+    @RequestMapping(path = "/loadProducts", method = RequestMethod.GET)
     public ModelAndView loadProducts() {
         itemService.createItems();
         return new ModelAndView("redirect:/home");

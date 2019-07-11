@@ -15,6 +15,7 @@ public class CommerceServiceImpl implements CommerceService {
     @Inject
     private CommerceDao commerceDao;
 
+
     public List<Commerce> getCommercesByDistance(Long distance, Double userLat, Double userLon){
         List<Commerce> commerceList = commerceDao.getCommerces();
         List<Commerce> commerceToRemove = new ArrayList<>();
