@@ -2,8 +2,6 @@ package ar.edu.unlam.tallerweb1.servicios;
 
 import ar.edu.unlam.tallerweb1.dao.CommerceDao;
 import ar.edu.unlam.tallerweb1.modelo.Commerce;
-import ar.edu.unlam.tallerweb1.modelo.Ranking;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +14,7 @@ import java.util.List;
 public class CommerceServiceImpl implements CommerceService {
     @Inject
     private CommerceDao commerceDao;
+
 
     public List<Commerce> getCommercesByDistance(Long distance, Double userLat, Double userLon){
         List<Commerce> commerceList = commerceDao.getCommerces();

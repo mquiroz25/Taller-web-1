@@ -14,6 +14,11 @@ public class ItemCommerceServiceImpl implements ItemCommerceService {
     @Inject
     private ItemCommerceDao itemCommerceDao;
 
+    public void setCommerceDao(ItemCommerceDao itemCommerceDao)
+    {
+        this.itemCommerceDao = itemCommerceDao;
+    }
+
     @Override
     public boolean notifyNoStock(Long idCommerce, Long idItem){
         try{
@@ -25,4 +30,21 @@ public class ItemCommerceServiceImpl implements ItemCommerceService {
             return false;
         }
     }
+
+	@Override
+	public Integer checkStock(Long idCommerce, Long idItem) {
+        Integer stock = itemCommerceDao.getStock(idCommerce, idItem);
+        return stock;
+	}
+
+	@Override
+	public ItemCommerce getItemCommerceById(Long idCommerce, Long idItem) {
+		ItemCommerce itemCommerce = itemCommerceDao.getItemCommerceById(idCommerce, idItem);
+		return itemCommerce;
+	}
+
+	@Override
+	public void deductStock(Long idCommerce, Long idItem, Integer amount) {
+		itemCommerceDao.deductStock(idCommerce, idItem, amount);
+	}
 }

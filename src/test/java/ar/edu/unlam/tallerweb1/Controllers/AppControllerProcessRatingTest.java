@@ -2,7 +2,11 @@ package ar.edu.unlam.tallerweb1.Controllers;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import ar.edu.unlam.tallerweb1.modelo.ItemCommerce;
+import ar.edu.unlam.tallerweb1.modelo.Message;
+import ar.edu.unlam.tallerweb1.servicios.ItemService;
 import org.junit.Test;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -75,7 +79,19 @@ public class AppControllerProcessRatingTest {
 		assertThat(mav.getModel().containsKey("error"));
 		assertThat(mav.getModel().get("error")).isEqualTo("no existe comercio con ese id");
 
-	}	
+	}
+
+	@Test
+	public void testQueDeberiaTraerUnaListaDeItemCommerce(){
+		ItemService itemService = mock(ItemService.class);
+		List<ItemCommerce> itemCommerces = new ArrayList<ItemCommerce>();
+		Message message = mock(Message.class);
+		when(itemService.searchItems(message)).thenReturn(itemCommerces);
+		AppController sut = new AppController();
+		sut.setItemService(itemService);
+		ModelAndView model =  sut.search(message);
+		assertThat(model.getModel().get("items")).isEqualTo(itemCommerces);
+	}
 	
 	
 	
