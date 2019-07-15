@@ -139,7 +139,7 @@ $('input[type="radio"]').click(function(){
 				$("#info").text("Usando tu ubicación. Click en buscar");
 		    }
 		    
-		    getLocation();|
+		    getLocation();
 		});
 
 	  }

@@ -95,15 +95,8 @@ public class Commerce {
 		return averageRanking;
 	}
 
-	public void setAverageRanking(List<Ranking>rankingList) {
-		Double sum = 0.0;
-
-		for (Ranking r : rankingList)
-		{
-		    sum = sum + r.getValue();
-		}
+	public void setAverageRanking(Double averageRanking) {
+		 this.averageRanking = averageRanking;
 		
-		this.averageRanking = sum/rankingList.size();
-		this.averageRanking = Math.round(this.averageRanking * 10.0) / 10.0;
 	}
 }

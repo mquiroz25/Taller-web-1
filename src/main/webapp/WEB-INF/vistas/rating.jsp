@@ -46,7 +46,7 @@
     <label for="exampleFormControlTextarea1">Escriba un comentario</label>
     <textarea class="form-control" name="review"  id="exampleFormControlTextarea1" rows="2"required></textarea>
   </div>
-  <input type="hidden" name="id" value="${id_commerce}"><br>
+  <input type="hidden" name="id_commerce" value="${id_commerce}"><br>
   <button type="submit" class="btn btn-primary">Calificar</button>
 </form:form>
 </div>

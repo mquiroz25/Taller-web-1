@@ -121,8 +121,7 @@ public class AppController {
     public ModelAndView rate(@PathVariable Long id_commerce,@PathVariable String name_commerce ) {
         ModelMap model = new ModelMap();
 
-        //obtengo la lista de ranking por id delcomercio
-        List<Ranking> rankingListCommerce = rankingService.getRankingByIdCommerce(id_commerce);
+        List<Ranking> rankingListCommerce = rankingService.getRankingListByIdCommerce(id_commerce);
         
         model.put("rankingListCommerce", rankingListCommerce);
         model.put("id_commerce", id_commerce);    
@@ -132,36 +131,24 @@ public class AppController {
     }
 
     @RequestMapping(path ="/processRating", method = RequestMethod.GET)
-    public ModelAndView process(Long id, Double attention, Double speed, Double prices, String review) {	
+    public ModelAndView process(Long id_commerce, Double attention, Double speed, Double prices, String review) {	
     	
     	ModelMap model = new ModelMap();
-    	
-        Double averageForCriteria = rankingService.getAverageForCriteria(attention, speed, prices);
-        
-        //guardo la calificacion obtenida en un objeto ranking
-        Ranking ranking = new Ranking();
-        ranking.setValue(averageForCriteria);
-        ranking.setReview(review);
-        
-        //obtengo el comercio con el id
-        Commerce commerce = commerceService.getCommerceById(id);
-        
-        	if(commerce!=null) { 	
-            //seteo el ranking al comercio
-            ranking.setCommerce(commerce);
-            rankingService.saveRanking(ranking);
-      
-            //obtengo la lista de ranking por id delcomercio
-            List<Ranking> rankingList = rankingService.getRankingByIdCommerce(id);
-            commerce.setAverageRanking(rankingList);
+        Commerce commerce = commerceService.getCommerceById(id_commerce);
 
-            return new ModelAndView("redirect:/home");  
-        }
-    
+        	  if(commerce!=null)
+        	 { 
+        	  Ranking ranking = rankingService.getAverageForCriteriaAndSetRankingToCommerce(attention, speed, prices,review,commerce);
+        	  rankingService.saveRanking(ranking);
+               List<Ranking> rankingList = rankingService.getRankingListByIdCommerce(id_commerce);
+               commerceService.calculateAverageRankingListAndSetToCommerce(commerce, rankingList);
+
+               return new ModelAndView("redirect:/home");  
+        	 }
         else {
-        	model.put("error", "no existe comercio con ese id");
-            return new ModelAndView("error", model);
-        }
+        	   model.put("error", "no existe comercio con ese id");
+               return new ModelAndView("error", model);
+             }
     }
 
 
