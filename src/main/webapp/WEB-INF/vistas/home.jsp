@@ -146,7 +146,7 @@ $('input[type="radio"]').click(function(){
 	  else{
 		 $("#address").prop('required',true);
 		 $("#addressDiv").show();
-
+		   $("#info").hide();
 		 
 		 
 		 $( document ).ready(function() {
