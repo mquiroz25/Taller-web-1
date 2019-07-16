@@ -12,6 +12,10 @@ import java.util.List;
 
 @Repository("ItemDao")
 public class ItemDaoImpl implements ItemDao {
+	
+	@Inject 
+	CommerceDao commerceDao;
+	
     @Inject
     private SessionFactory sessionFactory;
 
@@ -68,7 +72,8 @@ public class ItemDaoImpl implements ItemDao {
 
 		List<Ranking>l1 = new ArrayList<>();
 		l1.add(r1);
-		walmart.setAverageRanking(l1);
+		commerceDao.calculateAverageRankingListAndSetToCommerce(walmart, l1);
+
 		//--------------------------------//
 		
 		Ranking r2 = new Ranking();
@@ -78,7 +83,7 @@ public class ItemDaoImpl implements ItemDao {
 		
 		List<Ranking>l2 = new ArrayList<>();
 		l2.add(r2);
-		jumbo.setAverageRanking(l2);
+		commerceDao.calculateAverageRankingListAndSetToCommerce(jumbo, l2);
 		//--------------------------------//
 		Ranking r3 = new Ranking();
 		r3.setValue(3.5);
@@ -87,7 +92,8 @@ public class ItemDaoImpl implements ItemDao {
 		
 		List<Ranking>l3 = new ArrayList<>();
 		l3.add(r3);
-		coto.setAverageRanking(l3);
+		commerceDao.calculateAverageRankingListAndSetToCommerce(coto, l3);
+
 		//--------------------------------//
 		Ranking r4 = new Ranking();
 		r4.setValue(1.0);
@@ -96,7 +102,8 @@ public class ItemDaoImpl implements ItemDao {
 		
 		List<Ranking>l4 = new ArrayList<>();
 		l4.add(r4);
-		carrefour.setAverageRanking(l4);
+		commerceDao.calculateAverageRankingListAndSetToCommerce(carrefour, l4);
+	
 		//--------------------------------//
 		Ranking r5 = new Ranking();
 		r5.setValue(2.5);
@@ -105,8 +112,8 @@ public class ItemDaoImpl implements ItemDao {
 		
 		List<Ranking>l5 = new ArrayList<>();
 		l5.add(r5);
-		walmartLujan.setAverageRanking(l5);
-			
+		commerceDao.calculateAverageRankingListAndSetToCommerce(walmartLujan, l5);
+		
 		session.save(r1);
 		session.save(r2);
 		session.save(r3);

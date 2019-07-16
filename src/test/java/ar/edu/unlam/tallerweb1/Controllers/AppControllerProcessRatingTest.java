@@ -28,21 +28,21 @@ public class AppControllerProcessRatingTest {
 		
 		RankingService rankingServiceMock = mock(RankingService.class);	
 		CommerceService commerceServiceMock = mock(CommerceService.class);
+		Commerce commerceMock = mock(Commerce.class);
 		
 		sut.setCommerceService(commerceServiceMock);
 		sut.setRankingService(rankingServiceMock);
+		
 
 		Double speed = 5.0;
 		Double prices = 5.0;
 		Double attention = 5.0;
-		Double averageForCriteria = 5.0;
 		Long id_commerce = 1l;
 		String review = "buena atencion";
-		
-		when(rankingServiceMock.getAverageForCriteria(attention, speed, prices)).thenReturn(averageForCriteria);	
-		when(commerceServiceMock.getCommerceById(id_commerce)).thenReturn(new Commerce());
-		when(rankingServiceMock.getRankingByIdCommerce(id_commerce)).thenReturn(new ArrayList<Ranking>());
-		
+
+		when(commerceServiceMock.getCommerceById(anyLong())).thenReturn(new Commerce());
+		when(rankingServiceMock.getAverageForCriteriaAndSetRankingToCommerce(attention, speed, prices,review,commerceMock)).thenReturn(new Ranking());
+		when(rankingServiceMock.getRankingListByIdCommerce(id_commerce)).thenReturn(new ArrayList<Ranking>());
 		
 		ModelAndView mav = sut.process(id_commerce, attention, speed, prices, review);
 		
@@ -66,11 +66,9 @@ public class AppControllerProcessRatingTest {
 		Double speed = 5.0;
 		Double prices = 5.0;
 		Double attention = 5.0;
-		Double averageForCriteria = 5.0;
 		Long id_commerce = 1l;
 		String review = "buena atencion";
 		
-		when(rankingServiceMock.getAverageForCriteria(attention, speed, prices)).thenReturn(averageForCriteria);	
 		when(commerceServiceMock.getCommerceById(id_commerce)).thenReturn(null);
 
 		ModelAndView mav = sut.process(id_commerce, attention, speed, prices, review);

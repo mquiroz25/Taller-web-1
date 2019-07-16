@@ -2,6 +2,8 @@ package ar.edu.unlam.tallerweb1.servicios;
 
 import ar.edu.unlam.tallerweb1.dao.CommerceDao;
 import ar.edu.unlam.tallerweb1.modelo.Commerce;
+import ar.edu.unlam.tallerweb1.modelo.Ranking;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,5 +49,11 @@ public class CommerceServiceImpl implements CommerceService {
 	@Override
 	public Commerce getCommerceById(Long id) {
 		return commerceDao.getCommerceById(id);
+	}
+
+	@Override
+	public void calculateAverageRankingListAndSetToCommerce(Commerce commerce, List<Ranking> rankingList) {
+		commerceDao.calculateAverageRankingListAndSetToCommerce(commerce, rankingList);
+		
 	}
 }
