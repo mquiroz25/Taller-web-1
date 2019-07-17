@@ -18,7 +18,7 @@ import ar.edu.unlam.tallerweb1.servicios.RankingService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AppControllerProcessRatingTest {
+public class AppControllerTest {
 	
 	@Test
 	public void testQueVerificaQueComercioExistaYRedirijaAhome()
@@ -79,18 +79,5 @@ public class AppControllerProcessRatingTest {
 
 	}
 
-	@Test
-	public void testQueDeberiaTraerUnaListaDeItemCommerce(){
-		ItemService itemService = mock(ItemService.class);
-		List<ItemCommerce> itemCommerces = new ArrayList<ItemCommerce>();
-		Message message = mock(Message.class);
-		when(itemService.searchItems(message)).thenReturn(itemCommerces);
-		AppController sut = new AppController();
-		sut.setItemService(itemService);
-		ModelAndView model =  sut.search(message);
-		assertThat(model.getModel().get("items")).isEqualTo(itemCommerces);
-	}
-	
-	
 	
 }

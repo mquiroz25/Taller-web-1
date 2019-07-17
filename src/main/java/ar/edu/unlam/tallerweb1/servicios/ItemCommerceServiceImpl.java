@@ -47,7 +47,8 @@ public class ItemCommerceServiceImpl implements ItemCommerceService {
 	}
 
 	@Override
-	public void deductStock(Long idCommerce, Long idItem, Integer amount) throws Exception {
-		itemCommerceDao.deductStock(idCommerce, idItem, amount);
+	public void deductStock(Long idCommerce, Long idItem, Integer amount) {
+            itemCommerceDao.deductStock(idCommerce, idItem, amount);
+
 	}
 }

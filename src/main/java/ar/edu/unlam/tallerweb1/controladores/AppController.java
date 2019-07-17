@@ -49,8 +49,11 @@ public class AppController {
 
 	@RequestMapping(path = "/loadProducts", method = RequestMethod.GET)
     public ModelAndView loadProducts() {
-        itemService.createItems();
-        return new ModelAndView("redirect:/home");
+        if(itemService.createItems()){
+            return new ModelAndView("redirect:/home");
+        }else {
+            return new ModelAndView("redirect:/error");
+        }
     }
     
     
@@ -71,8 +74,7 @@ public class AppController {
         ModelMap model = new ModelMap();
         
         List<ItemCommerce> itemCommerces = itemService.searchItems(message);
-        
-        	model.put("m", message);
+        model.put("m", message);
   
         List <Item> items = new ArrayList<>();
         for (ItemCommerce var : itemCommerces) {
@@ -201,6 +203,12 @@ public class AppController {
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ModelAndView index() {
         return new ModelAndView("redirect:/home");
+    }
+
+    @RequestMapping(path = "/error", method = RequestMethod.GET)
+    public ModelAndView error() {
+        ModelMap model = new ModelMap();
+        return new ModelAndView("error", model);
     }
     
     

@@ -21,7 +21,8 @@ public class RankingServiceImpl implements RankingService {
 
 	@Override
 	public void saveRanking(Ranking ranking) {
-		rankingDao.saveRanking(ranking);		
+
+		rankingDao.saveRanking(ranking);
 	}
 
 	@Override

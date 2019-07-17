@@ -20,6 +20,10 @@ public class ItemServiceImpl implements ItemService{
 	@Inject
 	private CommerceService commerceService;
 
+	public void setItemDao(ItemDao itemDao)
+	{
+		this.itemDao = itemDao;
+	}
 	@Override
 	public List<ItemCommerce> searchItems(Message message){
 		List<Commerce> commercesToKeep = commerceService.getCommercesByDistance(message.getDistance(), message.getLatitude(), message.getLongitude());
@@ -32,31 +36,14 @@ public class ItemServiceImpl implements ItemService{
    		return itemCommerceList;
    }
 
-   private List<Item> getItemsByDistance(List<ItemCommerce> itemCommercesToFilter, Message message){
-		List<Item> itemsFiltered = new ArrayList<>();
-
-		for (ItemCommerce itemCommerce: itemCommercesToFilter) {
-		   Commerce commerce = itemCommerce.getCommerce();
-
-		   if (message.getDistance() < calculateDistanceBetweenCommerceAndUser(message.getLatitude(), message.getLongitude(), commerce.getLatitude(), commerce.getLongitude())){
-		   		itemsFiltered.add(itemCommerce.getItem());
-		   }
-	   }
-
-		return itemsFiltered;
-   }
-
-   private Long calculateDistanceBetweenCommerceAndUser(Double LatUser, Double LonUser, Double LatCommerce, Double LonCommerce){
-		return calculateDistance(LatUser, LonUser, LatCommerce, LonCommerce);
-   }
-
-   private Long calculateDistance(Double Lat1, Double Lon1, Double Lat2, Double Lon2){
-	   return Math.round((Math.acos(((Math.sin(Math.toRadians(Lat2)))*(Math.sin(Math.toRadians(Lat1)))) + ((Math.cos(Math.toRadians(Lat2)))*(Math.cos(Math.toRadians(Lat1)))*(Math.cos(Math.toRadians(Lon1 - Lon2))))) * 6371));
-   }
-
    @Override
-   public void createItems() {
-	   itemDao.createItems();
+   public boolean createItems() {
+	   try{
+	   	itemDao.createItems();
+	   	return true;
+	   }catch(Exception e){
+	   	return false;
+	   }
    }
 
    @Override

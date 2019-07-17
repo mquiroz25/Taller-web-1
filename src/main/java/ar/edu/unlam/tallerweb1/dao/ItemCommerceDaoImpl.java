@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 
@@ -14,6 +15,7 @@ public class ItemCommerceDaoImpl implements ItemCommerceDao {
     @Inject
     private SessionFactory sessionFactory;
 
+    @Transactional
     @Override
     public  void notifyNoStock(ItemCommerce itemCommerce){
         final Session session = sessionFactory.getCurrentSession();
@@ -48,10 +50,10 @@ public class ItemCommerceDaoImpl implements ItemCommerceDao {
         return stock;
 	}
 
+	@Transactional
 	@Override
-	public void deductStock(Long idCommerce, Long idItem, Integer amount) throws Exception {
-		try {
-			final Session session = sessionFactory.getCurrentSession();
+	public void deductStock(Long idCommerce, Long idItem, Integer amount) {
+    	final Session session = sessionFactory.getCurrentSession();
 			Object obj = session.createCriteria(ItemCommerce.class)
 	                .createAlias("commerce", "c")
 	                .createAlias("item", "i")
@@ -63,9 +65,5 @@ public class ItemCommerceDaoImpl implements ItemCommerceDao {
 			Integer newStock = stock - amount;
 			itemCommerce.setStock(newStock);
 			session.update(itemCommerce);
-		} catch (Exception e) {
-			throw new Exception("Error al realizar reserva");
-		}
-
 	}
 }

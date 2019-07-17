@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ItemService {
    List<ItemCommerce> searchItems(Message message);
-   void createItems();
+   boolean createItems();
    Item searchItemById(Long id);
 }
