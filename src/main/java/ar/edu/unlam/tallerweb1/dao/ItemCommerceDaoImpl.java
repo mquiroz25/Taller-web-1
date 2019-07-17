@@ -49,18 +49,23 @@ public class ItemCommerceDaoImpl implements ItemCommerceDao {
 	}
 
 	@Override
-	public void deductStock(Long idCommerce, Long idItem, Integer amount) {
-		final Session session = sessionFactory.getCurrentSession();
-		Object obj = session.createCriteria(ItemCommerce.class)
-                .createAlias("commerce", "c")
-                .createAlias("item", "i")
-                .add(Restrictions.eq("c.commerce_id", idCommerce))
-                .add(Restrictions.eq("i.id", idItem))
-                .uniqueResult();
-        ItemCommerce itemCommerce = (ItemCommerce)obj;
-		Integer stock = itemCommerce.getStock();
-		Integer newStock = stock - amount;
-		itemCommerce.setStock(newStock);
-		session.update(itemCommerce);
+	public void deductStock(Long idCommerce, Long idItem, Integer amount) throws Exception {
+		try {
+			final Session session = sessionFactory.getCurrentSession();
+			Object obj = session.createCriteria(ItemCommerce.class)
+	                .createAlias("commerce", "c")
+	                .createAlias("item", "i")
+	                .add(Restrictions.eq("c.commerce_id", idCommerce))
+	                .add(Restrictions.eq("i.id", idItem))
+	                .uniqueResult();
+	        ItemCommerce itemCommerce = (ItemCommerce)obj;
+			Integer stock = itemCommerce.getStock();
+			Integer newStock = stock - amount;
+			itemCommerce.setStock(newStock);
+			session.update(itemCommerce);
+		} catch (Exception e) {
+			throw new Exception("Error al realizar reserva");
+		}
+
 	}
 }

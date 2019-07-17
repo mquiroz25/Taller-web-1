@@ -32,8 +32,11 @@ public class ItemCommerceServiceImpl implements ItemCommerceService {
     }
 
 	@Override
-	public Integer checkStock(Long idCommerce, Long idItem) {
+	public Integer checkAvailability(Long idCommerce, Long idItem) throws Exception {
         Integer stock = itemCommerceDao.getStock(idCommerce, idItem);
+        if (stock <= 0) {
+			throw new Exception("El item seleccionado no cuenta con stock");
+		}
         return stock;
 	}
 
@@ -44,7 +47,7 @@ public class ItemCommerceServiceImpl implements ItemCommerceService {
 	}
 
 	@Override
-	public void deductStock(Long idCommerce, Long idItem, Integer amount) {
+	public void deductStock(Long idCommerce, Long idItem, Integer amount) throws Exception {
 		itemCommerceDao.deductStock(idCommerce, idItem, amount);
 	}
 }

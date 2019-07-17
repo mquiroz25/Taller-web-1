@@ -13,11 +13,30 @@ public class ReserveServiceImpl implements ReserveService{
 
 	@Inject
 	private ReserveDao reserveDao;
+	
+	@Inject
+	private ItemCommerceService itemCommerceService;
 
-	@Override
-	public void saveReserve(Reserve reserve) {
-		reserveDao.saveReserve(reserve);
+	public void setItemCommerceService(ItemCommerceService itemCommerceService) {
+		this.itemCommerceService = itemCommerceService;
+	}
+	
+	
+
+	public void setReserveDao(ReserveDao reserveDao) {
+		this.reserveDao = reserveDao;
 	}
 
-	
+
+
+	@Override
+	public Reserve saveReserve(Reserve reserve) throws Exception {
+			Integer stock = itemCommerceService.checkAvailability(reserve.getCommerceId(), reserve.getItemId());
+			if (stock - reserve.getAmount() < 0) {
+				throw new Exception("No es posible reservar la cantidad ingresada");
+			}
+			itemCommerceService.deductStock(reserve.getCommerceId(), reserve.getItemId(), reserve.getAmount());
+			reserveDao.saveReserve(reserve);
+			return reserve;
+	}
 }

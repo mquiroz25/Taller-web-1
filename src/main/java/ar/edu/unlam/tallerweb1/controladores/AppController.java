@@ -47,9 +47,7 @@ public class AppController {
         this.itemService = itemService;
     }
 
-
-
-    @RequestMapping(path = "/loadProducts", method = RequestMethod.GET)
+	@RequestMapping(path = "/loadProducts", method = RequestMethod.GET)
     public ModelAndView loadProducts() {
         itemService.createItems();
         return new ModelAndView("redirect:/home");
@@ -167,38 +165,36 @@ public class AppController {
     
     @RequestMapping(path ="/reserve", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView reserve(@RequestParam Long idCommerce, @RequestParam Long idItem, @RequestParam Double latitude, @RequestParam Double longitude) {
-        Integer stock = itemCommerceService.checkStock(idCommerce, idItem);
         ModelMap model = new ModelMap();
-        if(stock <= 0) {
-            model.put("error", "El item seleccionado no cuenta con stock disponible");
-            return new ModelAndView("error", model);
-        } else {
-            Reserve reserve = new Reserve();
+		try {
+			itemCommerceService.checkAvailability(idCommerce, idItem);
+			Reserve reserve = new Reserve();
             model.put("reserve", reserve);
         	ItemCommerce itemCommerce = itemCommerceService.getItemCommerceById(idCommerce, idItem);
         	model.put("itemCommerce", itemCommerce);
         	model.put("latitude", latitude);
         	model.put("longitude", longitude);
             return new ModelAndView("reserve", model);
-        }
+		} catch (Exception e) {
+			model.put("error", e.getMessage());
+			return new ModelAndView("error", model);
+		}
     }
 
     @RequestMapping(path = "/save-reserve", method = RequestMethod.POST)
     public ModelAndView saveReserve(@ModelAttribute("reserve") Reserve reserve) {
-    	Integer stock = itemCommerceService.checkStock(reserve.getCommerceId(), reserve.getItemId());
     	ModelMap model = new ModelMap();
-    	if(stock - reserve.getAmount() < 0) {
-            model.put("error", "No es posible reservar la cantidad ingresada");
-            return new ModelAndView("error", model);
-        } else {
-        	itemCommerceService.deductStock(reserve.getCommerceId(), reserve.getItemId(), reserve.getAmount());
+    	try {
         	reserve.setItem(itemService.searchItemById(reserve.getItemId()));
         	reserve.setCommerce(commerceService.getCommerceById(reserve.getCommerceId()));
         	reserveService.saveReserve(reserve);
         	String message = String.format("Se ha reservado el producto %s por una cantidad de %d en el comercio %s", reserve.getItem().getDescription(), reserve.getAmount(), reserve.getCommerce().getName());
         	model.put("success", message);
         	return new ModelAndView("success", model);
-        }
+		} catch (Exception e) {
+			model.put("error", e.getMessage());
+			return new ModelAndView("error", model);
+		}     	
     }
     
     // Escucha la url /, y redirige a la URL /login, es lo mismo que si se invoca la url /login directamente.
