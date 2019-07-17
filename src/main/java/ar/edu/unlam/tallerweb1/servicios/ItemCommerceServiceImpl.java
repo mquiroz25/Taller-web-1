@@ -23,9 +23,12 @@ public class ItemCommerceServiceImpl implements ItemCommerceService {
     public boolean notifyNoStock(Long idCommerce, Long idItem){
         try{
             ItemCommerce itemCommerce = itemCommerceDao.getItemCommerceById(idCommerce, idItem);
-            itemCommerce.setStock(0);
-            itemCommerceDao.notifyNoStock(itemCommerce);
-            return true;
+            if(itemCommerce!=null) {
+            	itemCommerce.setStock(0);
+            	itemCommerceDao.notifyNoStock(itemCommerce);
+            	return true;
+            }
+            return false;
         } catch(Exception e){
             return false;
         }
