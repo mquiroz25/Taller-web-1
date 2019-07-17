@@ -47,9 +47,7 @@ public class AppController {
         this.itemService = itemService;
     }
 
-
-
-    @RequestMapping(path = "/loadProducts", method = RequestMethod.GET)
+	@RequestMapping(path = "/loadProducts", method = RequestMethod.GET)
     public ModelAndView loadProducts() {
         itemService.createItems();
         return new ModelAndView("redirect:/home");
