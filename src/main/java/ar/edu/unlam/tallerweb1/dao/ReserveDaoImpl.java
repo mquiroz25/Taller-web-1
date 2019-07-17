@@ -13,9 +13,14 @@ public class ReserveDaoImpl implements ReserveDao {
     private SessionFactory sessionFactory;
 
 	@Override
-	public void saveReserve(Reserve reserve) {
-		final Session session = sessionFactory.getCurrentSession();
-		session.save(reserve);
+	public void saveReserve(Reserve reserve) throws Exception {
+		try {
+			final Session session = sessionFactory.getCurrentSession();
+			session.save(reserve);
+		} catch (Exception e) {
+			throw new Exception("Error al realizar reserva");
+		}
+
 	}
 
     
