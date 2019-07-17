@@ -19,7 +19,7 @@ public class Item {
     private Category category;
 
     @OneToMany(mappedBy = "item")
-    private Set<ItemCommerce> itemCommerces = new HashSet<>();
+    private Set<ItemCommerceImpl> itemCommerceImpls = new HashSet<>();
 
     public Item() {
     }
@@ -47,16 +47,16 @@ public class Item {
         this.category = category;
     }
 
-    public Set<ItemCommerce> getItemCommerces() {
-        return itemCommerces;
+    public Set<ItemCommerceImpl> getItemCommerceImpls() {
+        return itemCommerceImpls;
     }
 
-    public void setItemCommerces(Set<ItemCommerce> itemCommerces) {
-        this.itemCommerces = itemCommerces;
+    public void setItemCommerceImpls(Set<ItemCommerceImpl> itemCommerceImpls) {
+        this.itemCommerceImpls = itemCommerceImpls;
     }
 
-    public void addItemCommerce(ItemCommerce itemCommerce){
-        this.itemCommerces = itemCommerces;
+    public void addItemCommerce(ItemCommerceImpl itemCommerceImpl){
+        this.itemCommerceImpls = itemCommerceImpls;
     }
 
     public String getBrand() {
@@ -86,8 +86,8 @@ public class Item {
     public Set<Commerce> getCommerces(){
         Set<Commerce> result = new HashSet<>();
 
-        for (ItemCommerce itemCommerce:itemCommerces){
-            result.add(itemCommerce.getCommerce());
+        for (ItemCommerceImpl itemCommerceImpl : itemCommerceImpls){
+            result.add(itemCommerceImpl.getCommerce());
         }
 
         return result;

@@ -1,12 +1,7 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
 
-import ar.edu.unlam.tallerweb1.modelo.Commerce;
-import ar.edu.unlam.tallerweb1.modelo.Item;
-import ar.edu.unlam.tallerweb1.modelo.ItemCommerce;
-import ar.edu.unlam.tallerweb1.modelo.Message;
-import ar.edu.unlam.tallerweb1.modelo.Ranking;
-import ar.edu.unlam.tallerweb1.modelo.Reserve;
+import ar.edu.unlam.tallerweb1.modelo.*;
 import ar.edu.unlam.tallerweb1.servicios.CommerceService;
 import ar.edu.unlam.tallerweb1.servicios.ItemCommerceService;
 import ar.edu.unlam.tallerweb1.servicios.ItemService;
@@ -89,36 +84,22 @@ public class AppController {
     }
 
     @RequestMapping(path = "/productDetail", method = RequestMethod.GET)
-    public ModelAndView productDetail(@RequestParam Long idItem,@RequestParam String category,@RequestParam Double latitude,@RequestParam Double longitude,@RequestParam Long distance) {
-        ModelMap model = new ModelMap();
-        Item item = itemService.searchItemById(idItem);
-        model.put("item", item);
+    public ModelAndView productDetail(
+            @RequestParam Long idItem,
+            @RequestParam String category,
+            @RequestParam Double latitude,
+            @RequestParam Double longitude,
+            @RequestParam Long distance,
+            @RequestParam Integer orderBy) throws Exception
+    {
 
-        Message message = new Message();
-        message.setCategory(category);
-        message.setLatitude(latitude);
-        message.setLongitude(longitude);
-        message.setDistance(distance);
-        
-        model.put("latitude", latitude);
-        model.put("longitude", longitude);
-        
-        List<ItemCommerce> listItemCommerce = itemService.searchItems(message);
-        List<ItemCommerce> list = new ArrayList<>();
-        
-        for (ItemCommerce itemCommerce : listItemCommerce) {
-            if (itemCommerce.getItem().getId().equals(idItem)) {
-                list.add(itemCommerce);
-            }
-        }
-
-        model.put("itemCommerce", list); 
-
+        ModelMap model = itemCommerceService.getModelForView(idItem, category, latitude, longitude, distance, orderBy);
+        model.put("PinMapReference", UrlPinMapImpl.getInstance().getUrlPinMapReference());
         return new ModelAndView("productDetail", model);
     }
 
     @RequestMapping(path = "/rate/{id_commerce}/{name_commerce}", method = RequestMethod.GET)
-    public ModelAndView rate(@PathVariable Long id_commerce,@PathVariable String name_commerce ) {
+    public ModelAndView rate(@PathVariable Long id_commerce, @PathVariable String name_commerce) {
         ModelMap model = new ModelMap();
 
         //obtengo la lista de ranking por id delcomercio
@@ -176,8 +157,7 @@ public class AppController {
             return new ModelAndView("redirect:/home");
         }
     }
-    
-    
+
     @RequestMapping(path ="/reserve", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView reserve(@RequestParam Long idCommerce, @RequestParam Long idItem, @RequestParam Double latitude, @RequestParam Double longitude) {
         Integer stock = itemCommerceService.checkStock(idCommerce, idItem);
@@ -188,7 +168,7 @@ public class AppController {
         } else {
             Reserve reserve = new Reserve();
             model.put("reserve", reserve);
-        	ItemCommerce itemCommerce = itemCommerceService.getItemCommerceById(idCommerce, idItem);
+            ItemCommerce itemCommerce = itemCommerceService.getItemCommerceById(idCommerce, idItem);
         	model.put("itemCommerce", itemCommerce);
         	model.put("latitude", latitude);
         	model.put("longitude", longitude);
@@ -219,6 +199,4 @@ public class AppController {
     public ModelAndView index() {
         return new ModelAndView("redirect:/home");
     }
-    
-    
 }

@@ -17,7 +17,7 @@ public class Commerce {
 
 
 	@OneToMany(mappedBy = "commerce")
-    private Set<ItemCommerce> itemCommerces = new HashSet<>();
+    private Set<ItemCommerceImpl> itemCommerceImpls = new HashSet<>();
  
     private Double averageRanking;
 
@@ -57,12 +57,12 @@ public class Commerce {
         this.name = name;
     }
 
-    public Set<ItemCommerce> getItemCommerces(){
-        return itemCommerces;
+    public Set<ItemCommerceImpl> getItemCommerceImpls(){
+        return itemCommerceImpls;
     }
 
-    public void setItemCommerces(Set<ItemCommerce> commerces){
-        this.itemCommerces = commerces;
+    public void setItemCommerceImpls(Set<ItemCommerceImpl> commerces){
+        this.itemCommerceImpls = commerces;
     }
 
     public Double getLatitude() {
@@ -84,8 +84,8 @@ public class Commerce {
     public Set<Item> getItems(){
         Set<Item> result = new HashSet<>();
 
-        for (ItemCommerce itemCommerce:itemCommerces){
-            result.add(itemCommerce.getItem());
+        for (ItemCommerceImpl itemCommerceImpl : itemCommerceImpls){
+            result.add(itemCommerceImpl.getItem());
         }
 
         return result;
