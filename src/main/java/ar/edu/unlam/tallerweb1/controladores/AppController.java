@@ -51,7 +51,6 @@ public class AppController {
         }
     }
     
-    
     @RequestMapping("/home")
     public ModelAndView home() {
         ModelMap model = new ModelMap();
@@ -93,9 +92,16 @@ public class AppController {
             @RequestParam Integer orderBy) throws Exception
     {
 
-        ModelMap model = itemCommerceService.getModelForView(idItem, category, latitude, longitude, distance, orderBy);
-        model.put("PinMapReference", UrlPinMapImpl.getInstance().getUrlPinMapReference());
-        return new ModelAndView("productDetail", model);
+        try {
+            ModelMap model = itemCommerceService.getModelForView(idItem, category, latitude, longitude, distance, orderBy);
+            model.put("PinMapReference", UrlPinMapImpl.getInstance().getUrlPinMapReference());
+            return new ModelAndView("productDetail", model);
+        }
+        catch (Exception e){
+            ModelMap modelError = new ModelMap();
+            modelError.put("error", e.getMessage());
+            return new ModelAndView("error", modelError);
+        }
     }
 
     @RequestMapping(path = "/rate/{id_commerce}/{name_commerce}", method = RequestMethod.GET)
@@ -117,21 +123,21 @@ public class AppController {
     	ModelMap model = new ModelMap();
         Commerce commerce = commerceService.getCommerceById(id_commerce);
 
-        	  if(commerce!=null)
-        	 {
-        	  Ranking ranking = rankingService.getAverageForCriteriaAndSetRankingToCommerce(attention, speed, prices,review,commerce);
-        	  rankingService.saveRanking(ranking);
+        if(commerce!=null)
+             {
+              Ranking ranking = rankingService.getAverageForCriteriaAndSetRankingToCommerce(attention, speed, prices,review,commerce);
+              rankingService.saveRanking(ranking);
                List<Ranking> rankingList = rankingService.getRankingListByIdCommerce(id_commerce);
                commerceService.calculateAverageRankingListAndSetToCommerce(commerce, rankingList);
 
                return new ModelAndView("redirect:/home");
-        	 }
-        else {
-        	   model.put("error", "no existe comercio con ese id");
-               return new ModelAndView("error", model);
              }
+        else
+        {
+           model.put("error", "no existe comercio con ese id");
+           return new ModelAndView("error", model);
+        }
     }
-
 
     @RequestMapping(path ="/noStock", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView noStock(@RequestParam Long idCommerce, @RequestParam Long idItem) {
@@ -190,6 +196,4 @@ public class AppController {
         ModelMap model = new ModelMap();
         return new ModelAndView("error", model);
     }
-
-    
 }
