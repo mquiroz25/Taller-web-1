@@ -42,12 +42,13 @@ public class AppController {
         this.itemService = itemService;
     }
 
-
-
-    @RequestMapping(path = "/loadProducts", method = RequestMethod.GET)
+	@RequestMapping(path = "/loadProducts", method = RequestMethod.GET)
     public ModelAndView loadProducts() {
-        itemService.createItems();
-        return new ModelAndView("redirect:/home");
+        if(itemService.createItems()){
+            return new ModelAndView("redirect:/home");
+        }else {
+            return new ModelAndView("redirect:/error");
+        }
     }
     
     
@@ -68,8 +69,7 @@ public class AppController {
         ModelMap model = new ModelMap();
         
         List<ItemCommerce> itemCommerces = itemService.searchItems(message);
-        
-        	model.put("m", message);
+        model.put("m", message);
   
         List <Item> items = new ArrayList<>();
         for (ItemCommerce var : itemCommerces) {
@@ -102,8 +102,7 @@ public class AppController {
     public ModelAndView rate(@PathVariable Long id_commerce, @PathVariable String name_commerce) {
         ModelMap model = new ModelMap();
 
-        //obtengo la lista de ranking por id delcomercio
-        List<Ranking> rankingListCommerce = rankingService.getRankingByIdCommerce(id_commerce);
+        List<Ranking> rankingListCommerce = rankingService.getRankingListByIdCommerce(id_commerce);
         
         model.put("rankingListCommerce", rankingListCommerce);
         model.put("id_commerce", id_commerce);    
@@ -113,36 +112,24 @@ public class AppController {
     }
 
     @RequestMapping(path ="/processRating", method = RequestMethod.GET)
-    public ModelAndView process(Long id, Double attention, Double speed, Double prices, String review) {	
+    public ModelAndView process(Long id_commerce, Double attention, Double speed, Double prices, String review) {
     	
     	ModelMap model = new ModelMap();
-    	
-        Double averageForCriteria = rankingService.getAverageForCriteria(attention, speed, prices);
-        
-        //guardo la calificacion obtenida en un objeto ranking
-        Ranking ranking = new Ranking();
-        ranking.setValue(averageForCriteria);
-        ranking.setReview(review);
-        
-        //obtengo el comercio con el id
-        Commerce commerce = commerceService.getCommerceById(id);
-        
-        	if(commerce!=null) { 	
-            //seteo el ranking al comercio
-            ranking.setCommerce(commerce);
-            rankingService.saveRanking(ranking);
-      
-            //obtengo la lista de ranking por id delcomercio
-            List<Ranking> rankingList = rankingService.getRankingByIdCommerce(id);
-            commerce.setAverageRanking(rankingList);
+        Commerce commerce = commerceService.getCommerceById(id_commerce);
 
-            return new ModelAndView("redirect:/home");  
-        }
-    
+        	  if(commerce!=null)
+        	 {
+        	  Ranking ranking = rankingService.getAverageForCriteriaAndSetRankingToCommerce(attention, speed, prices,review,commerce);
+        	  rankingService.saveRanking(ranking);
+               List<Ranking> rankingList = rankingService.getRankingListByIdCommerce(id_commerce);
+               commerceService.calculateAverageRankingListAndSetToCommerce(commerce, rankingList);
+
+               return new ModelAndView("redirect:/home");
+        	 }
         else {
-        	model.put("error", "no existe comercio con ese id");
-            return new ModelAndView("error", model);
-        }
+        	   model.put("error", "no existe comercio con ese id");
+               return new ModelAndView("error", model);
+             }
     }
 
 
@@ -160,38 +147,36 @@ public class AppController {
 
     @RequestMapping(path ="/reserve", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView reserve(@RequestParam Long idCommerce, @RequestParam Long idItem, @RequestParam Double latitude, @RequestParam Double longitude) {
-        Integer stock = itemCommerceService.checkStock(idCommerce, idItem);
         ModelMap model = new ModelMap();
-        if(stock <= 0) {
-            model.put("error", "El item seleccionado no cuenta con stock disponible");
-            return new ModelAndView("error", model);
-        } else {
-            Reserve reserve = new Reserve();
+		try {
+			itemCommerceService.checkAvailability(idCommerce, idItem);
+			Reserve reserve = new Reserve();
             model.put("reserve", reserve);
             ItemCommerce itemCommerce = itemCommerceService.getItemCommerceById(idCommerce, idItem);
         	model.put("itemCommerce", itemCommerce);
         	model.put("latitude", latitude);
         	model.put("longitude", longitude);
             return new ModelAndView("reserve", model);
-        }
+		} catch (Exception e) {
+			model.put("error", e.getMessage());
+			return new ModelAndView("error", model);
+		}
     }
 
     @RequestMapping(path = "/save-reserve", method = RequestMethod.POST)
     public ModelAndView saveReserve(@ModelAttribute("reserve") Reserve reserve) {
-    	Integer stock = itemCommerceService.checkStock(reserve.getCommerceId(), reserve.getItemId());
     	ModelMap model = new ModelMap();
-    	if(stock - reserve.getAmount() < 0) {
-            model.put("error", "No es posible reservar la cantidad ingresada");
-            return new ModelAndView("error", model);
-        } else {
-        	itemCommerceService.deductStock(reserve.getCommerceId(), reserve.getItemId(), reserve.getAmount());
+    	try {
         	reserve.setItem(itemService.searchItemById(reserve.getItemId()));
         	reserve.setCommerce(commerceService.getCommerceById(reserve.getCommerceId()));
         	reserveService.saveReserve(reserve);
         	String message = String.format("Se ha reservado el producto %s por una cantidad de %d en el comercio %s", reserve.getItem().getDescription(), reserve.getAmount(), reserve.getCommerce().getName());
         	model.put("success", message);
         	return new ModelAndView("success", model);
-        }
+		} catch (Exception e) {
+			model.put("error", e.getMessage());
+			return new ModelAndView("error", model);
+		}
     }
     
     // Escucha la url /, y redirige a la URL /login, es lo mismo que si se invoca la url /login directamente.
@@ -199,4 +184,12 @@ public class AppController {
     public ModelAndView index() {
         return new ModelAndView("redirect:/home");
     }
+
+    @RequestMapping(path = "/error", method = RequestMethod.GET)
+    public ModelAndView error() {
+        ModelMap model = new ModelMap();
+        return new ModelAndView("error", model);
+    }
+
+    
 }

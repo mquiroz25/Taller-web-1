@@ -38,7 +38,7 @@
   </div>
 </div>
 
-        <form:form action="search" method="POST" modelAttribute="message">
+        <form:form action="search" method="POST" modelAttribute="message" onkeydown="return event.key != 'Enter';">
         	<div class="form-group row">
         		<label for="category" class="col-sm-2 col-form-label">Categoria o Marca: </label>
     			<div class="col-sm-8">
@@ -146,7 +146,7 @@ $('input[type="radio"]').click(function(){
 	  else{
 		 $("#address").prop('required',true);
 		 $("#addressDiv").show();
-
+		   $("#info").hide();
 		 
 		 
 		 $( document ).ready(function() {

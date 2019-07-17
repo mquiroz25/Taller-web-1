@@ -6,8 +6,6 @@ import org.springframework.ui.ModelMap;
 public interface ItemCommerceService {
     boolean notifyNoStock(Long idCommerce, Long idItem);
     ItemCommerce getItemCommerceById(Long idCommerce, Long idItem);
-    Integer checkStock(Long idCommerce, Long idItem);
-    void deductStock(Long idCommerce, Long idItem, Integer amount);
     ModelMap getModelForView(
             Long idItem,
             String category,
@@ -15,4 +13,6 @@ public interface ItemCommerceService {
             Double longitude,
             Long distance,
             Integer orderBy) throws Exception;
+    Integer checkAvailability(Long idCommerce, Long idItem) throws Exception;
+    void deductStock(Long idCommerce, Long idItem, Integer amount) throws Exception;
 }
