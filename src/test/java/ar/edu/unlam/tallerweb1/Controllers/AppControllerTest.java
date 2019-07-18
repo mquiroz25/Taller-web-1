@@ -42,6 +42,7 @@ public class AppControllerTest {
 
 		when(commerceServiceMock.getCommerceById(anyLong())).thenReturn(new Commerce());
 		when(rankingServiceMock.getAverageForCriteriaAndSetRankingToCommerce(attention, speed, prices,review,commerceMock)).thenReturn(new Ranking());
+		when(rankingServiceMock.saveRanking(any(Ranking.class))).thenReturn(true);
 		when(rankingServiceMock.getRankingListByIdCommerce(id_commerce)).thenReturn(new ArrayList<Ranking>());
 		
 		ModelAndView mav = sut.process(id_commerce, attention, speed, prices, review);
