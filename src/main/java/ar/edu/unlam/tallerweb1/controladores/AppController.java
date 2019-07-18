@@ -1,12 +1,7 @@
 package ar.edu.unlam.tallerweb1.controladores;
 
 
-import ar.edu.unlam.tallerweb1.modelo.Commerce;
-import ar.edu.unlam.tallerweb1.modelo.Item;
-import ar.edu.unlam.tallerweb1.modelo.ItemCommerce;
-import ar.edu.unlam.tallerweb1.modelo.Message;
-import ar.edu.unlam.tallerweb1.modelo.Ranking;
-import ar.edu.unlam.tallerweb1.modelo.Reserve;
+import ar.edu.unlam.tallerweb1.modelo.*;
 import ar.edu.unlam.tallerweb1.servicios.CommerceService;
 import ar.edu.unlam.tallerweb1.servicios.ItemCommerceService;
 import ar.edu.unlam.tallerweb1.servicios.ItemService;
@@ -56,7 +51,6 @@ public class AppController {
         }
     }
     
-    
     @RequestMapping("/home")
     public ModelAndView home() {
         ModelMap model = new ModelMap();
@@ -89,36 +83,29 @@ public class AppController {
     }
 
     @RequestMapping(path = "/productDetail", method = RequestMethod.GET)
-    public ModelAndView productDetail(@RequestParam Long idItem,@RequestParam String category,@RequestParam Double latitude,@RequestParam Double longitude,@RequestParam Long distance) {
-        ModelMap model = new ModelMap();
-        Item item = itemService.searchItemById(idItem);
-        model.put("item", item);
+    public ModelAndView productDetail(
+            @RequestParam Long idItem,
+            @RequestParam String category,
+            @RequestParam Double latitude,
+            @RequestParam Double longitude,
+            @RequestParam Long distance,
+            @RequestParam Integer orderBy) throws Exception
+    {
 
-        Message message = new Message();
-        message.setCategory(category);
-        message.setLatitude(latitude);
-        message.setLongitude(longitude);
-        message.setDistance(distance);
-        
-        model.put("latitude", latitude);
-        model.put("longitude", longitude);
-        
-        List<ItemCommerce> listItemCommerce = itemService.searchItems(message);
-        List<ItemCommerce> list = new ArrayList<>();
-        
-        for (ItemCommerce itemCommerce : listItemCommerce) {
-            if (itemCommerce.getItem().getId().equals(idItem)) {
-                list.add(itemCommerce);
-            }
+        try {
+            ModelMap model = itemCommerceService.getModelForView(idItem, category, latitude, longitude, distance, orderBy);
+            model.put("PinMapReference", UrlPinMapImpl.getInstance().getUrlPinMapReference());
+            return new ModelAndView("productDetail", model);
         }
-
-        model.put("itemCommerce", list); 
-
-        return new ModelAndView("productDetail", model);
+        catch (Exception e){
+            ModelMap modelError = new ModelMap();
+            modelError.put("error", e.getMessage());
+            return new ModelAndView("error", modelError);
+        }
     }
 
     @RequestMapping(path = "/rate/{id_commerce}/{name_commerce}", method = RequestMethod.GET)
-    public ModelAndView rate(@PathVariable Long id_commerce,@PathVariable String name_commerce ) {
+    public ModelAndView rate(@PathVariable Long id_commerce, @PathVariable String name_commerce) {
         ModelMap model = new ModelMap();
 
         List<Ranking> rankingListCommerce = rankingService.getRankingListByIdCommerce(id_commerce);
@@ -131,26 +118,26 @@ public class AppController {
     }
 
     @RequestMapping(path ="/processRating", method = RequestMethod.GET)
-    public ModelAndView process(Long id_commerce, Double attention, Double speed, Double prices, String review) {	
+    public ModelAndView process(Long id_commerce, Double attention, Double speed, Double prices, String review) {
     	
     	ModelMap model = new ModelMap();
         Commerce commerce = commerceService.getCommerceById(id_commerce);
 
-        	  if(commerce!=null)
-        	 { 
-        	  Ranking ranking = rankingService.getAverageForCriteriaAndSetRankingToCommerce(attention, speed, prices,review,commerce);
-        	  rankingService.saveRanking(ranking);
+        if(commerce!=null)
+             {
+              Ranking ranking = rankingService.getAverageForCriteriaAndSetRankingToCommerce(attention, speed, prices,review,commerce);
+              rankingService.saveRanking(ranking);
                List<Ranking> rankingList = rankingService.getRankingListByIdCommerce(id_commerce);
                commerceService.calculateAverageRankingListAndSetToCommerce(commerce, rankingList);
 
-               return new ModelAndView("redirect:/home");  
-        	 }
-        else {
-        	   model.put("error", "no existe comercio con ese id");
-               return new ModelAndView("error", model);
+               return new ModelAndView("redirect:/home");
              }
+        else
+        {
+           model.put("error", "no existe comercio con ese id");
+           return new ModelAndView("error", model);
+        }
     }
-
 
     @RequestMapping(path ="/noStock", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView noStock(@RequestParam Long idCommerce, @RequestParam Long idItem) {
@@ -163,8 +150,7 @@ public class AppController {
             return new ModelAndView("redirect:/home");
         }
     }
-    
-    
+
     @RequestMapping(path ="/reserve", method = RequestMethod.GET, produces = "application/json")
     public ModelAndView reserve(@RequestParam Long idCommerce, @RequestParam Long idItem, @RequestParam Double latitude, @RequestParam Double longitude) {
         ModelMap model = new ModelMap();
@@ -172,7 +158,7 @@ public class AppController {
 			itemCommerceService.checkAvailability(idCommerce, idItem);
 			Reserve reserve = new Reserve();
             model.put("reserve", reserve);
-        	ItemCommerce itemCommerce = itemCommerceService.getItemCommerceById(idCommerce, idItem);
+            ItemCommerce itemCommerce = itemCommerceService.getItemCommerceById(idCommerce, idItem);
         	model.put("itemCommerce", itemCommerce);
         	model.put("latitude", latitude);
         	model.put("longitude", longitude);
@@ -196,7 +182,7 @@ public class AppController {
 		} catch (Exception e) {
 			model.put("error", e.getMessage());
 			return new ModelAndView("error", model);
-		}     	
+		}
     }
     
     // Escucha la url /, y redirige a la URL /login, es lo mismo que si se invoca la url /login directamente.
@@ -210,6 +196,4 @@ public class AppController {
         ModelMap model = new ModelMap();
         return new ModelAndView("error", model);
     }
-    
-    
 }

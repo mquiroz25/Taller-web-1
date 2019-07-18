@@ -75,18 +75,12 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            <c:forEach items="${PinMapReference}" var="pinMapReference">
                                 <tr>
-                                    <td><img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|2B17FF"></td>
-                                    <td>Tu posición actual</td>
+                                    <td><img src="${pinMapReference.key}"></td>
+                                    <td>${pinMapReference.value}</td>
                                 </tr>
-                                <tr>
-                                    <td><img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|04FF38"></td>
-                                    <td>Comercio con el producto en stock y el más barato</td>
-                                </tr>
-                                <tr>
-                                    <td><img src="http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FE7569"></td>
-                                    <td>Comercio con el producto en stock</td>
-                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </div>
@@ -116,16 +110,10 @@
                         commerceName: "${item.commerce.name}",
                         stock: ${item.stock},
                         price: ${item.price},
-                        ranking: ${item.commerce.averageRanking}
+                        ranking: ${item.commerce.averageRanking},
+                        iconUrl: "${item.urlPinImage}"
                     });
                 </c:forEach>
-
-                var items = items.sort(function (a, b){
-                    if (a.price > b.price) return 1;
-                    if (a.price < b.price) return -1;
-
-                    return 0;
-                });
 				
                 var map;
                 function initMap() {
@@ -137,13 +125,8 @@
                 initMap();
                 
                 for (i = 0; i < items.length; i++) {
-                    var pinColor = "FE7569"; /// rojo
 
-                    if (i == 0){
-                        pinColor = "04FF38"; /// verde
-                    }
-
-                    var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+                    var pinImage = new google.maps.MarkerImage(items[i]["iconUrl"],
                         new google.maps.Size(21, 34),
                         new google.maps.Point(0,0),
                         new google.maps.Point(10, 34));

@@ -34,10 +34,11 @@
                     <td>${item.brand} </td>
                     <td><form:form action="productDetail" method="GET">
                         <input id="idItem"  name="idItem"value="${item.id}" type="hidden"/>
-                       <input id="latitude"  name="latitude"value="${m.latitude}" type="hidden"/>
+                        <input id="latitude"  name="latitude"value="${m.latitude}" type="hidden"/>
                         <input id="longitude"  name="longitude"value="${m.longitude}" type="hidden"/>
                         <input id="distance"  name="distance"value="${m.distance}" type="hidden"/>
-                        <input id="distance"  name="category"value="${m.category}" type="hidden"/>
+                        <input id="category"  name="category"value="${m.category}" type="hidden"/>
+                        <input id="orderBy"  name="orderBy" value="1" type="hidden"/>
                         <input type="submit" value="Ver detalles" class="btn btn-primary"/>
                     </form:form></td>
 

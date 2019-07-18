@@ -23,7 +23,7 @@ public class ItemDaoImpl implements ItemDao {
         final Session session = sessionFactory.getCurrentSession();
 
         @SuppressWarnings("unchecked")
-		List<ItemCommerce> itemList = session.createCriteria(ItemCommerce.class)
+		List<ItemCommerce> itemList = session.createCriteria(ItemCommerceImpl.class)
 				.createAlias("item", "i")
         		.createAlias("i.category", "c")
 				.add(Restrictions.in("commerce", commercesToKeep))
@@ -151,7 +151,7 @@ public class ItemDaoImpl implements ItemDao {
 
         // configuro que comercio vende que producto a que precio y que cantidad tiene
 		// coto solo tiene lavandinas
-		ItemCommerce itemCommerce = new ItemCommerce();
+		ItemCommerce itemCommerce = new ItemCommerceImpl();
 
 		itemCommerce.setCommerce(coto);
 		itemCommerce.setStock(10);
@@ -159,7 +159,7 @@ public class ItemDaoImpl implements ItemDao {
 		itemCommerce.setPrice(50.45);
 		session.save(itemCommerce);
 
-		itemCommerce = new ItemCommerce();
+		itemCommerce = new ItemCommerceImpl();
 		itemCommerce.setCommerce(coto);
 		itemCommerce.setStock(10);
 		itemCommerce.setItem(ayudin1);
@@ -167,14 +167,14 @@ public class ItemDaoImpl implements ItemDao {
 		session.save(itemCommerce);
 
 		// walmart vende ayudin1 y pepsi
-		itemCommerce = new ItemCommerce();
+		itemCommerce = new ItemCommerceImpl();
 		itemCommerce.setCommerce(walmart);
 		itemCommerce.setStock(10);
 		itemCommerce.setItem(ayudin1);
 		itemCommerce.setPrice(40.0);
 		session.save(itemCommerce);
 
-		itemCommerce = new ItemCommerce();
+		itemCommerce = new ItemCommerceImpl();
 		itemCommerce.setCommerce(walmart);
 		itemCommerce.setStock(12);
 		itemCommerce.setItem(pepsi);
@@ -182,7 +182,7 @@ public class ItemDaoImpl implements ItemDao {
 		session.save(itemCommerce);
 
 		// walmart Lujan tiene solo pepsi
-		itemCommerce = new ItemCommerce();
+		itemCommerce = new ItemCommerceImpl();
 		itemCommerce.setCommerce(walmartLujan);
 		itemCommerce.setStock(2);
 		itemCommerce.setItem(pepsi);
@@ -190,7 +190,7 @@ public class ItemDaoImpl implements ItemDao {
 		session.save(itemCommerce);
 
 		// carrefour vende pepsi
-		itemCommerce = new ItemCommerce();
+		itemCommerce = new ItemCommerceImpl();
 		itemCommerce.setCommerce(carrefour);
 		itemCommerce.setStock(3);
 		itemCommerce.setItem(pepsi);

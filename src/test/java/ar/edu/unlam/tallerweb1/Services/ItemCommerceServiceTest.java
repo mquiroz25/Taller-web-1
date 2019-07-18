@@ -1,7 +1,7 @@
 package ar.edu.unlam.tallerweb1.Services;
 
 import ar.edu.unlam.tallerweb1.dao.ItemCommerceDaoImpl;
-import ar.edu.unlam.tallerweb1.modelo.ItemCommerce;
+import ar.edu.unlam.tallerweb1.modelo.ItemCommerceImpl;
 import ar.edu.unlam.tallerweb1.servicios.ItemCommerceServiceImpl;
 import org.junit.Test;
 import static org.assertj.core.api.Assertions.*;
@@ -12,7 +12,7 @@ public class ItemCommerceServiceTest {
     @Test
     public void testQueVerificaQuegetItemCommerceByIdSeEjecute(){
         ItemCommerceDaoImpl itemCommerceDao = mock(ItemCommerceDaoImpl.class);
-        when(itemCommerceDao.getItemCommerceById(anyLong(), anyLong())).thenReturn(new ItemCommerce());
+        when(itemCommerceDao.getItemCommerceById(anyLong(), anyLong())).thenReturn(new ItemCommerceImpl());
         ItemCommerceServiceImpl sut = new ItemCommerceServiceImpl();
         sut.setCommerceDao(itemCommerceDao);
         assertThat(sut.notifyNoStock(1L, 1L)).isTrue();
@@ -40,9 +40,9 @@ public class ItemCommerceServiceTest {
     @Test
     public void testQueVerificaQueNotificarStockEnCasoDeErrorDevuelvaFalse(){
         ItemCommerceDaoImpl itemCommerceDao = mock(ItemCommerceDaoImpl.class);
-        when(itemCommerceDao.getItemCommerceById(anyLong(), anyLong())).thenReturn(new ItemCommerce());
+        when(itemCommerceDao.getItemCommerceById(anyLong(), anyLong())).thenReturn(new ItemCommerceImpl());
 
-        doThrow(Exception.class).when(itemCommerceDao).notifyNoStock(any(ItemCommerce.class));
+        doThrow(Exception.class).when(itemCommerceDao).notifyNoStock(any(ItemCommerceImpl.class));
 
         ItemCommerceServiceImpl sut = new ItemCommerceServiceImpl();
         sut.setCommerceDao(itemCommerceDao);
