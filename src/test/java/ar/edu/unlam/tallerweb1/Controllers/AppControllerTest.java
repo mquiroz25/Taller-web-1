@@ -69,7 +69,7 @@ public class AppControllerTest {
 		Double attention = 5.0;
 		Long id_commerce = 1l;
 		String review = "buena atencion";
-		
+
 		when(commerceServiceMock.getCommerceById(id_commerce)).thenReturn(null);
 
 		ModelAndView mav = sut.process(id_commerce, attention, speed, prices, review);
@@ -77,6 +77,26 @@ public class AppControllerTest {
 		assertThat(mav.getViewName()).isEqualTo("error");
 		assertThat(mav.getModel().containsKey("error"));
 		assertThat(mav.getModel().get("error")).isEqualTo("no existe comercio con ese id");
+
+	}
+
+	@Test
+	public void testQueMuestaErrorCuandoHuboErrorAlGuardarRanking()
+	{
+
+		RankingService rankingServiceMock = mock(RankingService.class);
+		CommerceService commerceServiceMock = mock(CommerceService.class);
+
+		when(commerceServiceMock.getCommerceById(anyLong())).thenReturn(new Commerce());
+		when(rankingServiceMock.saveRanking(any(Ranking.class))).thenReturn(false);
+		AppController sut = new AppController ();
+		sut.setCommerceService(commerceServiceMock);
+		sut.setRankingService(rankingServiceMock);
+		ModelAndView mav = sut.process(1L, 2.0, 20.0, 2.0, "asd");
+
+		assertThat(mav.getViewName()).isEqualTo("error");
+		assertThat(mav.getModel().containsKey("error"));
+		assertThat(mav.getModel().get("error")).isEqualTo("Hubo un error al guardar el ranking");
 
 	}
 
