@@ -20,9 +20,13 @@ public class RankingServiceImpl implements RankingService {
 	}
 
 	@Override
-	public void saveRanking(Ranking ranking) {
-
-		rankingDao.saveRanking(ranking);
+	public boolean saveRanking(Ranking ranking) {
+		try{
+			rankingDao.saveRanking(ranking);
+			return true;
+		}catch(Exception e){
+			return false;
+		}
 	}
 
 	@Override

@@ -126,11 +126,14 @@ public class AppController {
         if(commerce!=null)
              {
               Ranking ranking = rankingService.getAverageForCriteriaAndSetRankingToCommerce(attention, speed, prices,review,commerce);
-              rankingService.saveRanking(ranking);
-               List<Ranking> rankingList = rankingService.getRankingListByIdCommerce(id_commerce);
-               commerceService.calculateAverageRankingListAndSetToCommerce(commerce, rankingList);
-
-               return new ModelAndView("redirect:/home");
+              if(rankingService.saveRanking(ranking)){
+                  List<Ranking> rankingList = rankingService.getRankingListByIdCommerce(id_commerce);
+                  commerceService.calculateAverageRankingListAndSetToCommerce(commerce, rankingList);
+                  return new ModelAndView("redirect:/home");
+              }else {
+                  model.put("error", "Hubo un error al guardar el ranking");
+                  return new ModelAndView("error", model);
+              }
              }
         else
         {
