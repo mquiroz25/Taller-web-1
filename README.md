@@ -1,4 +1,8 @@
 Proyecto realizado para la materia Taller web 1 
+Tecnologias utilizadas:
+Backend:Java,Spring MVC,Hibernate
+Frontend:Html5,Css3,Bootstrap 4,Javascript
+Base de datos:MySQL
 
 Funcionalidades de la aplicacion:
 -buscar productos por marca o categoria 
