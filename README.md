@@ -12,3 +12,4 @@ Funcionalidades de la aplicacion:
 -calificar a los negocios 
 -reservar productos 
 -avisar si no hay stock
+https://github.com/mquiroz25/Taller-web-1/blob/master/FireShot%20Capture%20004%20-%20%20-%20localhost.png
